@@ -1,0 +1,84 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+
+<!-- CSS -->
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/emp_home.css' %}">
+{% endblock %}
+
+
+{% block contenido %}
+
+{% load humanize %}
+
+</style>
+<section>
+    <h1>Bienvenid@,  {{ uName }} </h1>
+</section>
+<main>
+    <div class="contenedor">
+
+        <div class="enlaces">
+            
+            <h4>
+                <a href="#">
+                    <img src="{% static 'fermeApp/img/cuenta.png' %}" alt="">
+                    Administrar cuenta
+                </a>
+            </h4>
+        </div>
+        <div class="enlaces">
+
+            <h4>
+                <a href=" {% url 'emp_orden' %} ">
+                    <img src="{% static 'fermeApp/img/order.png' %}" alt="">
+                    Ordenes de compra
+                </a>
+            </h4>
+        </div>
+        
+        <div class="enlaces">
+
+            <h4>
+                <a href="{% url 'emp_productos' %}">
+                    <img src="{% static 'fermeApp/img/productos.png' %}" alt="">
+                    Productos
+                </a>
+            </h4>
+        </div>
+
+        <div class="enlaces">
+
+            <h4>
+                <a href="{% url 'emp_proveedor' %}"> 
+                    <img src="{% static 'fermeApp/img/proveedor.png' %}" alt="">              
+                    Proveedores
+                </a>
+            </h4>
+        </div>
+
+        <div class="enlaces">
+
+            <h4>
+                <a href="">
+                    <img src="{% static 'fermeApp/img/user.png' %}" alt="">
+                    Clientes
+                </a>
+            </h4>
+        </div>
+
+        <div class="enlaces">
+
+            <h4>
+                <a href="">
+                    <img src="{% static 'fermeApp/img/report.png' %}" alt="">
+                    Reportes
+                </a>
+            </h4>
+        </div>
+        
+    </div>
+</main>
+{% endblock %}

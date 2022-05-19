@@ -1,0 +1,67 @@
+body{
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+}
+section{
+    height: 30vh;
+    background-image: url("../img/sierraCircular.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+main {
+    display: flex;
+    justify-content: center;
+}
+
+/* ### PRODUCTO */
+.producto-container{
+    background-color: white;
+    width: 80%;
+    padding: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 30px 0;
+}
+.producto {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0 0 0/.3);
+}
+.producto-contenido {
+    padding: .5em;
+}
+.producto-contenido h4 {
+    margin-top: .5em;
+    font-size: 1em;
+    color: rgb(133, 133, 133);
+}
+.producto-contenido p {
+    margin-top: 2em;
+    font-weight: 700;
+}
+.producto-img {
+    background-color: rgba(0 0 0/.3);
+    width: 100%;
+    border-radius: 3px 3px 0 0 ;
+}
+
+.btn-carro {
+    border: none;
+    border-radius: 100px;
+    width: 80%;
+    padding: .5em;
+    color: white;
+    background-color: #22577A;
+    box-shadow: 0 5px 5px rgba(0 0 0 /.3);
+    transition: all .3s ease;
+    display: block;
+    margin: .5em auto;
+}
+.btn-carro:hover {
+    background-color: #064663;
+    box-shadow: 0 5px 5px rgb(17, 46, 65);
+}

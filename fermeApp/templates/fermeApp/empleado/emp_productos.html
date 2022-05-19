@@ -1,0 +1,81 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+
+{% block contenido %}
+<style>
+    body{
+        color: black;
+        letter-spacing: 1px;
+    }
+    section{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 10vh;
+        width: 80%;
+    }
+    main {
+        display: flex;
+        justify-content: center;
+        height: 80vh;
+    }
+    .table{
+        max-width: 60%;
+        height: 15vh;
+        text-align: center;
+    }
+    button {
+        border: none;
+        border-radius: 100px;
+        padding: .5em;
+        color: white;
+        background-color: #22577A;
+        box-shadow: 0 5px 5px rgba(0 0 0 /.5);
+        transition: all .3s ease;
+        margin: 5px 1px;
+        }
+    button a {
+        color: white;
+        text-decoration: none;
+        font-size: 13px;
+    }
+    button:hover {
+        background-color: #93B5C6;
+        box-shadow: 0 5px 5px #22577A;
+    }
+
+</style>
+{% load humanize %}
+<section>
+    <button><a href="{% url 'addProducto' %}">Agregar producto</a></button>
+</section>
+<main>
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for p in productos %}
+          <tr>
+            <th scope="row">1</th>
+            <td>{{p.nombre}}</td>
+            <td> ${{p.precio | intcomma}}</td>
+            <td>{{p.stock | intcomma}}</td>
+            <td class="tdButton">
+                <button><a href="{% url 'modificarProducto' p.id_prod %}">Modificar producto</a></button>
+                <button><a href="{% url 'eliminar_producto' p.id_prod %}">Eliminar producto</a></button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+</main>
+{% endblock %}

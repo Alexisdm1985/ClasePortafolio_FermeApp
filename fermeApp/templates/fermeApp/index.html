@@ -1,0 +1,44 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+
+<!-- CSS -->
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}">
+{% endblock %}
+
+<!-- CONTENT -->
+{% block contenido %}
+
+<!-- Foto -->
+<section>
+</section>
+
+<main>
+    
+    {% load humanize %}
+
+    <div class="producto-container">
+    
+        {% for p in productos %}
+    
+        <div class="producto">
+    
+            <img class="producto-img" src="{% static 'fermeApp/img/tools.jpg' %}" alt="CAMBIARESTOCAMBIARESTO">
+    
+            <div class="producto-contenido">
+                <h4>Marca</h4>
+                <h3> {{p.nombre}} </h3>
+                <p>$ {{p.precio | intcomma}} </p>
+            </div>
+            <div class="btn-section">
+                <button class="btn-carro">Agregar al Carro</button>
+            </div>
+        </div>
+        
+        {% endfor %}
+    </div>
+
+</main>
+{% endblock %}
+

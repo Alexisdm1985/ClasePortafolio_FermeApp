@@ -1,0 +1,32 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+
+<!-- CONTENT -->
+{% block contenido %}
+
+<style>
+    main{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    form{
+        width: 60%;
+    }
+</style>
+
+{% load crispy_forms_tags %}
+<main>
+    <form action="" method="POST">
+        <br><br>
+        
+        {% csrf_token %}
+        
+        {{ form | crispy}}
+        
+        <br>
+        <button type="submit" class="btn btn-primary">Registrarme</button>
+    </form>
+</main>
+{% endblock %}

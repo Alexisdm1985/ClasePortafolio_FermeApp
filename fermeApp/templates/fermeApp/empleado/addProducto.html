@@ -1,0 +1,78 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block contenido %}
+<style>
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1 {
+    text-align: center;
+    margin: .5em;
+}
+.contenedor{
+    display: flex;
+    align-items: center;
+    width: 70%;
+    flex-direction: column;
+    text-indent: 2px;
+    margin-bottom: 10px;
+}
+.contenedor  div {
+    margin: 0 auto;
+    width: 90%;
+}
+.contenedor label {
+    margin-left: 1.2em;
+}
+.formulario{
+    /* background-color: #041C32; */
+    padding: 1.5em;
+    /* color: white; */
+    width: 60%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+button {
+    border: none;
+    border-radius: 100px;
+    width: 50%;
+    padding: .5em;
+    color: white;
+    background-color: #22577A;
+    box-shadow: 0 5px 5px rgba(0 0 0 /.5);
+    transition: all .3s ease;
+}
+button:hover {
+    background-color: #93B5C6;
+    box-shadow: 0 5px 5px #22577A;
+
+}
+</style>
+<main>
+    <h1>Agregar Producto</h1>
+    <div class="contenedor">
+        
+        <form class="formulario" action="" method="POST">
+            {% csrf_token %}
+        
+            {{ form | crispy }}
+            <br>
+            <button type="submit">Guardar producto</button>
+        
+        </form>
+    </div>
+
+</main>
+
+
+{% endblock %}
