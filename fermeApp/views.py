@@ -152,7 +152,7 @@ def addOrden(request):
         else:
             data["form"] = formulario
 
-    return render(request, 'fermeApp/empleado/addProveedor.html', data)
+    return render(request, 'fermeApp/empleado/addOrden.html', data)
 # Proveedor
 def emp_proveedor(request):
     

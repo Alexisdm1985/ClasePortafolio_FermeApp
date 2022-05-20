@@ -5,7 +5,7 @@
 
 <!-- CSS -->
 {% block extrahead %}
-<link rel="stylesheet" href="{% static 'fermeApp\css\emp_addOrden'%}">
+<link rel="stylesheet" href="{% static 'fermeApp\css\emp_addOrden.css'%}">
 {% endblock %}
 
 <!-- CONTENIDO -->
@@ -19,10 +19,8 @@
         
             {{ form | crispy }}
        
-            <br>
             {{ form2 | crispy }}
             <button type="submit">Guardar orden</button>
-        
         </form>
     </div>
 

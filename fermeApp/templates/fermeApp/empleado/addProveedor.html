@@ -4,7 +4,7 @@
 
 <!-- CSS -->
 {% block extrahead %}
-<link rel="stylesheet" href="{% static 'fermeApp\css\emp_addProveedor'%}">
+<link rel="stylesheet" href="{% static 'fermeApp\css\emp_addProveedor.css'%}">
 {% endblock %}
 
 <!-- CONTENT -->
@@ -12,15 +12,15 @@
 
 {% load crispy_forms_tags %}
 <main>
-    <form action="" method="POST">
-        <br><br>
-        
-        {% csrf_token %}
-        
-        {{ form | crispy}}
-        
-        <br>
-        <button type="submit" class="btn btn-primary">Registrarme</button>
-    </form>
+    <h1>Agregar Proveedor</h1>
+    <div class="contenedor">
+        <form class="formulario" action="" method="POST">
+    
+            {% csrf_token %}
+            {{ form | crispy}}
+            
+            <button type="submit">Registrarme</button>
+        </form>
+    </div>
 </main>
 {% endblock %}

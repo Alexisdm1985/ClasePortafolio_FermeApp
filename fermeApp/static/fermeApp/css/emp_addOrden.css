@@ -2,29 +2,37 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Raleway', sans-serif;
 }
 h1 {
     text-align: center;
     margin: .5em;
+    letter-spacing: 2px;
+    margin-top: .5em;
+}
+label {
+    margin-bottom: .7em;
+    margin-top: .7em;
+    margin-left: 1.2em;
 }
 .contenedor{
     display: flex;
     align-items: center;
-    width: 70%;
     flex-direction: column;
+    width: 70%;
+    margin: 2em 0;
+    padding: 2em;
+    box-shadow: 0 0 5px rgba(0 0 0 /.5);
+    border-radius: 7px;
     text-indent: 2px;
-    margin-bottom: 10px;
 }
 .contenedor  div {
     margin: 0 auto;
     width: 90%;
 }
-.contenedor label {
-    margin-left: 1.2em;
-}
 .formulario{
     padding: 1.5em;
-    width: 60%;
+    width: 100%;
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -43,7 +51,18 @@ button {
     transition: all .3s ease;
 }
 button:hover {
-    background-color: #93B5C6;
-    box-shadow: 0 5px 5px #22577A;
+    background-color: #064663;
+    box-shadow: 0 5px 5px rgb(17, 46, 65);
 
+}
+
+@media screen and (min-width: 1000px){
+    .contenedor{
+        width: 35%;
+    }
+    }
+@media screen and (max-width: 1500px){
+    .contenedor{
+        width: 45%;
+    }
 }
