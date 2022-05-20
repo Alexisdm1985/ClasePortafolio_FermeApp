@@ -1,6 +1,6 @@
 from dataclasses import field, fields
 from django import forms
-from .models import Cliente, DetalleOrden, InvProducto, OfertaProd, OrdenCompra, Proveedor
+from .models import Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -32,12 +32,6 @@ class AddProveedor(forms.ModelForm):
     class Meta:
         model = Proveedor
         fields = ["rut", "rubro", "celular", "domicilio"]
-
-class AddOferta(forms.ModelForm):
-
-    class Meta:
-        model = OfertaProd
-        fields = '__all__'
 
 class AddOrden(forms.ModelForm):
 
