@@ -62,8 +62,11 @@ def contacto(request):
 # Vendedor
 # Empleado
 def empleado(request):
+
+    userName = request.user.get_short_name()
+
     data = {
-        'uName': request.user.get_short_name()
+        'uName': userName if userName else 'Admin'
     }
     return render(request, 'fermeApp/empleado/home.html', data)
 
