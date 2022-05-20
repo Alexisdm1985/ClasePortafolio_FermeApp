@@ -2,51 +2,13 @@
 {% extends 'fermeApp/base.html' %} 
 {% load static %}
 
-{% block contenido %}
-<style>
-    body{
-        color: black;
-        letter-spacing: 1px;
-    }
-    section{
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        height: 10vh;
-        width: 80%;
-    }
-    main {
-        display: flex;
-        justify-content: center;
-        height: 80vh;
-    }
-    .table{
-        max-width: 60%;
-        height: 15vh;
-        text-align: center;
-    }
-    button {
-        border: none;
-        border-radius: 100px;
-        padding: .5em;
-        color: white;
-        background-color: #22577A;
-        box-shadow: 0 5px 5px rgba(0 0 0 /.5);
-        transition: all .3s ease;
-        margin: 5px 1px;
-        }
-    button a {
-        color: white;
-        text-decoration: none;
-        font-size: 13px;
-    }
-    button:hover {
-        background-color: #93B5C6;
-        box-shadow: 0 5px 5px #22577A;
-    }
+<!-- CSS -->
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/emp_orden'%}">
+{% endblock %}
 
-</style>
 {% load humanize %}
+{% block contenido %}
 <section>
     <button><a href=" {% url 'addOrden' %}">Agregar orden de compra</a></button>
 </section>
@@ -54,7 +16,7 @@
     <table class="table">
         <thead class="thead-dark">
           <tr>
-            <!-- <th scope="col">#</th> -->
+            <th scope="col">#</th>
             <th scope="col">Nro orden</th>
             <th scope="col">Fecha</th>
             <th scope="col">Rut empleado</th>
@@ -64,7 +26,7 @@
         <tbody>
             {% for p in ordenes %}
           <tr>
-            <!-- <th scope="row">1</th> -->
+            <th scope="row">{{forloop.counter}}</th>
             <td>{{p.nro_orden}}</td>
             <td>{{p.fecha}}</td>
             <td>{{p.empleado_rut_emp}}</td>
