@@ -1,6 +1,5 @@
 body{
     color: black;
-    font-family: 'Montserrat', sans-serif;
 }
 section{
     height: 30vh;
@@ -12,6 +11,7 @@ section{
 main {
     display: flex;
     justify-content: center;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* ### PRODUCTO */

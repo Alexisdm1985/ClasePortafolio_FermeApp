@@ -2,19 +2,13 @@
 {% extends 'fermeApp/base.html' %} 
 {% load static %}
 
+<!-- CSS -->
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp\css\emp_addProveedor'%}">
+{% endblock %}
+
 <!-- CONTENT -->
 {% block contenido %}
-
-<style>
-    main{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    form{
-        width: 60%;
-    }
-</style>
 
 {% load crispy_forms_tags %}
 <main>

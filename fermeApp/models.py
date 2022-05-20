@@ -90,6 +90,9 @@ class Cliente(models.Model):
     tipo_usuario = models.CharField(max_length=30)
     habilitado = models.FloatField()
 
+    def __str__(self):
+        return f"{self.nombre} {self.p_apellido}"
+
     class Meta:
         managed = False
         db_table = 'cliente'
@@ -106,6 +109,9 @@ class DetalleOrden(models.Model):
     recibido = models.FloatField()
     nombre = models.CharField(max_length=250)
 
+    def __str__(self):
+        return f"Detalle de {self.orden_compra_nro_orden}"
+
     class Meta:
         managed = False
         db_table = 'detalle_orden'
@@ -118,6 +124,9 @@ class DetalleVenta(models.Model):
     descuento = models.IntegerField()
     venta_doc_nro_doc = models.OneToOneField('VentaDoc', models.DO_NOTHING, db_column='venta_doc_nro_doc', primary_key=True)
     inv_producto_id_prod = models.ForeignKey('InvProducto', models.DO_NOTHING, db_column='inv_producto_id_prod')
+
+    def __str__(self):
+        return f"Detalle de {self.venta_doc_nro_doc}"
 
     class Meta:
         managed = False
@@ -180,6 +189,10 @@ class Empleado(models.Model):
     tipo_usuario = models.CharField(max_length=30)
     habilitado = models.FloatField()
 
+
+    def __str__(self):
+        return f"{self.nombre} {self.p_apellido}"
+
     class Meta:
         managed = False
         db_table = 'empleado'
@@ -188,6 +201,9 @@ class Empleado(models.Model):
 class FamProducto(models.Model):
     id_fam = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.descripcion
 
     class Meta:
         managed = False
@@ -207,6 +223,9 @@ class InvProducto(models.Model):
     marca = models.CharField(max_length=250)
     tipo_producto_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='tipo_producto_id_tipo')
 
+    def __str__(self):
+        return f"{self.nombre}"
+
     class Meta:
         managed = False
         db_table = 'inv_producto'
@@ -216,6 +235,9 @@ class OrdenCompra(models.Model):
     nro_orden = models.AutoField(primary_key=True)
     fecha = models.DateField()
     empleado_rut_emp = models.ForeignKey(Empleado, models.DO_NOTHING, db_column='empleado_rut_emp')
+    
+    def __str__(self):
+        return f"Orden compra nro {self.nro_orden}"
 
     class Meta:
         managed = False
@@ -232,6 +254,9 @@ class Proveedor(models.Model):
     tipo_usuario = models.CharField(max_length=30)
     habilitado = models.FloatField()
 
+    def __str__(self):
+        return f"{self.nombre} - {self.id_prov}"
+
     class Meta:
         managed = False
         db_table = 'proveedor'
@@ -240,6 +265,9 @@ class Proveedor(models.Model):
 class TipoProducto(models.Model):
     id_tipo = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=250)
+
+    def __str__(self):
+        return f"{self.descripcion}"
 
     class Meta:
         managed = False
@@ -258,19 +286,25 @@ class Vendedor(models.Model):
     tipo_usuario = models.CharField(max_length=30)
     habilitado = models.FloatField()
 
+    def __str__(self):
+        return f"{self.nombre} {self.p_apellido}"
+
     class Meta:
         managed = False
         db_table = 'vendedor'
 
 
 class VentaDoc(models.Model):
-    nro_doc = models.IntegerField(primary_key=True)
+    nro_doc = models.AutoField(primary_key=True)
     fecha = models.DateField()
     tipo_venta = models.CharField(max_length=30)
     valor_neto = models.IntegerField()
     iva = models.IntegerField()
     vendedor_rut_ven = models.ForeignKey(Vendedor, models.DO_NOTHING, db_column='vendedor_rut_ven')
     cliente_rut_cli = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='cliente_rut_cli')
+
+    def __str__(self):
+        return f"Venta nro {self.nro_doc}"
 
     class Meta:
         managed = False
