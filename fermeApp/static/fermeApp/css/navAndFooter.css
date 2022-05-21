@@ -19,10 +19,8 @@ nav {
     background-image: url('../img/ferme.png');
     background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;
     width: 200px;
-    height: 113px;
-    border-radius: 5px;
+    height: 120px;
 }
 .nav-left {
     display: flex;
