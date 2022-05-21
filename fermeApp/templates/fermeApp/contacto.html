@@ -2,9 +2,35 @@
 {% extends 'fermeApp/base.html' %} 
 {% load static %}
 
+<!-- CSS -->
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/contacto.css' %}">
+{% endblock %}
+
 <!-- CONTENT -->
 {% block contenido %}
 <main>
-    <p>CONTACTO CONTENIDO</p>
+    <div class="container">
+        
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <h1>HABLEMOS</h1>
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" required>
+            <label for="email">Correo</label>
+            <input id="email" name="email" type="text" required>
+            <label for="comentario">Comentario</label>
+            <textarea name="comentario" id="comentario" cols="30" rows="10" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+        <div class="contact">
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d831.6591672811892!2d-70.5839971707411!3d-33.51082888060897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662d04fd5e48cb1%3A0xc62959aeb9bd3ada!2sMetrosivero%205885%2C%20La%20Florida%2C%208270023%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses-419!2scl!4v1653092460112!5m2!1ses-419!2scl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <p>Ejercito 599 - Paicavi 80, Concepción</p>
+            <span>+56942554235 / +56598451</span>
+        </div>
+
+    </div>
 </main>
 {% endblock %}
