@@ -37,6 +37,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface', # Nos permite configurar el admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,8 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fermeApp',
     'crispy_forms',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'colorfield'
 ]
+# Necesario para Django interface
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # Para que crispy trabaje con bootstrap
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

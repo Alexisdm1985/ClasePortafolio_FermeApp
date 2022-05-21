@@ -1,8 +1,8 @@
 from dataclasses import field, fields
 from django import forms
 from .models import Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm  # Permite crear usuarios del sistema
+from django.contrib.auth.models import User #Podemos usar metodos para user actual 
 
 class FormRegistroCli(forms.ModelForm):
 
@@ -28,7 +28,7 @@ class AddProducto(forms.ModelForm):
         fields = ['id_prod', 'nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca']
 
 class AddProveedor(forms.ModelForm):
-
+    
     class Meta:
         model = Proveedor
         fields = ["rut", "rubro", "celular", "domicilio"]

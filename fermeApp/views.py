@@ -171,10 +171,13 @@ def addProveedor(request):
 
     if request.method == 'POST':
         formulario = NuevoUserCreationForm(data=request.POST)
-        formulario2 = AddProveedor(data=request.POST)
+        # formulario2 = AddProveedor(data=request.POST)
 
         if formulario.is_valid():
+            #  and formulario2.is_valid():
+            # nombre = formulario.__getattribute__
             formulario.save()
+
 
             return redirect(to='emp_proveedor')
             

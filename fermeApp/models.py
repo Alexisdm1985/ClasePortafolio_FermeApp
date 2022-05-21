@@ -87,7 +87,7 @@ class Cliente(models.Model):
     usuario = models.CharField(max_length=50)
     contrasenia = models.CharField(max_length=250)
     pertenencia_emp = models.FloatField()
-    tipo_usuario = models.CharField(max_length=30)
+    tipo_usuario = models.CharField(max_length=30,default='CLIENTE')
     habilitado = models.FloatField()
 
     def __str__(self):
@@ -186,7 +186,7 @@ class Empleado(models.Model):
     usuario = models.CharField(max_length=50)
     contrasenia = models.CharField(max_length=250)
     cargo = models.CharField(max_length=50)
-    tipo_usuario = models.CharField(max_length=30)
+    tipo_usuario = models.CharField(max_length=30, default='EMPLEADO')
     habilitado = models.FloatField()
 
 
@@ -251,7 +251,7 @@ class Proveedor(models.Model):
     rubro = models.CharField(max_length=50)
     celular = models.BigIntegerField()
     domicilio = models.CharField(max_length=220)
-    tipo_usuario = models.CharField(max_length=30)
+    tipo_usuario = models.CharField(max_length=30, default='PROVEEDOR')
     habilitado = models.FloatField()
 
     def __str__(self):
@@ -283,7 +283,7 @@ class Vendedor(models.Model):
     telefono = models.BigIntegerField()
     usuario = models.CharField(max_length=50)
     contrasenia = models.CharField(max_length=250)
-    tipo_usuario = models.CharField(max_length=30)
+    tipo_usuario = models.CharField(max_length=30, default='VENDEDOR')
     habilitado = models.FloatField()
 
     def __str__(self):
