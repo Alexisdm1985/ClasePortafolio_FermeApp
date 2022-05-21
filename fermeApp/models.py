@@ -10,8 +10,8 @@ from django.db import models
 
 # OPCIONES
 opciones_habilitado = [
-    [1, "Si"],
-    [2, "No"]
+    [0, "Si"],
+    [1, "No"]
 ]
 
 class AuthGroup(models.Model):
@@ -92,9 +92,10 @@ class Cliente(models.Model):
     telefono = models.BigIntegerField()
     usuario = models.CharField(max_length=50)
     contrasenia = models.CharField(max_length=250)
-    pertenencia_emp = models.FloatField()
+    pertenencia_emp = models.FloatField(choices=opciones_habilitado)
     tipo_usuario = models.CharField(max_length=30,default='CLIENTE')
     habilitado = models.FloatField(choices=opciones_habilitado)
+        
 
     def __str__(self):
         return f"{self.nombre} {self.p_apellido}"
