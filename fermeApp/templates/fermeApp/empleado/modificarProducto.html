@@ -17,14 +17,15 @@
             {% csrf_token %}
         
             {{ form | crispy }}
-            <br>
-            <button type="submit">Confirmar modificaciones</button>
-        
+           
+            <button id="btn_modal" type="submit" >Confirmar</button>
+            
         </form>
     </div>
+    
+    
 </main>
 {% endblock %}
-
 
 <!-- capfirst = capitalize
 title = todo en mayusc -->

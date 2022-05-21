@@ -27,7 +27,7 @@
             <img class="producto-img" src="{% static 'fermeApp/img/tools.jpg' %}" alt="CAMBIARESTOCAMBIARESTO">
     
             <div class="producto-contenido">
-                <h4>Marca</h4>
+                <h4>{{p.marca}}</h4>
                 <h3> {{p.nombre}} </h3>
                 <p>$ {{p.precio | intcomma}} </p>
             </div>

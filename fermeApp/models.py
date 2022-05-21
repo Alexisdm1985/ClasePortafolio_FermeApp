@@ -211,14 +211,14 @@ class FamProducto(models.Model):
 
 
 class InvProducto(models.Model):
-    id_prod = models.BigAutoField(primary_key=True)
+    id_prod = models.BigIntegerField(primary_key=True)
     nombre = models.CharField(max_length=250)
     precio = models.IntegerField()
     stock = models.IntegerField()
     stock_crit = models.IntegerField()
     stock_max = models.IntegerField()
     fecha_venc = models.DateField(blank=True, null=True)
-    habilitado = models.FloatField()
+    habilitado = models.FloatField(default=1)
     fam_producto_id_fam = models.ForeignKey(FamProducto, models.DO_NOTHING, db_column='fam_producto_id_fam')
     marca = models.CharField(max_length=250)
     tipo_producto_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='tipo_producto_id_tipo')
