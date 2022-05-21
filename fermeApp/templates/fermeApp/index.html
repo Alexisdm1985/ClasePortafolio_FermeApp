@@ -1,68 +1,64 @@
 <!-- Import -->
-{% extends 'fermeApp/base.html' %} 
+{% extends 'fermeApp/base.html' %}
 {% load static %}
 
 <!-- CSS -->
 {% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/carousel.css' %}">
 <link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}">
+<script src="https://kit.fontawesome.com/887a835504.js" crossorigin="anonymous"></script>
 {% endblock %}
 
 <!-- CONTENT -->
 {% block contenido %}
 
+<!-- Carrusel de Imagenes -->
 
-<section>
-  <p>Aqui va el carousels</p>
-      <!-- <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active" data-bs-interval="5000">
-            <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}"alt="...">
-          </div>
-          <div class="carousel-item" data-bs-interval="5000">
-            <img src="{% static 'fermeApp/img/estanteTools.jpg' %}" alt="...">
-          </div>
-          <div class="carousel-item" data-bs-interval="5000">
-            <img src="{% static 'fermeApp/img/tools.jpg' %}" alt="...">
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div> -->
-</section>
+<body>
+  <div class="slider-frame">
+      <ul>
+          <li><img src="{% static 'fermeApp/img/c1.jpg' %}" alt=""></li>
+          <li><img src="{% static 'fermeApp/img/c2.jpg' %}" alt=""></li>
+          <li><img src="{% static 'fermeApp/img/c3.jpg' %}" alt=""></li>
+          <li><img src="{% static 'fermeApp/img/c4.jpg' %}" alt=""></li>
+      </ul>
+  </div>
+</body>
+<br>
+<br>
+<div align='center'>
+  <h1 class="fa fa-align-center"> Destacados</h1>
+</div>
+<br>
+<br>
+
 
 <main>
-    
-    {% load humanize %}
 
-    <div class="producto-container">
-    
-        {% for p in productos %}
-    
-        <div class="producto">
-    
-            <img class="producto-img" src="{% static 'fermeApp/img/tools.jpg' %}" alt="CAMBIARESTOCAMBIARESTO">
-    
-            <div class="producto-contenido">
-                <h4>Marca</h4>
-                <h3> {{p.nombre}} </h3>
-                <p>$ {{p.precio | intcomma}} </p>
-            </div>
-            <div class="btn-section">
-                <button class="btn-carro">Agregar al Carro</button>
-            </div>
-        </div>
-        
-        {% endfor %}
+  {% load humanize %}
+
+  <div class="producto-container">
+
+    {% for p in productos %}
+
+    <div class="producto">
+
+      <img class="producto-img" src="{% static 'fermeApp/img/tools.jpg' %}" alt="CAMBIARESTOCAMBIARESTO">
+
+      <div class="producto-contenido">
+        <h4>Marca</h4>
+        <h3> {{p.nombre}} </h3>
+        <p>$ {{p.precio | intcomma}} </p>
+      </div>
+      <div class="btn-section">
+        <button class="btn-carro">Agregar al Carro</button>
+      </div>
     </div>
+
+    {% endfor %}
+  </div>
 
 
 
 </main>
 {% endblock %}
-
