@@ -8,6 +8,12 @@
 from django.db import models
 
 
+# OPCIONES
+opciones_habilitado = [
+    [1, "Si"],
+    [2, "No"]
+]
+
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150, blank=True, null=True)
 
@@ -88,7 +94,7 @@ class Cliente(models.Model):
     contrasenia = models.CharField(max_length=250)
     pertenencia_emp = models.FloatField()
     tipo_usuario = models.CharField(max_length=30,default='CLIENTE')
-    habilitado = models.FloatField()
+    habilitado = models.FloatField(choices=opciones_habilitado)
 
     def __str__(self):
         return f"{self.nombre} {self.p_apellido}"
@@ -187,7 +193,7 @@ class Empleado(models.Model):
     contrasenia = models.CharField(max_length=250)
     cargo = models.CharField(max_length=50)
     tipo_usuario = models.CharField(max_length=30, default='EMPLEADO')
-    habilitado = models.FloatField()
+    habilitado = models.FloatField(choices=opciones_habilitado)
 
 
     def __str__(self):
@@ -218,7 +224,7 @@ class InvProducto(models.Model):
     stock_crit = models.IntegerField()
     stock_max = models.IntegerField()
     fecha_venc = models.DateField(blank=True, null=True)
-    habilitado = models.FloatField(default=1)
+    habilitado = models.FloatField(choices=opciones_habilitado, default=1)
     fam_producto_id_fam = models.ForeignKey(FamProducto, models.DO_NOTHING, db_column='fam_producto_id_fam')
     marca = models.CharField(max_length=250)
     tipo_producto_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='tipo_producto_id_tipo')
@@ -252,7 +258,7 @@ class Proveedor(models.Model):
     celular = models.BigIntegerField()
     domicilio = models.CharField(max_length=220)
     tipo_usuario = models.CharField(max_length=30, default='PROVEEDOR')
-    habilitado = models.FloatField()
+    habilitado = models.FloatField(choices=opciones_habilitado)
 
     def __str__(self):
         return f"{self.nombre} - {self.id_prov}"
@@ -284,7 +290,7 @@ class Vendedor(models.Model):
     usuario = models.CharField(max_length=50)
     contrasenia = models.CharField(max_length=250)
     tipo_usuario = models.CharField(max_length=30, default='VENDEDOR')
-    habilitado = models.FloatField()
+    habilitado = models.FloatField(choices=opciones_habilitado)
 
     def __str__(self):
         return f"{self.nombre} {self.p_apellido}"
