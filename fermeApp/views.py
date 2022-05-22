@@ -1,3 +1,4 @@
+from tkinter.tix import MAX
 from .models import AuthUser, InvProducto, OrdenCompra, Proveedor, FamProducto
 from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor
 from django.shortcuts import render, redirect, get_object_or_404
@@ -160,11 +161,6 @@ def addOrden(request):
 
             return redirect(to='emp_proveedor')
             
-            # Rescato el nombre del primer formulario
-            # prov_nombre = formulario.cleaned_data["first name"]
-            # formulario2 += prov_nombre
-            # formulario2.save()
-            
         else:
             data["form"] = formulario
 
@@ -172,12 +168,10 @@ def addOrden(request):
 # Proveedor
 def emp_proveedor(request):
     
-    proveedor = Proveedor.objects.all()
-    djProveedor = AuthUser.objects.all()
+    proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
 
     data = {
-        'proveedores': proveedor,
-        'djProveedores': djProveedor
+        'proveedores': proveedor
     }
 
     return render(request, 'fermeApp/empleado/emp_proveedor.html', data)
@@ -201,9 +195,11 @@ def addProveedor(request):
             rut = formulario2.cleaned_data['rut']
             celular = formulario2.cleaned_data['celular']
 
-            new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro)
-
             formulario.save()
+            userProveedor = AuthUser.objects.all().order_by('-id') #Obtiene todos los auth user ordenados descendentemente
+            idProveedor = userProveedor[0].id
+        
+            new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro, userid = idProveedor)
             new_proveedor.save()
             return redirect(to='emp_proveedor')
     
@@ -211,8 +207,6 @@ def addProveedor(request):
             data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addProveedor.html', data)
-
-
 
 def modificarProveedor(request, id_prov):
 
@@ -224,7 +218,7 @@ def modificarProveedor(request, id_prov):
     if request.method == 'POST':
     
         formulario = ModificarProveedor(data=request.POST, instance=proveedor)
-        
+    
         if formulario.is_valid():
             formulario.save()
             return redirect(to= "emp_proveedor")
@@ -233,4 +227,14 @@ def modificarProveedor(request, id_prov):
 
     return render(request, 'fermeApp/empleado/modificarProveedor.html', data)
 
-# def eliminar_proveedor(request, id):
+def eliminar_proveedor(request, id_prov):
+
+    proveedor = get_object_or_404(Proveedor, id_prov=id_prov)
+    proveedor.habilitado = 0
+    idUser = proveedor.userid
+    djangoProveedor = get_object_or_404(AuthUser, id=idUser)
+    djangoProveedor.is_active = 0
+
+    proveedor.save()
+    djangoProveedor.save()
+    return redirect(to= "emp_proveedor")

@@ -17,8 +17,8 @@
     
             {% csrf_token %}
     
-            {{ form | crispy}}
             {{ form2 | crispy }}
+            {{ form | crispy}}
             
             <button type="submit">Modificar</button>
         </form>
