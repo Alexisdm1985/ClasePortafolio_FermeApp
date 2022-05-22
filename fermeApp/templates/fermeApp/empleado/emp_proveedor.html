@@ -31,10 +31,10 @@
             <td> {{p.rut}}</td>
             <td>{{p.rubro}}</td>
             <td class="tdButton">
-                <button><a href="#">Modificar proveedor</a></button>
+                <button><a href="{% url 'modificarProveedor' p.id_prov %}">Modificar proveedor</a></button>
                 <button><a href="#">Eliminar proveedor</a></button>
-            </td>
-          </tr>
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
