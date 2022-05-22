@@ -1,4 +1,4 @@
-from .models import InvProducto, OrdenCompra, Proveedor, FamProducto
+from .models import AuthUser, InvProducto, OrdenCompra, Proveedor, FamProducto
 from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
@@ -157,8 +157,11 @@ def addOrden(request):
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.all()
+    djProveedor = AuthUser.objects.all()
+
     data = {
-        'proveedores': proveedor
+        'proveedores': proveedor,
+        'djProveedores': djProveedor
     }
 
     return render(request, 'fermeApp/empleado/emp_proveedor.html', data)
@@ -195,24 +198,27 @@ def addProveedor(request):
 
 
 
-# def modificarProveedor(request, id):
+def modificarProveedor(request, id_prov, id_django):
 
-#     proveedor = get_object_or_404(Proveedor, id_prov=id)
+    proveedor = get_object_or_404(Proveedor, id_prov=id_prov)
+    djProveedor = get_object_or_404(Proveedor, id=id_django)
 
-#     data = {
-#         'form': NuevoUserCreationForm (instance = producto)
-#     }
+    data = {
+        'form': AddProveedor(instance = proveedor),
+        'form2': NuevoUserCreationForm(instance = djProveedor)
+    }
 
-#     if request.method == 'POST':
-#         # En data no viene el id pero si esta en la instancia de producto
-#             #  porque lo buscamos con el id
-#         formulario = AddProducto(data=request.POST, instance=producto)
-#         if formulario.is_valid():
-#             formulario.save()
-#             return redirect(to= "emp_productos")
+    if request.method == 'POST':
+    
+        formulario = AddProveedor(data=request.POST, instance=proveedor)
+        formulario2 = NuevoUserCreationForm(data=request.POST, instance=proveedor)
+        
+        if formulario.is_valid() and formulario2.is_valid():
+            # formulario.save()
+            return redirect(to= "emp_proveedor")
 
-#         data['form'] = formulario
+        data['form'] = formulario
 
-#     return render(request, 'fermeApp/empleado/modificarProducto.html', data)
+    return render(request, 'fermeApp/empleado/modificarProveedor.html', data)
 
 # def eliminar_proveedor(request, id):
