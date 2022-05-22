@@ -25,7 +25,7 @@ class AddProducto(forms.ModelForm):
     
     class Meta:
         model = InvProducto
-        fields = ['id_prod', 'nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca']
+        fields = ['id_prod', 'nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen']
 
 class AddProveedor(forms.ModelForm):
     

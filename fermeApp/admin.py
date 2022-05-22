@@ -22,8 +22,9 @@ class FamProductoAdmin (admin.ModelAdmin):
 class TipoProductoAdmin (admin.ModelAdmin):
     list_display = ["id_tipo", "descripcion"]
 
+
 class InvProductoAdmin (admin.ModelAdmin):
-    list_display = ["id_prod", "nombre", "precio", "stock", "stock_crit", "stock_max", "habilitado", "fam_producto_id_fam", "marca", "tipo_producto_id_tipo"]
+    list_display = ["id_prod", "nombre", "precio", "stock", "stock_crit", "stock_max", "habilitado", "fam_producto_id_fam", "marca", "tipo_producto_id_tipo", "imagen"]
 
 # AMIN ORDEN COMPRA
 class DetalleOrdenAdmin (admin.ModelAdmin):

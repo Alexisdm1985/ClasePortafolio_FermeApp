@@ -5,8 +5,14 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from pickle import FALSE
 from django.db import models
 
+# OPCIONES
+opciones_habilitado = [
+    [1, "Si"],
+    [2, "No"]
+]
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150, blank=True, null=True)
@@ -88,7 +94,7 @@ class Cliente(models.Model):
     contrasenia = models.CharField(max_length=250)
     pertenencia_emp = models.FloatField()
     tipo_usuario = models.CharField(max_length=30,default='CLIENTE')
-    habilitado = models.FloatField()
+    habilitado = models.FloatField(choices=opciones_habilitado)
 
     def __str__(self):
         return f"{self.nombre} {self.p_apellido}"
@@ -222,7 +228,8 @@ class InvProducto(models.Model):
     fam_producto_id_fam = models.ForeignKey(FamProducto, models.DO_NOTHING, db_column='fam_producto_id_fam')
     marca = models.CharField(max_length=250)
     tipo_producto_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='tipo_producto_id_tipo')
-
+    imagen = models.ImageField(upload_to="productos", null=FALSE)
+    
     def __str__(self):
         return f"{self.nombre}"
 
@@ -230,6 +237,7 @@ class InvProducto(models.Model):
         managed = False
         db_table = 'inv_producto'
 
+    
 
 class OrdenCompra(models.Model):
     nro_orden = models.AutoField(primary_key=True)
