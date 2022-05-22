@@ -1,5 +1,5 @@
 <!-- Import -->
-{% extends 'fermeApp/base.html' %} 
+{% extends 'fermeApp/base.html' %}
 {% load static %}
 
 <!-- CSS -->
@@ -11,32 +11,36 @@
 {% block contenido %}
 
 <!-- Foto -->
-<section>
-</section>
+
+<body>
+    <div align='center'>
+        <br>
+        <h1 class="fa fa-align-center"> Productos</h1>
+        <hr>
+      </div>
+</body>
 
 <main>
-    
+
     {% load humanize %}
 
     <div class="producto-container">
-    
         {% for p in productos %}
-    
-        <div class="producto">
-    
-            <img class="producto-img" src="{% static 'fermeApp/img/tools.jpg' %}" alt="CAMBIARESTOCAMBIARESTO">
-    
-            <div class="producto-contenido">
-                <h4>{{p.marca}}</h4>
-                <h3> {{p.nombre}} </h3>
-                <p>$ {{p.precio | intcomma}} </p>
-            </div>
-            <div class="btn-section">
-                <button class="btn-carro">Agregar al Carro</button>
-            </div>
-        </div>
 
-    {% endfor %}
+            <div class="producto"> 
+                <div class="producto-contenido">
+                  {% if p.imagen %}
+                          <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
+                  {% endif %}
+                    <h4>{{p.marca}}</h4>
+                    <h3> {{p.nombre}} </h3>
+                    <p>$ {{p.precio | intcomma}} </p>
+                </div>
+                    <div class="btn-section">
+                         <button class="btn-carro">Agregar al Carro</button>
+                    </div>
+            </div>
+        {% endfor %}
     </div>
 
 </main>
