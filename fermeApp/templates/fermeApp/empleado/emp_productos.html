@@ -9,7 +9,26 @@
 
 {% block contenido %}
 
+    <!-- FILTRAR -->
+    <center>
+      <br>
+
+      <div class="container-sm " >
+        <div class="row">
+            <form action="" method="POST">
+                <label for="">Nombre Producto: </label>
+                <input type="text" name="nombre" id="">
+                <input type="submit" class ="btn btn-success" value="Buscar">
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+  </center>
+  <hr>
+  <!-- FIN FILTRAR -->
+
 {% load humanize %}
+
 <section>
     <button><a href="{% url 'addProducto' %}">Agregar producto</a></button>
 </section>
@@ -21,6 +40,9 @@
             <th scope="col">Nombre</th>
             <th scope="col">Precio</th>
             <th scope="col">Stock</th>
+            <th scope="col">Stock Critico</th>
+            <th scope="col">Stock Max</th>
+            <th scope="col">Foto</th>
             <th scope="col">Opciones</th>
           </tr>
         </thead>
@@ -31,6 +53,12 @@
             <td>{{p.nombre}}</td>
             <td> ${{p.precio | intcomma}}</td>
             <td>{{p.stock | intcomma}}</td>
+            <td>{{p.stock_crit | intcomma}}</td>
+            <td>{{p.stock_max | intcomma}}</td>
+            <td> {% if p.imagen %}
+                  <img src="{{ p.imagen.url }}" alt="imagen producto" height="40" width="70">
+                {% endif %}
+            </td>
             <td class="tdButton">
                 <button><a href="{% url 'modificarProducto' p.id_prod %}">Modificar producto</a></button>
                 <button><a href="{% url 'eliminar_producto' p.id_prod %}">Eliminar producto</a></button>

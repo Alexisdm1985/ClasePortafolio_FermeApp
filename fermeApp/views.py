@@ -49,11 +49,18 @@ def nosotros(request):
 
 def productos(request):
         # Obtiene todos los productos
-    listadoProducto = InvProducto.objects.all()
+    producto = InvProducto.objects.all()
     data = {
-        'productos': listadoProducto
+        'productos': producto
     }
-    return render(request, 'fermeApp/productos.html', data)
+
+    if request.POST.get('nombre'):
+                tituloAfiltrar = request.POST.get('nombre')
+                producto = producto.filter(nombre__icontains=tituloAfiltrar)
+
+    return render(request, 'fermeApp/productos.html', {'productos': producto})
+
+
     
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
@@ -72,11 +79,20 @@ def empleado(request):
 
 # Listar productos
 def emp_productos(request):
+
     producto = InvProducto.objects.all()
     data = {
         'productos': producto
     }
-    return render(request, 'fermeApp/empleado/emp_productos.html', data)
+
+    if request.POST.get('nombre'):
+                tituloAfiltrar = request.POST.get('nombre')
+                producto = producto.filter(nombre__icontains=tituloAfiltrar)
+
+    return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
+    
+
+
 
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):

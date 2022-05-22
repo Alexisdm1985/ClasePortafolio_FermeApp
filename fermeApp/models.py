@@ -244,7 +244,6 @@ class InvProducto(models.Model):
         managed = False
         db_table = 'inv_producto'
 
-    
 
 class OrdenCompra(models.Model):
     nro_orden = models.AutoField(primary_key=True)
