@@ -144,11 +144,6 @@ def addOrden(request):
 
             return redirect(to='emp_proveedor')
             
-            # Rescato el nombre del primer formulario
-            # prov_nombre = formulario.cleaned_data["first name"]
-            # formulario2 += prov_nombre
-            # formulario2.save()
-            
         else:
             data["form"] = formulario
 
@@ -182,10 +177,13 @@ def addProveedor(request):
             domicilio = formulario2.cleaned_data['domicilio']
             rut = formulario2.cleaned_data['rut']
             celular = formulario2.cleaned_data['celular']
+            formulario.save()
+
+            userProveedor = AuthUser.objects.all()
+            
+                
 
             new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro)
-
-            formulario.save()
             new_proveedor.save()
             return redirect(to='emp_proveedor')
     
@@ -216,7 +214,7 @@ def modificarProveedor(request, id_prov):
     return render(request, 'fermeApp/empleado/modificarProveedor.html', data)
 
 def eliminar_proveedor(request, id_prov):
-    
+
     proveedor = get_object_or_404(Proveedor, id_prov=id_prov)
     proveedor.habilitado = 0
     proveedor.save()

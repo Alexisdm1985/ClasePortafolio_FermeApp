@@ -1,10 +1,9 @@
 from django.contrib import admin
 from .models import *
-#  Vendedor, Empleado, Proveedor, Cliente, FamProducto, Parametro, VentaDoc, InvProducto, OrdenCompra, DetalleOrden, DetalleVenta, OfertaProd, DetalleOferta
 
 # ADMIN USUARIOS
 class ProveedorAdmin (admin.ModelAdmin):
-    list_display = ["id_prov", "nombre", "rut", "rubro", "habilitado"]
+    list_display = ["id_prov", "nombre", "rut", "rubro", "habilitado", "userid"]
 
 class VendedorAdmin (admin.ModelAdmin):
     list_display = ["rut_ven", "nombre", "p_apellido", "usuario", "habilitado"]
@@ -26,7 +25,7 @@ class TipoProductoAdmin (admin.ModelAdmin):
 class InvProductoAdmin (admin.ModelAdmin):
     list_display = ["id_prod", "nombre", "precio", "stock", "stock_crit", "stock_max", "habilitado", "fam_producto_id_fam", "marca", "tipo_producto_id_tipo", "imagen"]
 
-# AMIN ORDEN COMPRA
+# ADMIN ORDEN COMPRA
 class DetalleOrdenAdmin (admin.ModelAdmin):
     list_display = ["orden_compra_nro_orden", "nombre", "proveedor_id_prov", "cantidad", "precio", "descuento", "recibido"]
 
