@@ -1,5 +1,5 @@
 from .models import AuthUser, InvProducto, OrdenCompra, Proveedor, FamProducto
-from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, ModificarProveedor, AddProveedor
+from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -85,7 +85,7 @@ def addProducto(request):
     }
 
     if request.method == 'POST':
-        formulario = AddProducto(data=request.POST, files=request.FILES)
+        formulario = AddProducto(data=request.POST)
 
         if formulario.is_valid():
             formulario.save()
@@ -107,7 +107,7 @@ def modificarProducto(request, id):
     if request.method == 'POST':
         # En data no viene el id pero si esta en la instancia de producto
             #  porque lo buscamos con el id
-        formulario = AddProducto(data=request.POST, instance=producto, files=request.FILES)
+        formulario = AddProducto(data=request.POST, instance=producto)
         if formulario.is_valid():
             formulario.save()
             return redirect(to= "emp_productos")
@@ -212,7 +212,7 @@ def modificarProveedor(request, id_prov):
         formulario = ModificarProveedor(data=request.POST, instance=proveedor)
         
         if formulario.is_valid():
-            formulario.save()
+            # formulario.save()
             return redirect(to= "emp_proveedor")
 
         data['form'] = formulario
