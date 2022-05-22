@@ -201,8 +201,6 @@ def addProveedor(request):
 def modificarProveedor(request, id_prov):
 
     proveedor = get_object_or_404(Proveedor, id_prov=id_prov)
-
-
     data = {
         'form': ModificarProveedor(instance = proveedor)
     }
