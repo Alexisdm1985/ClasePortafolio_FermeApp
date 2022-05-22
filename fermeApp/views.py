@@ -1,5 +1,5 @@
 from .models import AuthUser, InvProducto, OrdenCompra, Proveedor, FamProducto
-from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor
+from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, ModificarProveedor, AddProveedor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -198,22 +198,20 @@ def addProveedor(request):
 
 
 
-def modificarProveedor(request, id_prov, id_django):
+def modificarProveedor(request, id_prov):
 
     proveedor = get_object_or_404(Proveedor, id_prov=id_prov)
-    djProveedor = get_object_or_404(Proveedor, id=id_django)
+
 
     data = {
-        'form': AddProveedor(instance = proveedor),
-        'form2': NuevoUserCreationForm(instance = djProveedor)
+        'form': ModificarProveedor(instance = proveedor)
     }
 
     if request.method == 'POST':
     
-        formulario = AddProveedor(data=request.POST, instance=proveedor)
-        formulario2 = NuevoUserCreationForm(data=request.POST, instance=proveedor)
+        formulario = ModificarProveedor(data=request.POST, instance=proveedor)
         
-        if formulario.is_valid() and formulario2.is_valid():
+        if formulario.is_valid():
             # formulario.save()
             return redirect(to= "emp_proveedor")
 

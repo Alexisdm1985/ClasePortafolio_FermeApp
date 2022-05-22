@@ -17,7 +17,7 @@ urlpatterns = [
     path('addProducto/', addProducto, name='addProducto'),
     path('addProveedor/', addProveedor, name='addProveedor'),
     path('modificarProducto/<id>/', modificarProducto, name='modificarProducto'),
-    path('modificarProveedor/<id_prov>/', modificarProveedor, name='modificarProveedor'),
+    path('modificarProveedor/<id_prov>/', modificarProveedor, name='modificarProveedor'),  #MODIFICANDO ESTO
     path('eliminar_producto/<id>/', eliminar_producto, name='eliminar_producto'),
     
 
