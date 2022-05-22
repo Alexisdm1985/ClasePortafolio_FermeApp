@@ -16,8 +16,8 @@
         <form class="formulario" action="" method="POST">
     
             {% csrf_token %}
-            {{ form2 | crispy}}
             {{ form | crispy}}
+            {{ form2 | crispy}}
             
             <button type="submit">Registrarme</button>
         </form>
