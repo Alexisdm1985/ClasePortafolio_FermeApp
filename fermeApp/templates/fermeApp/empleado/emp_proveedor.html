@@ -32,7 +32,7 @@
             <td>{{p.rubro}}</td>
             <td class="tdButton">
                 <button><a href="{% url 'modificarProveedor' p.id_prov %}">Modificar proveedor</a></button>
-                <button><a href="#">Eliminar proveedor</a></button>
+                <button><a href="{% url 'eliminar_proveedor' p.id_prov %}">Eliminar proveedor</a></button>
               </td>
             </tr>
           {% endfor %}

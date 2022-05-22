@@ -156,12 +156,10 @@ def addOrden(request):
 # Proveedor
 def emp_proveedor(request):
     
-    proveedor = Proveedor.objects.all()
-    djProveedor = AuthUser.objects.all()
+    proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
 
     data = {
-        'proveedores': proveedor,
-        'djProveedores': djProveedor
+        'proveedores': proveedor
     }
 
     return render(request, 'fermeApp/empleado/emp_proveedor.html', data)
@@ -217,4 +215,10 @@ def modificarProveedor(request, id_prov):
 
     return render(request, 'fermeApp/empleado/modificarProveedor.html', data)
 
-# def eliminar_proveedor(request, id):
+def eliminar_proveedor(request, id_prov):
+    
+    proveedor = get_object_or_404(Proveedor, id_prov=id_prov)
+    proveedor.habilitado = 0
+    proveedor.save()
+    
+    return redirect(to= "emp_proveedor")
