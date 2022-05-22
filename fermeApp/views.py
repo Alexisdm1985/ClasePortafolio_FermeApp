@@ -171,21 +171,23 @@ def addProveedor(request):
 
     if request.method == 'POST':
         formulario = NuevoUserCreationForm(data=request.POST)
-        # formulario2 = AddProveedor(data=request.POST)
+        formulario2 = AddProveedor(data=request.POST)
 
-        if formulario.is_valid():
-            #  and formulario2.is_valid():
-            # nombre = formulario.__getattribute__
+        if formulario.is_valid() and formulario2.is_valid():
+            
+            # Guardamos datos para nuestra base de datos proveedor
+            nombre = formulario.cleaned_data['first_name']
+            rubro = formulario2.cleaned_data['rubro']
+            domicilio = formulario2.cleaned_data['domicilio']
+            rut = formulario2.cleaned_data['rut']
+            celular = formulario2.cleaned_data['celular']
+
+            new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro)
+
             formulario.save()
-
-
+            new_proveedor.save()
             return redirect(to='emp_proveedor')
-            
-            # Rescato el nombre del primer formulario
-            # prov_nombre = formulario.cleaned_data["first name"]
-            # formulario2 += prov_nombre
-            # formulario2.save()
-            
+    
         else:
             data["form"] = formulario
 
