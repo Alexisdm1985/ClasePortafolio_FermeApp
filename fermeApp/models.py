@@ -10,12 +10,6 @@ from django.db import models
 
 # OPCIONES
 opciones_habilitado = [
-    [1, "Si"],
-    [2, "No"]
-]
-
-# OPCIONES
-opciones_habilitado = [
     [0, "No"],
     [1, "Si"]
 ]

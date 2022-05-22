@@ -12,7 +12,7 @@ class FormRegistroCli(forms.ModelForm):
         model = Cliente
         fields = ["nombre", "rut_cli", "p_apellido", "s_apellido", "email", "telefono", "usuario", "contrasenia", "pertenencia_emp"]
 
-#Formulario registro usuarios
+# REGISTRO DJANGO USUARIOS
 class NuevoUserCreationForm(UserCreationForm):
 
     first_name = forms.CharField(required=True)
@@ -20,19 +20,14 @@ class NuevoUserCreationForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', "email", "password1", "password2"]
 
-# FORMULARIOS EMPLEADO
-class AddProducto(forms.ModelForm):
-    
-    class Meta:
-        model = InvProducto
-        fields = ['id_prod', 'nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen']
-
+#  AGREGAR
 class AddProveedor(forms.ModelForm):
     
     class Meta:
         model = Proveedor
         fields = ["rut", "rubro", "celular", "domicilio"]
 
+        
 class AddOrden(forms.ModelForm):
 
     class Meta:
@@ -44,3 +39,16 @@ class AddDetalleOrden(forms.ModelForm):
     class Meta:
         model = DetalleOrden
         fields = '__all__'
+
+class AddProducto(forms.ModelForm):
+    
+    class Meta:
+        model = InvProducto
+        fields = ['id_prod', 'nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen']
+
+# MODIFICAR
+class ModificarProveedor(forms.ModelForm):
+
+    class Meta:
+        model = Proveedor
+        fields = ["rut", "rubro", "celular", "domicilio","habilitado" ]
