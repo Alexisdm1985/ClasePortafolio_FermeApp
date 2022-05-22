@@ -1,5 +1,5 @@
 from tkinter.tix import MAX
-from .models import AuthUser, InvProducto, OrdenCompra, Proveedor, FamProducto
+from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto
 from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
@@ -148,23 +148,36 @@ def emp_orden(request):
 def addOrden(request):
     data = {
         'form': AddOrden(),
-        'form2': AddDetalleOrden()
+        'form_detalle': AddDetalleOrden()
     }
 
     if request.method == 'POST':
         formulario = AddOrden(data=request.POST)
-        formulario2 = AddDetalleOrden(data=request.POST)
+        formulario_detalle = AddDetalleOrden(data=request.POST)
 
-        if formulario.is_valid() and formulario2.is_valid():
+        if formulario.is_valid() and formulario_detalle.is_valid():
             formulario.save()
-            formulario2.save()
+            nombre = formulario_detalle.cleaned_data['nombre']
+            cantidad = formulario_detalle.cleaned_data['cantidad']
+            precio = formulario_detalle.cleaned_data['precio']
+            descuento = formulario_detalle.cleaned_data['descuento']
+            observaciones= formulario_detalle.cleaned_data['observaciones']
+            id_prov = formulario_detalle.cleaned_data['proveedor_id_prov']
 
-            return redirect(to='emp_proveedor')
+            new_orden = OrdenCompra.objects.all().order_by('-nro_orden')
+        
+            orden = new_orden[0].nro_orden #Obtiene la ultima orden de compra ingresada
+            ordenInstance = OrdenCompra.objects.get(nro_orden = orden)
+            
+            detalle_orden = DetalleOrden(orden_compra_nro_orden= ordenInstance, proveedor_id_prov = id_prov, cantidad = cantidad, precio = precio, descuento= descuento, observaciones = observaciones, nombre = nombre)
+            detalle_orden.save()
+            return redirect(to='emp_orden')
             
         else:
             data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addOrden.html', data)
+
 # Proveedor
 def emp_proveedor(request):
     

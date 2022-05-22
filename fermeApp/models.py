@@ -113,7 +113,7 @@ class DetalleOrden(models.Model):
     precio = models.IntegerField()
     descuento = models.IntegerField()
     observaciones = models.CharField(max_length=220, blank=True, null=True)
-    recibido = models.FloatField()
+    recibido = models.FloatField(default=0, choices=opciones_habilitado)
     nombre = models.CharField(max_length=250)
 
     def __str__(self):

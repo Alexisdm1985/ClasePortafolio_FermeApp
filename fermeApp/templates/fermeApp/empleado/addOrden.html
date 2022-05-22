@@ -18,9 +18,10 @@
             {% csrf_token %}
         
             {{ form | crispy }}
+            {{ form_detalle | crispy }}
        
-            {{ form2 | crispy }}
-            <button type="submit">Guardar orden</button>
+            <button type="submit">Agregar detalle</button>
+            <!-- Quiero que al apretar el boton recargue la pagina con el nuevo formulario -->
         </form>
     </div>
 
