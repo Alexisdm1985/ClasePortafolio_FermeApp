@@ -13,7 +13,7 @@
 <main>
     <h1>Modificacion de producto</h1>
     <div class="contenedor">
-        <form class="formulario" action="" method="POST">
+        <form class="formulario" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
         
             {{ form | crispy }}
@@ -22,8 +22,6 @@
             
         </form>
     </div>
-    
-    
 </main>
 {% endblock %}
 

@@ -10,14 +10,25 @@
 <!-- CONTENT -->
 {% block contenido %}
 
-<!-- Foto -->
-
 <body>
     <div align='center'>
         <br>
         <h1 class="fa fa-align-center"> Productos</h1>
         <hr>
-      </div>
+    </div>
+
+        <!-- FILTRAR -->
+           <div class="container-sm" align="right"  >
+                <div class="row">
+                    <form action="" method="POST">
+                        <label for="">Nombre Producto: </label>
+                        <input type="text" name="nombre" id="" value="{{request.GET.nombre}}">
+                        <input type="submit" class ="btn btn-success" value="BUSCAR">
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+      <!-- FIN FILTRAR -->
 </body>
 
 <main>
