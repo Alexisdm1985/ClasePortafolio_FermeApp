@@ -1,4 +1,4 @@
-from .models import InvProducto, OrdenCompra, Proveedor, FamProducto, AuthUser
+from .models import InvProducto, OrdenCompra, Proveedor, FamProducto
 from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
@@ -153,7 +153,6 @@ def addOrden(request):
             data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addOrden.html', data)
-
 # Proveedor
 def emp_proveedor(request):
     
@@ -175,17 +174,20 @@ def addProveedor(request):
         formulario2 = AddProveedor(data=request.POST)
 
         if formulario.is_valid() and formulario2.is_valid():
+            
+            # Guardamos datos para nuestra base de datos proveedor
             nombre = formulario.cleaned_data['first_name']
             rubro = formulario2.cleaned_data['rubro']
+            domicilio = formulario2.cleaned_data['domicilio']
             rut = formulario2.cleaned_data['rut']
             celular = formulario2.cleaned_data['celular']
-            domicilio = formulario2.cleaned_data['domicilio']
+
+            new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro)
 
             formulario.save()
-            new_proveedor = Proveedor(nombre = nombre, rut = rut, rubro = rubro, celular = celular, domicilio = domicilio)
             new_proveedor.save()
             return redirect(to='emp_proveedor')
-            
+    
         else:
             data["form"] = formulario
 

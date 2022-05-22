@@ -10,8 +10,8 @@ from django.db import models
 
 # OPCIONES
 opciones_habilitado = [
-    [0, "Si"],
-    [1, "No"]
+    [0, "No"],
+    [1, "Si"]
 ]
 
 class AuthGroup(models.Model):
