@@ -259,7 +259,7 @@ class Proveedor(models.Model):
     celular = models.BigIntegerField()
     domicilio = models.CharField(max_length=220)
     tipo_usuario = models.CharField(max_length=30, default='PROVEEDOR')
-    habilitado = models.FloatField(choices=opciones_habilitado)
+    habilitado = models.FloatField(choices=opciones_habilitado, default=1)
 
     def __str__(self):
         return f"{self.nombre} - {self.id_prov}"

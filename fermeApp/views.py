@@ -1,4 +1,4 @@
-from .models import InvProducto, OrdenCompra, Proveedor, FamProducto
+from .models import InvProducto, OrdenCompra, Proveedor, FamProducto, AuthUser
 from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
@@ -153,6 +153,7 @@ def addOrden(request):
             data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addOrden.html', data)
+
 # Proveedor
 def emp_proveedor(request):
     
@@ -171,20 +172,19 @@ def addProveedor(request):
 
     if request.method == 'POST':
         formulario = NuevoUserCreationForm(data=request.POST)
-        # formulario2 = AddProveedor(data=request.POST)
+        formulario2 = AddProveedor(data=request.POST)
 
-        if formulario.is_valid():
-            #  and formulario2.is_valid():
-            # nombre = formulario.__getattribute__
+        if formulario.is_valid() and formulario2.is_valid():
+            nombre = formulario.cleaned_data['first_name']
+            rubro = formulario2.cleaned_data['rubro']
+            rut = formulario2.cleaned_data['rut']
+            celular = formulario2.cleaned_data['celular']
+            domicilio = formulario2.cleaned_data['domicilio']
+
             formulario.save()
-
-
+            new_proveedor = Proveedor(nombre = nombre, rut = rut, rubro = rubro, celular = celular, domicilio = domicilio)
+            new_proveedor.save()
             return redirect(to='emp_proveedor')
-            
-            # Rescato el nombre del primer formulario
-            # prov_nombre = formulario.cleaned_data["first name"]
-            # formulario2 += prov_nombre
-            # formulario2.save()
             
         else:
             data["form"] = formulario
