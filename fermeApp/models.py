@@ -235,7 +235,7 @@ class InvProducto(models.Model):
     fam_producto_id_fam = models.ForeignKey(FamProducto, models.DO_NOTHING, db_column='fam_producto_id_fam')
     marca = models.CharField(max_length=250)
     tipo_producto_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='tipo_producto_id_tipo')
-    imagen = models.ImageField(upload_to="productos", null=FALSE)
+    imagen = models.ImageField(upload_to="productos", null=True)
     
     def __str__(self):
         return f"{self.nombre}"
