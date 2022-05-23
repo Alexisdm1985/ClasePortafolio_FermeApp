@@ -11,11 +11,10 @@ from django.contrib.auth.decorators import permission_required, login_required
 def index(request):
     
     # Obtiene todos los productos
-    listadoProducto = InvProducto.objects.all()
-    familiaProducto = FamProducto.objects.all()
+    listadoProducto = InvProducto.objects.filter(habilitado=1)
     data = {
-        'productos': listadoProducto,
-        'familia': familiaProducto
+        'productos': listadoProducto
+        
     }
     return render(request, 'fermeApp/index.html', data)
     
@@ -49,7 +48,7 @@ def nosotros(request):
 
 def productos(request):
         # Obtiene todos los productos
-    producto = InvProducto.objects.all()
+    producto = InvProducto.objects.filter(habilitado=1)
     data = {
         'productos': producto
     }
@@ -76,14 +75,14 @@ def empleado(request):
 # PRODUCTOS
 def emp_productos(request):
 
-    producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
-    data = {
-        'productos': producto
-    }
+    # producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
+    # data = {
+    #     'productos': producto
+    # }
 
     if request.POST.get('nombre'):
         tituloAfiltrar = request.POST.get('nombre')
-        producto = producto.filter(nombre__icontains=tituloAfiltrar)
+        producto = producto.filter(nombre__icontains=tituloAfiltrar, habilitado=1)
 
     return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
 # @permission_required('fermeApp.add_invproducto')
