@@ -211,6 +211,7 @@ def addDetalle(request, nro_orden):
 def modificarOrden(request, nro_orden):
 
     ordenCompra = get_object_or_404(OrdenCompra, nro_orden=nro_orden)
+    detalleOrden = DetalleOrden.objects.filter(orden_compra_nro_orden = nro_orden) # Todos sus detalles
 
     data = {
         'form': AddOrden(instance = ordenCompra),
@@ -218,10 +219,21 @@ def modificarOrden(request, nro_orden):
     }
 
     if request.method == 'POST':
-        formulario = AddOrden(data=request.POST, instance=ordenCompra)
-        if formulario.is_valid():
+
+        formulario = AddOrden(data=request.POST, instance=ordenCompra) # Contiene los datos de orden compra seleccionados
+        formularioDetalle = ModificarIdProveedor(data=request.POST) # Contiene el id proveedor seleccionado
+
+        if formularioDetalle.is_valid() and formulario.is_valid():
+
+            proveedor = Proveedor.objects.get(id_prov = formularioDetalle.cleaned_data['proveedor_id_prov']) #Obtiene instancia proveedor
             formulario.save()
+
+            for i in detalleOrden: # Itero cada detalle para modificar id proveedor
+
+                i.proveedor_id_prov = proveedor
+                i.save()
             return redirect(to= "emp_orden")
+        else: print("Error views.py def modificarOrden")
 
     return render(request, 'fermeApp/empleado/modificarOrden.html', data)
 

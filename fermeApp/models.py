@@ -265,6 +265,9 @@ class Proveedor(models.Model):
 
     def __int__(self):
         return self.id_prov
+        
+    def __str__(self):
+        return f"{self.id_prov}-{self.nombre} "
 
     class Meta:
         managed = False
