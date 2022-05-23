@@ -57,7 +57,7 @@ class ModificarProveedor(forms.ModelForm):
 
     class Meta:
         model = Proveedor
-        fields = ["rut", "rubro", "celular", "domicilio" ]
+        fields = ["nombre", "rut", "rubro", "celular", "domicilio" ]
 
 class ModificarIdProveedor(forms.ModelForm):
 

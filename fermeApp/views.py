@@ -351,8 +351,14 @@ def modificarProveedor(request, id_prov):
         formulario = ModificarProveedor(data=request.POST, instance=proveedor)
     
         if formulario.is_valid():
+
+            nombre = formulario.cleaned_data['nombre']
+            authProveedor = AuthUser.objects.get(id = proveedor.userid)
+            authProveedor.first_name = nombre
+            authProveedor.save()
             formulario.save()
-            return redirect(to= "emp_proveedor")
+
+            # return redirect(to= "emp_proveedor")
 
         data['form'] = formulario
 
