@@ -10,7 +10,7 @@
 {% load humanize %}
 {% block contenido %}
 <section>
-    <button><a href=" {% url 'addOrden' %}">Agregar orden de compra</a></button>
+    <!-- <button><a href=" {% url 'addOrden' %}">Agregar orden de compra</a></button> -->
 </section>
 <main>
     <table class="table">
@@ -18,8 +18,11 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Nro orden</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Rut empleado</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Descuento</th>
+            <th scope="col">Recibido</th>
             <th scope="col">Opciones</th>
           </tr>
         </thead>
@@ -27,12 +30,14 @@
             {% for p in ordenes %}
           <tr>
             <th scope="row">{{forloop.counter}}</th>
-            <td>{{p.nro_orden}}</td>
-            <td>{{p.fecha}}</td>
-            <td>{{p.empleado_rut_emp}}</td>
+            <td>{{p.orden_compra_nro_orden}}</td>
+            <td>{{p.nombre}}</td>
+            <td>{{p.cantidad}}</td>
+            <td>{{p.precio}}</td>
+            <td>{{p.descuento}}</td>
+            <td>{{p.recibido}}</td>
             <td class="tdButton">
-                <button><a href="{% url 'modificarOrden' p.nro_orden %}">Modificar orden</a></button>
-                <button><a href="{% url 'detalleOrden' p.nro_orden %}">Ver detalles</a></button>
+                <button><a href="{% url 'modificarDetalle' p.orden_compra_nro_orden p.nro_prod %}">Modificar</a></button>
             </td>
           </tr>
           {% endfor %}

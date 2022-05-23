@@ -11,17 +11,15 @@
 <!-- CONTENIDO -->
 {% block contenido %}
 <main>
-    <h1>Agregar orden</h1>
+    <h1>Modificar orden</h1>
     <div class="contenedor">
         
         <form class="formulario" action="" method="POST">
             {% csrf_token %}
         
             {{ form | crispy }}
-            {{ form_detalle | crispy }}
        
-            <button type="submit">Agregar detalle</button>
-            <!-- Quiero que al apretar el boton recargue la pagina con el nuevo formulario -->
+            <button type="submit">Modificar detalle</button>
         </form>
     </div>
 

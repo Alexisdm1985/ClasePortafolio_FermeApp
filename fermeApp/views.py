@@ -1,14 +1,12 @@
-from tkinter.tix import MAX
-from .models import AuthUser, InvProducto, OrdenCompra, Proveedor, FamProducto
-from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor
+from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto
+from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
 
 # Create your views here.
 
-
-# Global
+# GLOBAL
 def index(request):
     
     # Obtiene todos los productos
@@ -61,13 +59,9 @@ def productos(request):
 
     return render(request, 'fermeApp/productos.html', {'productos': producto})
 
-
-    
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
     
-# Cliente
-# Vendedor
 # Empleado
 def empleado(request):
 
@@ -78,7 +72,7 @@ def empleado(request):
     }
     return render(request, 'fermeApp/empleado/home.html', data)
 
-# Listar productos
+# PRODUCTOS
 def emp_productos(request):
 
     producto = InvProducto.objects.all()
@@ -91,12 +85,9 @@ def emp_productos(request):
                 producto = producto.filter(nombre__icontains=tituloAfiltrar)
 
     return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
-    
-
-
-
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):
+    
     data = {
         'form': AddProducto()
     }
@@ -138,6 +129,7 @@ def eliminar_producto(request, id):
     producto.delete()
     return redirect(to= "emp_productos")
 
+# ORDEN COMPRA
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
     data = {
@@ -148,28 +140,81 @@ def emp_orden(request):
 def addOrden(request):
     data = {
         'form': AddOrden(),
-        'form2': AddDetalleOrden()
+        'form_detalle': AddDetalleOrden()
     }
 
     if request.method == 'POST':
         formulario = AddOrden(data=request.POST)
-        formulario2 = AddDetalleOrden(data=request.POST)
+        formulario_detalle = AddDetalleOrden(data=request.POST)
 
-        if formulario.is_valid() and formulario2.is_valid():
+        if formulario.is_valid() and formulario_detalle.is_valid():
             formulario.save()
-            formulario2.save()
+            nombre = formulario_detalle.cleaned_data['nombre']
+            cantidad = formulario_detalle.cleaned_data['cantidad']
+            precio = formulario_detalle.cleaned_data['precio']
+            descuento = formulario_detalle.cleaned_data['descuento']
+            observaciones= formulario_detalle.cleaned_data['observaciones']
+            id_prov = formulario_detalle.cleaned_data['proveedor_id_prov']
 
-            return redirect(to='emp_proveedor')
+            new_orden = OrdenCompra.objects.all().order_by('-nro_orden')
+        
+            orden = new_orden[0].nro_orden #Obtiene la ultima orden de compra ingresada
+            ordenInstance = OrdenCompra.objects.get(nro_orden = orden)
+            
+            detalle_orden = DetalleOrden(orden_compra_nro_orden= ordenInstance, proveedor_id_prov = id_prov, cantidad = cantidad, precio = precio, descuento= descuento, observaciones = observaciones, nombre = nombre)
+            detalle_orden.save()
+            return redirect(to='emp_orden')
             
         else:
             data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addOrden.html', data)
+
+def modificarOrden(request, nro_orden):
+
+    ordenCompra = get_object_or_404(OrdenCompra, nro_orden=nro_orden)
+
+    data = {
+        'form': AddOrden(instance = ordenCompra)
+    }
+
+    if request.method == 'POST':
+        formulario = AddOrden(data=request.POST, instance=ordenCompra)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to= "emp_orden")
+
+    return render(request, 'fermeApp/empleado/modificarOrden.html', data)
+
+def detalleOrden(request, nro_orden): # listar detalle orden 
+
+    ordenes = DetalleOrden.objects.filter(orden_compra_nro_orden=nro_orden) #Obtiene todos los detalles de orden relacionados
+    data = {
+        'ordenes': ordenes
+    }
+    return render(request, 'fermeApp/empleado/emp_detallesOrden.html', data)
+
+def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden especificado
+
+    detalle = get_object_or_404(DetalleOrden, orden_compra_nro_orden=nro_orden, nro_prod=nro_prod)
+    data = {
+        'form': AddDetalle(instance=detalle)
+    }
+
+    if request.method == 'POST':
+        formulario = AddDetalle(data=request.POST, instance=detalle)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='detalleOrden', nro_orden=34)
+
+        data['form'] = formulario
+
+    return render(request, 'fermeApp/empleado/modificarDetalleOrden.html', data)
+
 # Proveedor
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
-
     data = {
         'proveedores': proveedor
     }
