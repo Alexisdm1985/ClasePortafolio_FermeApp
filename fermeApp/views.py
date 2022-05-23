@@ -178,11 +178,36 @@ def addOrden(request):
 
     return render(request, 'fermeApp/empleado/addOrden.html', data)
 
+# Modificar orden
+def modificarOrden(request, nro_orden):
+
+    ordenCompra = get_object_or_404(OrdenCompra, nro_orden=nro_orden)
+
+    data = {
+        'form': AddOrden(instance = ordenCompra)
+    }
+
+    if request.method == 'POST':
+        formulario = AddOrden(data=request.POST, instance=ordenCompra)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to= "emp_orden")
+
+    return render(request, 'fermeApp/empleado/modificarOrden.html', data)
+
+# Agregar detalle orden
+def detalleOrden(request, nro_orden):
+
+    ordenes = DetalleOrden.objects.filter(orden_compra_nro_orden=nro_orden)
+    data = {
+        'ordenes': ordenes
+    }
+    return render(request, 'fermeApp/empleado/emp_detallesOrden.html', data)
+
 # Proveedor
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
-
     data = {
         'proveedores': proveedor
     }
