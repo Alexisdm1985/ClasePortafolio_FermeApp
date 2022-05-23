@@ -102,7 +102,7 @@ def addProducto(request):
     }
 
     if request.method == 'POST':
-        formulario = AddProducto(data=request.POST)
+        formulario = AddProducto(data=request.POST, files=request.FILES)
 
         if formulario.is_valid():
             formulario.save()
@@ -136,7 +136,7 @@ def modificarProducto(request, id):
 def eliminar_producto(request, id):
     producto = get_object_or_404(InvProducto, id_prod=id)
     producto.delete()
-    return redirect(to= "homeEmp")
+    return redirect(to= "emp_productos")
 
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
