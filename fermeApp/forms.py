@@ -40,6 +40,12 @@ class AddDetalleOrden(forms.ModelForm):
         model = DetalleOrden
         fields = ["nombre" , "cantidad", "precio", "descuento", "observaciones", "proveedor_id_prov"]
 
+class AddDetalle(forms.ModelForm):
+
+    class Meta:
+        model = DetalleOrden
+        fields = ["nombre" , "cantidad", "precio", "descuento", "observaciones"]
+
 class AddProducto(forms.ModelForm):
     
     class Meta:

@@ -117,7 +117,7 @@ class DetalleOrden(models.Model):
     nombre = models.CharField(max_length=250)
 
     def __str__(self):
-        return f"Detalle de {self.orden_compra_nro_orden}"
+        return self.orden_compra_nro_orden.__str__()
 
     class Meta:
         managed = False
@@ -245,7 +245,7 @@ class OrdenCompra(models.Model):
     empleado_rut_emp = models.ForeignKey(Empleado, models.DO_NOTHING, db_column='empleado_rut_emp')
     
     def __str__(self):
-        return f"Orden compra nro {self.nro_orden}"
+        return self.nro_orden.__str__()
 
     class Meta:
         managed = False
