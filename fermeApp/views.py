@@ -133,9 +133,18 @@ def eliminar_producto(request, id):
 # ORDEN COMPRA
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
+    idProveedor = []
+
+    for i in orden: # Obtiene el id_proveedor de cada orden
+        detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
+        idProveedor.append(detalles[0].proveedor_id_prov)
+
+        
     data = {
-        'ordenes': orden
+        'ordenes': orden,
+        'id_prov': idProveedor
     }
+
     return render(request, 'fermeApp/empleado/emp_orden.html', data)
 
 def addOrden(request):
