@@ -49,15 +49,17 @@ def nosotros(request):
 def productos(request):
         # Obtiene todos los productos
     producto = InvProducto.objects.filter(habilitado=1)
+    # categorias = ['Herramientas', 'Gasfiteria', 'Hogar', 'Construccion']
     data = {
+        # 'categorias': categorias,
         'productos': producto
     }
 
     if request.POST.get('nombre'):
-                tituloAfiltrar = request.POST.get('nombre')
-                producto = producto.filter(nombre__icontains=tituloAfiltrar)
+        tituloAfiltrar = request.POST.get('nombre')
+        producto = producto.filter(nombre__icontains=tituloAfiltrar)
 
-    return render(request, 'fermeApp/productos.html', {'productos': producto})
+    return render(request, 'fermeApp/productos.html', {'productos':producto})
 
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
