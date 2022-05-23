@@ -33,6 +33,7 @@
             <td class="tdButton">
                 <button><a href="{% url 'modificarOrden' p.nro_orden %}">Modificar orden</a></button>
                 <button><a href="{% url 'detalleOrden' p.nro_orden %}">Ver detalles</a></button>
+                <button><a href="{% url 'addDetalle' p.nro_orden %}">Agregar detalle</a></button>
             </td>
           </tr>
           {% endfor %}

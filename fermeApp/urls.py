@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
+from .views import addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
 
 urlpatterns = [
 # Global
@@ -18,6 +18,7 @@ urlpatterns = [
 # Ordenes
     path('emp_orden/', emp_orden, name='emp_orden'),
     path('addOrden/', addOrden, name='addOrden'),
+    path('addDetalleOrden/<nro_orden>', addDetalle, name='addDetalle'),
     path('modificarOrden/<nro_orden>/', modificarOrden, name='modificarOrden'),
     path('emp_detallesOrden/<nro_orden>/', detalleOrden, name='detalleOrden'),
     path('modificarDetalleOrden/<nro_orden>/<nro_prod>/', modificarDetalle, name='modificarDetalle'),

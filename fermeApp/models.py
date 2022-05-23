@@ -263,8 +263,8 @@ class Proveedor(models.Model):
     habilitado = models.FloatField(choices=opciones_habilitado, default=1)
     userid = models.IntegerField()
 
-    def __str__(self):
-        return f"{self.nombre} - {self.id_prov}"
+    def __int__(self):
+        return self.id_prov
 
     class Meta:
         managed = False

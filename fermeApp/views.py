@@ -89,6 +89,7 @@ def emp_productos(request):
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):
     
+    orden = DetalleOrden
     data = {
         'form': AddProducto()
     }
@@ -100,8 +101,7 @@ def addProducto(request):
             formulario.save()
             
             return redirect(to='emp_productos')
-        else:
-            data["form"] = formulario
+        data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addProducto.html', data)
 
@@ -168,7 +168,7 @@ def addOrden(request):
 
             new_orden = OrdenCompra.objects.all().order_by('-nro_orden')
         
-            orden = new_orden[0].nro_orden #Obtiene la ultima orden de compra ingresada
+            orden = new_orden[0].nro_orden  #Obtiene la ultima orden de compra ingresada
             ordenInstance = OrdenCompra.objects.get(nro_orden = orden)
             
             detalle_orden = DetalleOrden(orden_compra_nro_orden= ordenInstance, proveedor_id_prov = id_prov, cantidad = cantidad, precio = precio, descuento= descuento, observaciones = observaciones, nombre = nombre)
@@ -180,10 +180,37 @@ def addOrden(request):
 
     return render(request, 'fermeApp/empleado/addOrden.html', data)
 
+def addDetalle(request, nro_orden):
+    detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=nro_orden)
+    orden = OrdenCompra.objects.get(nro_orden=nro_orden)
+    proveedor = Proveedor.objects.get(id_prov=detalles[0].proveedor_id_prov)
+
+    data = {
+        'form_detalle': AddDetalle()
+    }
+
+    if request.method == 'POST':
+        formulario = AddDetalle(data=request.POST, instance=detalles[0])
+        
+        if formulario.is_valid():
+            nombre = formulario.cleaned_data['nombre']
+            cantidad = formulario.cleaned_data['cantidad']
+            precio = formulario.cleaned_data['precio']
+            descuento = formulario.cleaned_data['descuento']
+            observaciones = formulario.cleaned_data['observaciones']
+
+            # Crear detalle orden 
+            new_detalle = DetalleOrden(orden_compra_nro_orden= orden, proveedor_id_prov= proveedor, cantidad = cantidad, precio=precio, descuento=descuento, observaciones=observaciones, nombre = nombre )
+            new_detalle.save()
+            return redirect(to= 'emp_orden')          
+
+        data['form_detalle'] = formulario
+
+    return render(request, 'fermeApp/empleado/addDetalleOrden.html', data)
+
 def modificarOrden(request, nro_orden):
 
     ordenCompra = get_object_or_404(OrdenCompra, nro_orden=nro_orden)
-    # id_prov = get_object_or_404(DetalleOrden, orden_compra_nro_orden=nro_orden)
 
     data = {
         'form': AddOrden(instance = ordenCompra),
@@ -253,6 +280,7 @@ def addProveedor(request):
             celular = formulario2.cleaned_data['celular']
 
             formulario.save()
+
             userProveedor = AuthUser.objects.all().order_by('-id') #Obtiene todos los auth user ordenados descendentemente
             idProveedor = userProveedor[0].id
         
