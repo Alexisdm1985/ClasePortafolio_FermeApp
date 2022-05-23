@@ -1,6 +1,6 @@
 from email.policy import default
 from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto
-from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle
+from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -76,7 +76,7 @@ def empleado(request):
 # PRODUCTOS
 def emp_productos(request):
 
-    producto = InvProducto.objects.all()
+    producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
     data = {
         'productos': producto
     }
@@ -110,13 +110,12 @@ def modificarProducto(request, id):
     producto = get_object_or_404(InvProducto, id_prod=id)
 
     data = {
-        'form': AddProducto(instance = producto)
+        'form': ModificarProducto(instance = producto)
     }
 
     if request.method == 'POST':
         # En data no viene el id pero si esta en la instancia de producto
-            #  porque lo buscamos con el id
-        formulario = AddProducto(data=request.POST, instance=producto, files=request.FILES)
+        formulario = ModificarProducto(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
             return redirect(to= "emp_productos")
@@ -127,7 +126,8 @@ def modificarProducto(request, id):
 
 def eliminar_producto(request, id):
     producto = get_object_or_404(InvProducto, id_prod=id)
-    producto.delete()
+    producto.habilitado = 0
+    producto.save()
     return redirect(to= "emp_productos")
 
 # ORDEN COMPRA

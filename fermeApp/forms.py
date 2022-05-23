@@ -64,3 +64,9 @@ class ModificarIdProveedor(forms.ModelForm):
     class Meta:
         model = DetalleOrden
         fields = ["proveedor_id_prov" ]
+
+class ModificarProducto(forms.ModelForm):
+    
+    class Meta:
+        model = InvProducto
+        fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen']
