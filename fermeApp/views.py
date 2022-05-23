@@ -1,5 +1,5 @@
 from email.policy import default
-from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto
+from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto
 from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
@@ -89,18 +89,52 @@ def emp_productos(request):
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):
     
-    orden = DetalleOrden
     data = {
-        'form': AddProducto()
+        'form': AddProducto(),
+        'proveedor': ModificarIdProveedor()
     }
 
     if request.method == 'POST':
         formulario = AddProducto(data=request.POST, files=request.FILES)
+        
+        formProveedor = ModificarIdProveedor(data=request.POST) # Obtiene el id del proveedor seleccionado
 
-        if formulario.is_valid():
-            formulario.save()
+        if formulario.is_valid() and formProveedor.is_valid():
+
+            # fecha = formulario.cleaned_data['fecha_venc']
+            # formulario.cleaned_data['fecha_venc'] = fecha.strip() # Elimino cualquier espacio
+
+            producto = InvProducto()
+            producto = formulario.cleaned_data # Lleno el objeto con el formulario
+
+            # Obtengo id_prod en base a proveedor id - familia - fechaVenc - tipo
+            proveedor = Proveedor.objects.get(id_prov = formProveedor.cleaned_data['proveedor_id_prov'])
             
-            return redirect(to='emp_productos')
+            familia = formulario.cleaned_data['fam_producto_id_fam']
+            id_fam = FamProducto.objects.get(descripcion=familia )
+
+            tipo = formulario.cleaned_data['tipo_producto_id_tipo']
+            id_tipo = TipoProducto.objects.get(descripcion=tipo)
+
+            fecha_form = formulario.cleaned_data['fecha_venc']
+            id_producto = 0
+
+            if fecha_form is None:
+                fecha_form = "00000000"
+                id_producto = str(proveedor.id_prov) + str(id_fam.id_fam) + fecha_form + str(id_tipo.id_tipo)
+                id_producto = int(id_producto)
+                fecha_form = None
+            else:
+                fecha_form = str(fecha_form).replace("-", "")
+                id_producto = str(proveedor.id_prov) + str(id_fam.id_fam) + fecha_form + str(id_tipo.id_tipo)
+                id_producto = int(id_producto)
+                fecha_form = formulario.cleaned_data['fecha_venc']
+            
+            
+            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo']) 
+            new_producto.save()
+            
+            # return redirect(to='emp_productos')
         data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addProducto.html', data)

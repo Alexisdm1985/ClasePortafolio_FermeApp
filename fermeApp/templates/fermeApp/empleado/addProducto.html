@@ -17,6 +17,7 @@
             {% csrf_token  %}
         
             {{ form | crispy }}
+            {{ proveedor | crispy }}
             <br>
             <button type="submit">Guardar producto</button>
         
