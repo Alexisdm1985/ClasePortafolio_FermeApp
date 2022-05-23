@@ -57,4 +57,10 @@ class ModificarProveedor(forms.ModelForm):
 
     class Meta:
         model = Proveedor
-        fields = ["rut", "rubro", "celular", "domicilio","habilitado" ]
+        fields = ["rut", "rubro", "celular", "domicilio" ]
+
+class ModificarIdProveedor(forms.ModelForm):
+
+    class Meta:
+        model = DetalleOrden
+        fields = ["proveedor_id_prov" ]

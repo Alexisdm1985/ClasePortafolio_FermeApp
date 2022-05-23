@@ -1,5 +1,6 @@
+from email.policy import default
 from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto
-from .forms import AddDetalleOrden, AddOrden, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle
+from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -173,9 +174,11 @@ def addOrden(request):
 def modificarOrden(request, nro_orden):
 
     ordenCompra = get_object_or_404(OrdenCompra, nro_orden=nro_orden)
+    # id_prov = get_object_or_404(DetalleOrden, orden_compra_nro_orden=nro_orden)
 
     data = {
-        'form': AddOrden(instance = ordenCompra)
+        'form': AddOrden(instance = ordenCompra),
+        'id_prov_form': ModificarIdProveedor()
     }
 
     if request.method == 'POST':
