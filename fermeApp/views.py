@@ -82,8 +82,8 @@ def emp_productos(request):
     }
 
     if request.POST.get('nombre'):
-                tituloAfiltrar = request.POST.get('nombre')
-                producto = producto.filter(nombre__icontains=tituloAfiltrar)
+        tituloAfiltrar = request.POST.get('nombre')
+        producto = producto.filter(nombre__icontains=tituloAfiltrar)
 
     return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
 # @permission_required('fermeApp.add_invproducto')
@@ -131,7 +131,7 @@ def addProducto(request):
                 fecha_form = formulario.cleaned_data['fecha_venc']
             
             
-            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo']) 
+            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo'], categoria = producto['categoria']) 
             new_producto.save()
             
             # return redirect(to='emp_productos')
@@ -358,8 +358,7 @@ def modificarProveedor(request, id_prov):
             authProveedor.save()
             formulario.save()
 
-            # return redirect(to= "emp_proveedor")
-
+            return redirect(to= "emp_proveedor")
         data['form'] = formulario
 
     return render(request, 'fermeApp/empleado/modificarProveedor.html', data)

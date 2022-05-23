@@ -50,7 +50,7 @@ class AddProducto(forms.ModelForm):
     
     class Meta:
         model = InvProducto
-        fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen']
+        fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen', 'categoria']
 
 # MODIFICAR
 class ModificarProveedor(forms.ModelForm):
@@ -69,4 +69,4 @@ class ModificarProducto(forms.ModelForm):
     
     class Meta:
         model = InvProducto
-        fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen']
+        fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen', 'categoria']

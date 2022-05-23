@@ -13,6 +13,12 @@ opciones_habilitado = [
     [0, "No"],
     [1, "Si"]
 ]
+opciones_categoria = [
+    ['Herramientas', 'Herramientas'],
+    ['Gasfiteria', 'Gasfiteria'],
+    ['Hogar', 'Hogar'],
+    ['Construccion', 'Construccion']
+]
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150, blank=True, null=True)
@@ -230,6 +236,7 @@ class InvProducto(models.Model):
     marca = models.CharField(max_length=250)
     tipo_producto_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='tipo_producto_id_tipo')
     imagen = models.ImageField(upload_to="productos", blank=True, null=True)
+    categoria= models.CharField(choices=opciones_categoria, max_length=250)
     
     def __str__(self):
         return f"{self.nombre}"
