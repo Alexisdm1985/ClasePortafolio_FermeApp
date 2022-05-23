@@ -23,7 +23,7 @@ main {
     margin: 0 auto;
     gap: 30px;
 }
-.producto {
+.producto{
     width: 200px;
     display: flex;
     flex-direction: column;
@@ -63,4 +63,37 @@ main {
 .btn-carro:hover {
     background-color: #064663;
     box-shadow: 0 5px 5px rgb(17, 46, 65);
+}
+
+/* CATEGORIA */
+.categorias {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3rem 0;
+    border-top: 1px solid rgba(0 0 0 /.3)
+}
+.categorias h1 {
+    margin: 1.5em 0;
+}
+.categoria-container {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+.categoria-contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: .5em;
+    box-shadow: 5px 5px 15px rgba(0 0 0 /.3);
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.categoria-contenido h2{
+    margin-top: .5em;
 }

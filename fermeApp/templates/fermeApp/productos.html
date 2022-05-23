@@ -9,50 +9,72 @@
 
 <!-- CONTENT -->
 {% block contenido %}
+{% load humanize %}
 
-<body>
+<section>
     <div align='center'>
         <br>
         <h1 class="fa fa-align-center"> Productos</h1>
         <hr>
     </div>
-
-        <!-- FILTRAR -->
-           <div class="container-sm" align="right"  >
-                <div class="row">
-                    <form action="" method="POST">
-                        <label for="">Nombre Producto: </label>
-                        <input type="text" name="nombre" id="" value="{{request.GET.nombre}}">
-                        <input type="submit" class ="btn btn-success" value="BUSCAR">
-                        {% csrf_token %}
-                    </form>
-                </div>
-            </div>
-      <!-- FIN FILTRAR -->
-</body>
-
+    
+    <!-- FILTRAR -->
+    <div class="container-sm" align="right"  >
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label for="">Nombre Producto: </label>
+                <input type="text" name="nombre" id="" value="{{request.GET.nombre}}">
+                <input type="submit" class ="btn btn-success" value="BUSCAR">
+            </form>
+        </div>
+    </div>
+    <!-- FIN FILTRAR -->
+</section>    
 <main>
-
-    {% load humanize %}
-
     <div class="producto-container">
         {% for p in productos %}
 
-            <div class="producto"> 
-                <div class="producto-contenido">
-                  {% if p.imagen %}
-                          <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
-                  {% endif %}
-                    <h4>{{p.marca}}</h4>
-                    <h3> {{p.nombre}} </h3>
-                    <p>$ {{p.precio | intcomma}} </p>
-                </div>
-                    <div class="btn-section">
-                         <button class="btn-carro">Agregar al Carro</button>
-                    </div>
+        <div class="producto"> 
+            <div class="producto-contenido">
+                {% if p.imagen %}
+                <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
+                {% endif %}
+                <h4>{{p.marca}}</h4>
+                <h3> {{p.nombre}} </h3>
+                <p>$ {{p.precio | intcomma}} </p>
             </div>
+
+            <div class="btn-section">
+                <button class="btn-carro">Agregar al Carro</button>
+            </div>
+        </div>
         {% endfor %}
     </div>
-
 </main>
+<section class="categorias">
+
+    <h1>CATEGORIAS</h1>
+
+    <div class="categoria-container">
+
+        <div class="categoria-contenido">
+            <img src="" alt="imagen categoria" height="133" width="184">
+            <h2>Herramientas</h2>
+        </div>
+        <div class="categoria-contenido">
+            <img src="" alt="imagen categoria" height="133" width="184">
+            <h2>Gasfiteria</h2>
+        </div>
+        <div class="categoria-contenido">
+            <img src="" alt="imagen categoria" height="133" width="184">
+            <h2>Hogar</h2>
+        </div>
+        <div class="categoria-contenido">
+            <img src="" alt="imagen categoria" height="133" width="184">
+            <h2>Construccion</h2>
+        </div>
+    </div>
+
+</section>
 {% endblock %}
