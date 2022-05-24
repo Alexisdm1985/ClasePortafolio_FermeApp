@@ -52,3 +52,18 @@ button:hover {
 background-color: #064663;
 box-shadow: 0 5px 5px rgb(17, 46, 65);
 }
+
+.cantidad {
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    width: 10%;
+    box-shadow: 0 5px 5px rgb(0 0 0 /.3);
+    padding: .3em;
+    text-align: center;
+    margin: 0 auto;
+
+}
+.seccionCarrito span {
+    margin: 0 auto;
+}

@@ -90,7 +90,8 @@ def producto(request, id_prod):
     producto = InvProducto.objects.get(id_prod=id_prod)
 
     data = {
-        'producto': producto
+        'producto': producto,
+        'usuario': request.user.groups.filter(name='CLIENTE').exists()
     }
     return render(request, 'fermeApp/producto.html', data)
 
@@ -618,5 +619,5 @@ def homeUsuarios (request):
         'cliente': usuario.groups.filter(name='CLIENTE').exists(),
         'vendedor': usuario.groups.filter(name='VENDEDOR').exists()
     }
-
+    
     return render(request, 'fermeApp/homeUsuarios.html', data)

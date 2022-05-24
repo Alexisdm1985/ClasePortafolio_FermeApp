@@ -92,3 +92,13 @@ footer a, footer p {
     width: 50px;
     margin: 0 .5em;
 }
+.numeroCart {
+    color: white;
+    box-shadow: 0 5px 5px rgba(0 0 0 / .3);
+    padding: .1em .3em;
+    background-color: #c70b27;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    display: none;
+}
