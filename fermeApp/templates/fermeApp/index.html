@@ -51,7 +51,7 @@
            <p>$ {{p.precio | intcomma}} </p>
         </div>
           <div class="btn-section">
-            <button type="button" class="btn-carro" data-idProducto="{{p.id_prod}}">Ver producto</button>
+            <button type="button" class="btn-carro verProducto" data-idProducto="{{p.id_prod}}"><a href="{% url 'producto' p.id_prod %}">Ver producto</a></button>
             <button class="btn-carro" data-idProducto="{{p.id_prod}}">Agregar al Carro</button>
           </div>
       </div>

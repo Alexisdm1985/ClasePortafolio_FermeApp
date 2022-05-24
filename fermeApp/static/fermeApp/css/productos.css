@@ -32,6 +32,7 @@ main {
 }
 .producto-contenido {
     padding: .5em;
+    height: 323.38px;
 }
 .producto-contenido h4 {
     margin-top: .5em;
@@ -96,4 +97,13 @@ main {
 
 .categoria-contenido h2{
     margin-top: .5em;
+}
+
+.categoria-contenido img{
+    border-radius: 5px;
+}
+
+.verProducto > a {
+    color: white;
+    text-decoration: none;
 }

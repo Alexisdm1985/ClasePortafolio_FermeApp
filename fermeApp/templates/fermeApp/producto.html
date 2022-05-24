@@ -31,11 +31,15 @@
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis magni blanditiis aut ea harum repudiandae perferendis facere, ipsam culpa</p>
                 <span class="precio">$ {{producto.precio}}</span>
             </div>
-            <div class="seccionCarrito">
-                <span>Cantidad</span>
-                <input class="cantidad" type="number" value="1" min="1">
-                <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
-            </div>
+        {% if user.is_authenticated %}
+            {% if usuario %}
+                <div class="seccionCarrito">
+                    <span>Cantidad</span>
+                    <input class="cantidad" type="number" value="1" min="1">
+                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
+                </div>
+            {% endif %}
+        {% endif %}
         </div>
     </div>
 
@@ -46,19 +50,18 @@
 
 
 <script>
+
     button = document.querySelector('.agregarProducto')
     nroCart = document.querySelector('.numeroCart')
-    
-    document.addEventListener('click', e => {
-        
+
+    button.addEventListener('click', e => {    
         e.preventDefault()
-        if(e.target === button){
-            cantidadStr = document.querySelector('.cantidad').value
-            cantidad = parseInt(cantidadStr)
-            nroCart.style.display = 'inline';
-            nroCart.textContent = cantidad;
-        }
+        cantidadStr = document.querySelector('.cantidad').value
+        cantidad = parseInt(cantidadStr)
+        nroCart.style.display = 'inline';
+        nroCart.textContent = cantidad;
     })
+
 </script>
 </main>
 
