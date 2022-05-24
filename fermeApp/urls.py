@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import modificarCliente, emp_cliente, addCliente , comprasCliente, administrarCliente, homeUsuarios, addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
+from .views import eliminar_cliente, modificarCliente, emp_cliente, addCliente , comprasCliente, administrarCliente, homeUsuarios, addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
 
 urlpatterns = [
 # Global
@@ -35,6 +35,6 @@ urlpatterns = [
     path('emp_cliente/', emp_cliente, name='emp_cliente'),
     path('addCliente/', addCliente, name='addCliente'),
     path('modificarCliente/<user_name>/', modificarCliente, name='modificarCliente'),
-    
+    path('eliminar_cliente/<rut>/', eliminar_cliente, name='eliminar_cliente'),        
 
 ]

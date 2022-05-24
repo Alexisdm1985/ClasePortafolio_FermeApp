@@ -558,7 +558,18 @@ def administrarCliente (request):
 def comprasCliente (request):
     return render(request, 'fermeApp/cliente/comprasCliente.html')
 
+def eliminar_cliente(request, rut):
+    cliente = get_object_or_404(Cliente, rut_cli=rut)
+    cliente.habilitado = 0
+    username = cliente.usuario
+    djangoCliente = get_object_or_404(AuthUser, username=username)
+    djangoCliente.is_active = 0
 
+    cliente.save()
+    djangoCliente.save()
+
+    messages.success(request, "Cliente eliminado satisfactoriamente") 
+    return redirect(to= "emp_cliente")
 
 # Empleado
 # @permission_required('fermeApp.view_proveedor')

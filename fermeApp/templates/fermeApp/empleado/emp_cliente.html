@@ -40,7 +40,7 @@
 
             <td class="tdButton">
                 <button><a href="{% url 'modificarCliente' p.usuario %}">Modificar cliente</a></button>
-                <button><a href="#">Eliminar cliente</a></button>
+                <button><a href="{% url 'eliminar_cliente' p.rut_cli %}">Eliminar cliente</a></button>
               </td>
             </tr>
           {% endfor %}
