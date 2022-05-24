@@ -78,3 +78,16 @@ class AddCliente(forms.ModelForm):
     class Meta:
         model = Cliente
         fields = ["rut_cli", "s_apellido", "telefono", "pertenencia_emp"]
+
+class ModificarCliente(forms.ModelForm):
+
+    class Meta:
+        model = Cliente
+        fields = ["usuario", "nombre", "email" ,"p_apellido", "s_apellido", "telefono", "pertenencia_emp"]
+
+# class ModificarDjangoCliente(UserCreationForm):
+
+#     first_name = forms.CharField(required=True)
+#     class Meta:
+#         model = User
+#         fields = ['username', 'first_name', "email"]

@@ -1,6 +1,6 @@
 from email.policy import default
 from .models import AuthUser, Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto
-from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto, AddCliente
+from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto, AddCliente, ModificarCliente
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -447,12 +447,6 @@ def eliminar_proveedor(request, id_prov):
     return redirect(to= "emp_proveedor")
 
 # Cliente
-def administrarCliente (request):
-    return render(request, 'fermeApp/cliente/administrarCliente.html')
-
-def comprasCliente (request):
-    return render(request, 'fermeApp/cliente/comprasCliente.html')
-
 def addCliente (request): #FALTA COMPROBAR
     data = {
         'form': NuevoUserCreationForm(),
@@ -508,6 +502,62 @@ def emp_cliente (request):
     }
 
     return render(request, 'fermeApp/empleado/emp_cliente.html', data)
+
+def modificarCliente(request, user_name):
+    
+    djCliente = get_object_or_404(AuthUser, username=user_name)
+    cliente = get_object_or_404(Cliente, usuario=user_name)
+
+    data = {
+        'form': ModificarCliente(instance = cliente)
+    }
+
+    if request.method == 'POST':
+    
+        cliForm = ModificarCliente(data=request.POST, instance=cliente)
+    
+        if cliForm.is_valid():
+            
+            # AUTH USER
+            username = cliForm.cleaned_data['usuario']
+            email = cliForm.cleaned_data['email']
+            first_name = cliForm.cleaned_data['nombre']
+            last_name = cliForm.cleaned_data['p_apellido']
+
+            # CLIENTE
+            s_apellido = cliForm.cleaned_data['s_apellido']
+            telefono = cliForm.cleaned_data['telefono']
+            pertenencia_emp = cliForm.cleaned_data['pertenencia_emp']
+            
+            # Modificando usuarios
+            djCliente.username = username
+            djCliente.email = email
+            djCliente.first_name = first_name
+            djCliente.last_name = last_name
+            djCliente.save()
+
+            cliente.nombre = first_name
+            cliente.email = email
+            cliente.p_apellido = last_name
+            cliente.s_apellido = s_apellido
+            cliente.telefono = telefono
+            cliente.pertenencia_emp = pertenencia_emp
+            cliente.usuario = username
+            cliente.save()
+            
+            messages.success(request, "Cliente modificado correctamente") 
+            return redirect(to= "emp_cliente")
+
+        data['form'] = cliForm
+
+    return render(request, 'fermeApp/empleado/modificar_cliente.html', data)
+
+def administrarCliente (request):
+    return render(request, 'fermeApp/cliente/administrarCliente.html')
+
+def comprasCliente (request):
+    return render(request, 'fermeApp/cliente/comprasCliente.html')
+
 
 
 # Empleado
