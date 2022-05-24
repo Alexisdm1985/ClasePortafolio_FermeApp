@@ -9,6 +9,27 @@
 
 {% load humanize %}
 {% block contenido %}
+
+
+<!-- FILTRAR -->
+<div>
+  <center>
+    <br>
+    <div class="container-sm">
+        <div class="col-md-6 mb-6">
+          <form action="" method="POST">
+            <label for="">Numero de Orden: </label>
+            <input type="text" name="nro_orden" id="">
+            <input type="submit" class="btn btn-danger" value="Filtrar">
+            {% csrf_token %}
+          </form>
+        </div>
+    </div>
+  </center>
+</div>
+
+  <!-- FIN FILTRAR -->
+
 <section>
     <button><a href=" {% url 'addOrden' %}">Agregar orden de compra</a></button>
 </section>

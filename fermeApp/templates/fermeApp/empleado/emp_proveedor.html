@@ -9,6 +9,25 @@
 
 {% block contenido %}
 
+<!-- FILTRAR -->
+<div>
+  <center>
+    <br>
+    <div class="container-sm">
+        <div class="col-md-6 mb-6">
+          <form action="" method="POST">
+            <label for="">Nombre Proveedor: </label>
+            <input type="text" name="nombre" id="">
+            <input type="submit" class="btn btn-success" value="Buscar">
+            {% csrf_token %}
+          </form>
+        </div>
+    </div>
+  </center>
+</div>
+  <!-- FIN FILTRAR -->
+
+
 <section>
     <button><a href="{% url 'addProveedor' %}">Agregar proveedor</a></button>
 </section>
