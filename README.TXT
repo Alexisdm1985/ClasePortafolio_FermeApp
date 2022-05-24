@@ -20,46 +20,40 @@ CHECK *-- Agregar modales mensaje satisfactorio
 
 ## URGENTE
 CHECK * Funcionalidad agregar producto individualmente
-- Funcionalidad agregar filtros en producto, orden, detalle orden, usuarios en general
-- Funcionalidad agregar busqueda: Orden compra, proveedor
+-- CARRITO DE COMPRA
+
 - Validaciones inputs formularios (todos)
 - Validacion producto
 - Validacion proveedor
 - Validacion ordencompra
 - Validacion detalleOrden
 
-- Paginacion 
+CHECK * Paginacion 
 -- Crear paginas
 ---- producto_individual
----- prodcuto_noencontnrado
+
 - USUARIO:
 ---- menuCliente
------- Administrar cuenta
--------- ?
+||------ Administrar cuenta
 ------ Mis compras
--------- ?
 - VENDEDOR:
 -- Crear paginas
 ---- menu_vendedor
------- Administrar cuenta
--------- ?
+||------ Administrar cuenta
 ------ Ventas
 ------ Buscador boleta
 -------- MenuVendedorBoleta
 ------ Buscador factura
 -------- MenuVendedorFactura
-
-##
-- EMP ADMINISTRADOR:
--- Crear paginas
----- MenuEmpleadoAdminReportes
----- MenuProveedorReportes2
 - PROOVEDOR:
 -- Crear paginas
 ---- MenuProveedor
 ---- MenuProveedorOrden
 
 ## FINALMENTE
+---- prodcuto_noencontnrado
+- Funcionalidad agregar filtros en producto, orden, detalle orden, usuarios en general
+- Funcionalidad agregar busqueda: Orden compra, proveedor
 - Crear readme con instrucciones de instalacion proyecto
 - Arreglo/checkeo disenio todas las paginas con mockup
 
@@ -69,5 +63,3 @@ CHECK * Funcionalidad agregar producto individualmente
 -- MenuAdminCuenta
 -- MenuAdminCuentaS
 -- MenuAdminCuentaSModificar
-
-    

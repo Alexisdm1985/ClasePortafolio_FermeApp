@@ -1,0 +1,55 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+
+<!-- CSS -->
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp\css\emp_proveedor.css' %}">
+{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <button><a href="{% url 'addCliente' %}">Agregar Cliente</a></button>
+</section>
+<main>
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Rut</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Email</th>
+            <th scope="col">Pertenece a empresa</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for p in entity %}
+          <tr>
+            <th scope="row">1</th>
+            <td>{{p.rut_cli}}</td>
+            <td> {{p.nombre}}</td>
+            <td>{{p.usuario}}</td>
+            <td>{{p.email}}</td>
+            {% if p.pertenencia_emp %}
+            <td>Si</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
+
+            <td class="tdButton">
+                <button><a href="{% url 'modificarCliente' p.usuario %}">Modificar cliente</a></button>
+                <button><a href="{% url 'eliminar_cliente' p.rut_cli %}">Eliminar cliente</a></button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      <!-- PAGINATOR -->
+      <div class="paginador">
+        {% include 'fermeApp/paginator.html' %}
+      </div>
+</main>
+{% endblock %}

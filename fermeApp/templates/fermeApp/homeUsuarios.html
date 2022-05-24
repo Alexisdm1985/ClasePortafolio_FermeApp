@@ -1,0 +1,56 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %} 
+{% load static %}
+
+<!-- CSS -->
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/emp_home.css' %}">
+{% endblock %}
+
+
+{% block contenido %}
+
+{% load humanize %}
+
+</style>
+<section>
+    <h1>Bienvenid@,  {{ uName }} </h1>
+</section>
+<main>
+    <div class="contenedor">
+
+        <div class="enlaces">
+            <h4>
+                <a href="#">
+                    <img src="{% static 'fermeApp/img/cuenta.png' %}" alt="">
+                    Administrar cuenta
+                </a>
+            </h4>
+        </div>
+    {% if cliente %}
+        <div class="enlaces">
+
+            <h4>
+                <a href="#">
+                    <img src="{% static 'fermeApp/img/order.png' %}" alt="">
+                    Mis compras
+                </a>
+            </h4>
+        </div>
+    {% endif %}
+    
+    {% if proveedor %}
+        <div class="enlaces">
+        
+            <h4>
+                <a href="#">
+                    <img src="{% static 'fermeApp/img/order.png' %}" alt="">
+                    Buscador de ordenes
+                </a>
+            </h4>
+        </div>
+    {% endif %}
+    </div>
+</main>
+{% endblock %}

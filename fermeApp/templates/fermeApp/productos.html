@@ -46,7 +46,8 @@
             </div>
 
             <div class="btn-section">
-                <button class="btn-carro">Agregar al Carro</button>
+                <button type="button" class="btn-carro verProducto" data-idProducto="{{p.id_prod}}"><a href="{% url 'producto' p.id_prod %}">Ver producto</a></button>
+                <button class="btn-carro agregarProducto" data-idProducto="{{p.id_prod}}">Agregar al Carro</button>
             </div>
         </div>
         {% endfor %}
@@ -82,4 +83,8 @@
     </div>
 
 </section>
+<!-- JS -->
+<script>
+
+</script>
 {% endblock %}

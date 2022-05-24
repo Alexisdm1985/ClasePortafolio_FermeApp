@@ -1,6 +1,7 @@
+from email.headerregistry import Group
 from email.policy import default
-from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto
-from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto
+from .models import AuthUser, Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto, Vendedor
+from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto, AddCliente, ModificarCliente
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -85,18 +86,17 @@ def productos(request):
 
     return render(request, 'fermeApp/productos.html', data)
 
+def producto(request, id_prod):
+    producto = InvProducto.objects.get(id_prod=id_prod)
+
+    data = {
+        'producto': producto
+    }
+    return render(request, 'fermeApp/producto.html', data)
+
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
     
-# Empleado
-def empleado(request):
-
-    userName = request.user.get_short_name()
-    data = {
-        'uName': userName if userName else 'Admin'
-    }
-    return render(request, 'fermeApp/empleado/home.html', data)
-
 # PRODUCTOS
 def emp_productos(request):
 
@@ -128,27 +128,23 @@ def addProducto(request):
     
     data = {
         'form': AddProducto(),
-        'proveedor': ModificarIdProveedor()
+        'form2': ModificarIdProveedor()
     }
 
     if request.method == 'POST':
         formulario = AddProducto(data=request.POST, files=request.FILES)
-        
-        formProveedor = ModificarIdProveedor(data=request.POST) # Obtiene el id del proveedor seleccionado
+        formulario2 = ModificarIdProveedor(data=request.POST) 
 
-        if formulario.is_valid() and formProveedor.is_valid():
-
-            # fecha = formulario.cleaned_data['fecha_venc']
-            # formulario.cleaned_data['fecha_venc'] = fecha.strip() # Elimino cualquier espacio
+        if formulario.is_valid() and formulario2.is_valid():
 
             producto = InvProducto()
             producto = formulario.cleaned_data # Lleno el objeto con el formulario
 
             # Obtengo id_prod en base a proveedor id - familia - fechaVenc - tipo
-            proveedor = Proveedor.objects.get(id_prov = formProveedor.cleaned_data['proveedor_id_prov'])
+            proveedor = Proveedor.objects.get(id_prov = formulario2.cleaned_data['proveedor_id_prov'])
             
             familia = formulario.cleaned_data['fam_producto_id_fam']
-            id_fam = FamProducto.objects.get(descripcion=familia )
+            id_fam = FamProducto.objects.get(descripcion=familia)
 
             tipo = formulario.cleaned_data['tipo_producto_id_tipo']
             id_tipo = TipoProducto.objects.get(descripcion=tipo)
@@ -168,10 +164,11 @@ def addProducto(request):
                 fecha_form = formulario.cleaned_data['fecha_venc']
             
             
-            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo'], categoria = producto['categoria']) 
+            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo'], imagen=producto['imagen'],categoria = producto['categoria']) 
             new_producto.save()
             
-            # return redirect(to='emp_productos')
+            return redirect(to='emp_productos')
+
         data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addProducto.html', data)
@@ -359,6 +356,7 @@ def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden esp
     return render(request, 'fermeApp/empleado/modificarDetalleOrden.html', data)
 
 # Proveedor
+# @permission_required('fermeApp.view_proveedor')
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
@@ -453,3 +451,167 @@ def eliminar_proveedor(request, id_prov):
 
     messages.success(request, "Proveedor eliminado satisfactoriamente") 
     return redirect(to= "emp_proveedor")
+
+def homeProveedor(request):
+    return render(request, 'fermeApp/proveedor/homeProveedor.html')
+
+# Cliente
+def addCliente (request): #FALTA COMPROBAR
+    data = {
+        'form': NuevoUserCreationForm(),
+        'form2': AddCliente()
+    }
+
+    if request.method == 'POST':
+        formulario = NuevoUserCreationForm(data=request.POST)
+        formulario2 = AddCliente(data=request.POST)
+
+        if formulario.is_valid() and formulario2.is_valid():
+            
+            # Guardamos datos para nuestra base de datos cliente
+            nombre = formulario.cleaned_data['first_name']
+            apellido = formulario.cleaned_data['last_name']
+            usuario = formulario.cleaned_data['username']
+            email = formulario.cleaned_data['email']
+            rut = formulario2.cleaned_data['rut_cli']
+            apellido2 = formulario2.cleaned_data['s_apellido']
+            telefono = formulario2.cleaned_data['telefono']
+            pertenencia_emp = formulario2.cleaned_data['pertenencia_emp']
+            contrasenia = formulario.cleaned_data['password1']
+
+            formulario.save() # AuthUser
+        
+            new_cliente = Cliente(rut_cli=rut, nombre=nombre, p_apellido=apellido, s_apellido=apellido2, email=email, telefono=telefono, usuario=usuario, contrasenia=contrasenia, pertenencia_emp=pertenencia_emp)
+            new_cliente.save()
+            
+            # group = Group.objects.get(name='CLIENTE')
+            new_cliente.groups.add(name='CLIENTE')
+
+            messages.success(request, "Cliente agregado satisfactoriamente") 
+            return redirect(to='emp_cliente')
+    
+        else:
+            data["form"] = formulario
+
+    return render(request, 'fermeApp/empleado/addCliente.html', data)
+
+def emp_cliente (request):
+    cliente = Cliente.objects.filter(habilitado=1) #Filtra todos los clientes con habilidado=1
+
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(cliente, 16)
+        cliente = paginator.page(page)
+    except:
+        raise Http404
+
+    # AGREGAR BUSQUEDA/FILTROS AQUI DESPUES DE PAGINATOR
+
+    data = {
+        'entity': cliente,
+        'paginator': paginator
+    }
+
+    return render(request, 'fermeApp/empleado/emp_cliente.html', data)
+
+def modificarCliente(request, user_name):
+    
+    djCliente = get_object_or_404(AuthUser, username=user_name)
+    cliente = get_object_or_404(Cliente, usuario=user_name)
+
+    data = {
+        'form': ModificarCliente(instance = cliente)
+    }
+
+    if request.method == 'POST':
+    
+        cliForm = ModificarCliente(data=request.POST, instance=cliente)
+    
+        if cliForm.is_valid():
+            
+            # AUTH USER
+            username = cliForm.cleaned_data['usuario']
+            email = cliForm.cleaned_data['email']
+            first_name = cliForm.cleaned_data['nombre']
+            last_name = cliForm.cleaned_data['p_apellido']
+
+            # CLIENTE
+            s_apellido = cliForm.cleaned_data['s_apellido']
+            telefono = cliForm.cleaned_data['telefono']
+            pertenencia_emp = cliForm.cleaned_data['pertenencia_emp']
+            
+            # Modificando usuarios
+            djCliente.username = username
+            djCliente.email = email
+            djCliente.first_name = first_name
+            djCliente.last_name = last_name
+            djCliente.save()
+
+            cliente.nombre = first_name
+            cliente.email = email
+            cliente.p_apellido = last_name
+            cliente.s_apellido = s_apellido
+            cliente.telefono = telefono
+            cliente.pertenencia_emp = pertenencia_emp
+            cliente.usuario = username
+            cliente.save()
+            
+            messages.success(request, "Cliente modificado correctamente") 
+            return redirect(to= "emp_cliente")
+
+        data['form'] = cliForm
+
+    return render(request, 'fermeApp/empleado/modificar_cliente.html', data)
+
+def administrarCliente (request):
+    return render(request, 'fermeApp/cliente/administrarCliente.html')
+
+def comprasCliente (request):
+    return render(request, 'fermeApp/cliente/comprasCliente.html')
+
+def eliminar_cliente(request, rut):
+    cliente = get_object_or_404(Cliente, rut_cli=rut)
+    cliente.habilitado = 0
+    username = cliente.usuario
+    djangoCliente = get_object_or_404(AuthUser, username=username)
+    djangoCliente.is_active = 0
+
+    cliente.save()
+    djangoCliente.save()
+
+    messages.success(request, "Cliente eliminado satisfactoriamente") 
+    return redirect(to= "emp_cliente")
+
+# Empleado
+# @permission_required('fermeApp.view_proveedor')
+def empleado(request):
+
+    userName = request.user.get_short_name()
+    data = {
+        'uName': userName if userName else 'Admin'
+    }
+    return render(request, 'fermeApp/empleado/home.html', data)
+
+def reportes(request):
+
+    userName = request.user.get_short_name()
+    data = {
+        'uName': userName if userName else 'Admin'
+    }
+    return render(request, 'fermeApp/empleado/reportes.html', data)
+
+# Cliente, Proveedor, Vendedor
+def homeUsuarios (request):
+
+    userName = request.user.get_short_name()
+    usuario = request.user
+
+    data = {
+        'uName': userName if userName else 'Admin',
+        'proveedor': usuario.groups.filter(name='PROVEEDOR').exists(),
+        'cliente': usuario.groups.filter(name='CLIENTE').exists(),
+        'vendedor': usuario.groups.filter(name='VENDEDOR').exists()
+    }
+
+    return render(request, 'fermeApp/homeUsuarios.html', data)

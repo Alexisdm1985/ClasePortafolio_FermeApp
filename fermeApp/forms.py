@@ -71,4 +71,30 @@ class ModificarProducto(forms.ModelForm):
         model = InvProducto
         fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen', 'categoria']
 
-        
+    
+# CLIENTE
+class AddCliente(forms.ModelForm):
+
+    class Meta:
+        model = Cliente
+        fields = ["rut_cli", "s_apellido", "telefono", "pertenencia_emp"]
+
+class ModificarCliente(forms.ModelForm):
+
+    class Meta:
+        model = Cliente
+        fields = ["usuario", "nombre", "email" ,"p_apellido", "s_apellido", "telefono", "pertenencia_emp"]
+
+# class ModificarDjangoCliente(UserCreationForm):
+
+#     first_name = forms.CharField(required=True)
+#     class Meta:
+#         model = User
+#         fields = ['username', 'first_name', "email"]
+
+# PRODUCTO
+# class AddNroOrden(forms.ModelForm):
+
+#     class Meta:
+#         model= OrdenCompra
+#         fields = ["nro_orden"]
