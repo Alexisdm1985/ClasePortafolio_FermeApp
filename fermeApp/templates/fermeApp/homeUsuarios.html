@@ -15,33 +15,42 @@
 
 </style>
 <section>
-    <h1>Bienvenid@,  {{ user.first_name }} </h1>
+    <h1>Bienvenid@,  {{ uName }} </h1>
 </section>
 <main>
     <div class="contenedor">
 
         <div class="enlaces">
-            
             <h4>
-                <!-- Si es Proveedor -->
-                <!-- Si es Vendedor -->
-                <!-- Si es Cliente -->
-                <a href="{% url 'administrarCliente' %}">
+                <a href="#">
                     <img src="{% static 'fermeApp/img/cuenta.png' %}" alt="">
                     Administrar cuenta
                 </a>
             </h4>
         </div>
+    {% if cliente %}
         <div class="enlaces">
 
             <h4>
-                <a href=" {% url 'comprasCliente' %} ">
+                <a href="#">
                     <img src="{% static 'fermeApp/img/order.png' %}" alt="">
                     Mis compras
                 </a>
             </h4>
         </div>
+    {% endif %}
+    
+    {% if proveedor %}
+        <div class="enlaces">
         
+            <h4>
+                <a href="#">
+                    <img src="{% static 'fermeApp/img/order.png' %}" alt="">
+                    Buscador de ordenes
+                </a>
+            </h4>
+        </div>
+    {% endif %}
     </div>
 </main>
 {% endblock %}

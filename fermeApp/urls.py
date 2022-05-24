@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import producto, eliminar_cliente, modificarCliente, emp_cliente, addCliente , comprasCliente, administrarCliente, homeUsuarios, addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
+from .views import homeProveedor, reportes, producto, eliminar_cliente, modificarCliente, emp_cliente, addCliente , comprasCliente, administrarCliente, homeUsuarios, addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
 
 urlpatterns = [
 # Global
@@ -11,6 +11,7 @@ urlpatterns = [
     path('nosotros/', nosotros, name='nosotros'),
 # EMPLEADO
     path('homeEmp/', empleado, name='homeEmp'),
+    path('reportes/', reportes, name='reportes'),
 # Productos
     path('emp_productos/', emp_productos, name='emp_productos'),
     path('addProducto/', addProducto, name='addProducto'),
@@ -27,7 +28,8 @@ urlpatterns = [
     path('emp_proveedor/', emp_proveedor, name='emp_proveedor'),
     path('addProveedor/', addProveedor, name='addProveedor'),
     path('modificarProveedor/<id_prov>/', modificarProveedor, name='modificarProveedor'),
-    path('eliminar_proveedor/<id_prov><>/', eliminar_proveedor, name='eliminar_proveedor'),        
+    path('eliminar_proveedor/<id_prov>/', eliminar_proveedor, name='eliminar_proveedor'),        
+    path('homeProveedor/', homeProveedor, name='homeProveedor'),        
 
 # Clientes
     path('homeUsuarios/', homeUsuarios, name='homeUsuarios'),

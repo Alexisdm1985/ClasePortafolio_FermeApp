@@ -1,5 +1,6 @@
+from email.headerregistry import Group
 from email.policy import default
-from .models import AuthUser, Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto
+from .models import AuthUser, Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto, Vendedor
 from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto, AddCliente, ModificarCliente
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
@@ -451,6 +452,9 @@ def eliminar_proveedor(request, id_prov):
     messages.success(request, "Proveedor eliminado satisfactoriamente") 
     return redirect(to= "emp_proveedor")
 
+def homeProveedor(request):
+    return render(request, 'fermeApp/proveedor/homeProveedor.html')
+
 # Cliente
 def addCliente (request): #FALTA COMPROBAR
     data = {
@@ -479,6 +483,9 @@ def addCliente (request): #FALTA COMPROBAR
         
             new_cliente = Cliente(rut_cli=rut, nombre=nombre, p_apellido=apellido, s_apellido=apellido2, email=email, telefono=telefono, usuario=usuario, contrasenia=contrasenia, pertenencia_emp=pertenencia_emp)
             new_cliente.save()
+            
+            # group = Group.objects.get(name='CLIENTE')
+            new_cliente.groups.add(name='CLIENTE')
 
             messages.success(request, "Cliente agregado satisfactoriamente") 
             return redirect(to='emp_cliente')
@@ -586,8 +593,25 @@ def empleado(request):
     }
     return render(request, 'fermeApp/empleado/home.html', data)
 
+def reportes(request):
+
+    userName = request.user.get_short_name()
+    data = {
+        'uName': userName if userName else 'Admin'
+    }
+    return render(request, 'fermeApp/empleado/reportes.html', data)
 
 # Cliente, Proveedor, Vendedor
 def homeUsuarios (request):
 
-    return render(request, 'fermeApp/homeUsuarios.html')
+    userName = request.user.get_short_name()
+    usuario = request.user
+
+    data = {
+        'uName': userName if userName else 'Admin',
+        'proveedor': usuario.groups.filter(name='PROVEEDOR').exists(),
+        'cliente': usuario.groups.filter(name='CLIENTE').exists(),
+        'vendedor': usuario.groups.filter(name='VENDEDOR').exists()
+    }
+
+    return render(request, 'fermeApp/homeUsuarios.html', data)
