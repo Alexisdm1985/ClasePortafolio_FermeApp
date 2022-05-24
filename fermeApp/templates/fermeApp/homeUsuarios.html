@@ -15,7 +15,7 @@
 
 </style>
 <section>
-    <h1>Bienvenid@,  {{ uName }} </h1>
+    <h1>Bienvenid@,  {{ user.username }} </h1>
 </section>
 <main>
     <div class="contenedor">
@@ -23,7 +23,10 @@
         <div class="enlaces">
             
             <h4>
-                <a href="#">
+                <!-- Si es Proveedor -->
+                <!-- Si es Vendedor -->
+                <!-- Si es Cliente -->
+                <a href="{% url 'administrarCliente' %}">
                     <img src="{% static 'fermeApp/img/cuenta.png' %}" alt="">
                     Administrar cuenta
                 </a>
@@ -32,7 +35,7 @@
         <div class="enlaces">
 
             <h4>
-                <a href=" {% url 'emp_orden' %} ">
+                <a href=" {% url 'comprasCliente' %} ">
                     <img src="{% static 'fermeApp/img/order.png' %}" alt="">
                     Mis compras
                 </a>

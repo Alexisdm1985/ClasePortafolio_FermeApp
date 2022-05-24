@@ -456,12 +456,20 @@ def eliminar_proveedor(request, id_prov):
     messages.success(request, "Proveedor eliminado satisfactoriamente") 
     return redirect(to= "emp_proveedor")
 
+# Cliente
+def administrarCliente (request):
+    
+
+    return render(request, 'fermeApp/cliente/administrarCliente.html')
+
+def comprasCliente (request):
+
+    return render(request, 'fermeApp/cliente/comprasCliente.html')
 
 
 
 
 # Cliente, Proveedor, Vendedor
 def homeUsuarios (request):
-
 
     return render(request, 'fermeApp/homeUsuarios.html')
