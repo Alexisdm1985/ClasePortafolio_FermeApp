@@ -11,7 +11,9 @@ section{
 }
 main {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
     height: 80vh;
 }
 .table{
@@ -37,4 +39,7 @@ button a {
 button:hover {
     background-color: #93B5C6;
     box-shadow: 0 5px 5px #22577A;
+}
+.paginador {
+    margin: 2.5em;
 }

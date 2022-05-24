@@ -40,7 +40,7 @@
   {% load humanize %}
 
   <div class="producto-container">
-    {% for p in productos %}
+    {% for p in entity %}
       <div class="producto">
         <div class="producto-contenido">
             {% if p.imagen %}
@@ -56,6 +56,11 @@
       </div>
     {% endfor %}
   </div>
+  
+      <!-- PAGINATOR -->
+      <div class="paginador">
+        {% include 'fermeApp/paginator.html' %}
+      </div>
 </main>
 
 {% endblock %}
