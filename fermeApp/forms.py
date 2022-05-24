@@ -91,3 +91,10 @@ class ModificarCliente(forms.ModelForm):
 #     class Meta:
 #         model = User
 #         fields = ['username', 'first_name', "email"]
+
+# PRODUCTO
+# class AddNroOrden(forms.ModelForm):
+
+#     class Meta:
+#         model= OrdenCompra
+#         fields = ["nro_orden"]

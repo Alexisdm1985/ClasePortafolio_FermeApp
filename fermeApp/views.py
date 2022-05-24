@@ -119,27 +119,23 @@ def addProducto(request):
     
     data = {
         'form': AddProducto(),
-        'proveedor': ModificarIdProveedor()
+        'form2': ModificarIdProveedor()
     }
 
     if request.method == 'POST':
         formulario = AddProducto(data=request.POST, files=request.FILES)
-        
-        formProveedor = ModificarIdProveedor(data=request.POST) # Obtiene el id del proveedor seleccionado
+        formulario2 = ModificarIdProveedor(data=request.POST) 
 
-        if formulario.is_valid() and formProveedor.is_valid():
-
-            # fecha = formulario.cleaned_data['fecha_venc']
-            # formulario.cleaned_data['fecha_venc'] = fecha.strip() # Elimino cualquier espacio
+        if formulario.is_valid() and formulario2.is_valid():
 
             producto = InvProducto()
             producto = formulario.cleaned_data # Lleno el objeto con el formulario
 
             # Obtengo id_prod en base a proveedor id - familia - fechaVenc - tipo
-            proveedor = Proveedor.objects.get(id_prov = formProveedor.cleaned_data['proveedor_id_prov'])
+            proveedor = Proveedor.objects.get(id_prov = formulario2.cleaned_data['proveedor_id_prov'])
             
             familia = formulario.cleaned_data['fam_producto_id_fam']
-            id_fam = FamProducto.objects.get(descripcion=familia )
+            id_fam = FamProducto.objects.get(descripcion=familia)
 
             tipo = formulario.cleaned_data['tipo_producto_id_tipo']
             id_tipo = TipoProducto.objects.get(descripcion=tipo)
@@ -159,10 +155,11 @@ def addProducto(request):
                 fecha_form = formulario.cleaned_data['fecha_venc']
             
             
-            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo'], categoria = producto['categoria']) 
+            new_producto = InvProducto(id_prod=id_producto, nombre= producto['nombre'], precio=producto['precio'], stock=producto['stock'], stock_crit=producto['stock_crit'] ,stock_max=producto['stock_max'], fecha_venc = fecha_form, fam_producto_id_fam = producto['fam_producto_id_fam'], marca = producto['marca'], tipo_producto_id_tipo = producto['tipo_producto_id_tipo'], imagen=producto['imagen'],categoria = producto['categoria']) 
             new_producto.save()
             
-            # return redirect(to='emp_productos')
+            return redirect(to='emp_productos')
+
         data["form"] = formulario
 
     return render(request, 'fermeApp/empleado/addProducto.html', data)
