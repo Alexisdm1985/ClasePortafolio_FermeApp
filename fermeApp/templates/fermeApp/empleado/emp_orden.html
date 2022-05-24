@@ -19,12 +19,12 @@
             <th scope="col">#</th>
             <th scope="col">Nro orden</th>
             <th scope="col">Fecha</th>
-            <th scope="col">Rut empleado</th>
-            <th scope="col">Opciones</th>
-          </tr>
-        </thead>
+          <th scope="col">Rut empleado</th>
+          <th scope="col">Opciones</th>
+        </tr>
+      </thead>
         <tbody>
-            {% for p in ordenes %}
+            {% for p in entity %}
           <tr>
             <th scope="row">{{forloop.counter}}</th>
             <td>{{p.nro_orden}}</td>
@@ -40,5 +40,10 @@
         </tbody>
       </table>
 
+      <!-- PAGINATOR -->
+      <div class="paginador">
+        {% include 'fermeApp/paginator.html' %}
+      </div>
 </main>
+
 {% endblock %}

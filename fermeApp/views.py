@@ -4,6 +4,9 @@ from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCre
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+from django.http import Http404
 
 # Create your views here.
 
@@ -12,8 +15,19 @@ def index(request):
     
     # Obtiene todos los productos
     listadoProducto = InvProducto.objects.filter(habilitado=1)
+    
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listadoProducto, 16)
+        listadoProducto = paginator.page(page)
+
+    except:
+        raise Http404
+        
     data = {
-        'productos': listadoProducto
+        'entity': listadoProducto,
+        'paginator': paginator
         
     }
     return render(request, 'fermeApp/index.html', data)
@@ -49,17 +63,27 @@ def nosotros(request):
 def productos(request):
         # Obtiene todos los productos
     producto = InvProducto.objects.filter(habilitado=1)
-    # categorias = ['Herramientas', 'Gasfiteria', 'Hogar', 'Construccion']
-    data = {
-        # 'categorias': categorias,
-        'productos': producto
-    }
+
 
     if request.POST.get('nombre'):
         tituloAfiltrar = request.POST.get('nombre')
         producto = producto.filter(nombre__icontains=tituloAfiltrar)
 
-    return render(request, 'fermeApp/productos.html', {'productos':producto})
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(producto, 16)
+        producto = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+
+        'entity': producto,
+        'paginator': paginator
+    }
+
+    return render(request, 'fermeApp/productos.html', data)
 
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
@@ -68,7 +92,6 @@ def contacto(request):
 def empleado(request):
 
     userName = request.user.get_short_name()
-
     data = {
         'uName': userName if userName else 'Admin'
     }
@@ -77,16 +100,29 @@ def empleado(request):
 # PRODUCTOS
 def emp_productos(request):
 
-    # producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
-    # data = {
-    #     'productos': producto
-    # }
+    producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
+
+
 
     if request.POST.get('nombre'):
         tituloAfiltrar = request.POST.get('nombre')
         producto = producto.filter(nombre__icontains=tituloAfiltrar, habilitado=1)
 
-    return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
+# pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(producto, 5)
+        producto = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+        'entity': producto,
+        'paginator': paginator
+    }
+
+    return render(request, 'fermeApp/empleado/emp_productos.html', data)
+
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):
     
@@ -153,6 +189,8 @@ def modificarProducto(request, id):
         formulario = ModificarProducto(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
+
+            messages.success(request, "Producto modificado satisfactoriamente") 
             return redirect(to= "emp_productos")
 
         data['form'] = formulario
@@ -163,21 +201,26 @@ def eliminar_producto(request, id):
     producto = get_object_or_404(InvProducto, id_prod=id)
     producto.habilitado = 0
     producto.save()
+
+    messages.success(request, "Producto eliminado satisfactoriamente") 
     return redirect(to= "emp_productos")
 
 # ORDEN COMPRA
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
-    idProveedor = []
 
-    for i in orden: # Obtiene el id_proveedor de cada orden
-        detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
-        idProveedor.append(detalles[0].proveedor_id_prov)
-
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(orden, 7)
+        orden = paginator.page(page)
+    except:
+        raise Http404
         
     data = {
-        'ordenes': orden,
-        'id_prov': idProveedor
+        'entity': orden,
+        'paginator': paginator
+        # 'id_prov': idProveedor
     }
 
     return render(request, 'fermeApp/empleado/emp_orden.html', data)
@@ -208,6 +251,8 @@ def addOrden(request):
             
             detalle_orden = DetalleOrden(orden_compra_nro_orden= ordenInstance, proveedor_id_prov = id_prov, cantidad = cantidad, precio = precio, descuento= descuento, observaciones = observaciones, nombre = nombre)
             detalle_orden.save()
+
+            messages.success(request, "Su orden ha sido ingresada correctamente") 
             return redirect(to='emp_orden')
             
         else:
@@ -237,6 +282,8 @@ def addDetalle(request, nro_orden):
             # Crear detalle orden 
             new_detalle = DetalleOrden(orden_compra_nro_orden= orden, proveedor_id_prov= proveedor, cantidad = cantidad, precio=precio, descuento=descuento, observaciones=observaciones, nombre = nombre )
             new_detalle.save()
+
+            messages.success(request, "Detalle de orden agregada correctamente") 
             return redirect(to= 'emp_orden')          
 
         data['form_detalle'] = formulario
@@ -267,7 +314,10 @@ def modificarOrden(request, nro_orden):
 
                 i.proveedor_id_prov = proveedor
                 i.save()
+
+            messages.success(request, "Orden de compra modificada correctamente") 
             return redirect(to= "emp_orden")
+
         else: print("Error views.py def modificarOrden")
 
     return render(request, 'fermeApp/empleado/modificarOrden.html', data)
@@ -275,8 +325,17 @@ def modificarOrden(request, nro_orden):
 def detalleOrden(request, nro_orden): # listar detalle orden 
 
     ordenes = DetalleOrden.objects.filter(orden_compra_nro_orden=nro_orden) #Obtiene todos los detalles de orden relacionados
+        # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(ordenes, 7)
+        ordenes = paginator.page(page)
+    except:
+        raise Http404
+
     data = {
-        'ordenes': ordenes
+        'entity': ordenes,
+        'paginator': paginator
     }
     return render(request, 'fermeApp/empleado/emp_detallesOrden.html', data)
 
@@ -291,6 +350,8 @@ def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden esp
         formulario = AddDetalle(data=request.POST, instance=detalle)
         if formulario.is_valid():
             formulario.save()
+
+            messages.success(request, "Detalle de orden modificada correctamente") 
             return redirect(to='detalleOrden', nro_orden=34)
 
         data['form'] = formulario
@@ -301,8 +362,20 @@ def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden esp
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
+
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(proveedor, 16)
+        proveedor = paginator.page(page)
+    except:
+        raise Http404
+
+    # AGREGAR BUSQUEDA/FILTROS AQUI DESPUES DE PAGINATOR
+
     data = {
-        'proveedores': proveedor
+        'entity': proveedor,
+        'paginator': paginator
     }
 
     return render(request, 'fermeApp/empleado/emp_proveedor.html', data)
@@ -333,6 +406,8 @@ def addProveedor(request):
         
             new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro, userid = idProveedor)
             new_proveedor.save()
+
+            messages.success(request, "Proveedor agregado satisfactoriamente") 
             return redirect(to='emp_proveedor')
     
         else:
@@ -359,6 +434,7 @@ def modificarProveedor(request, id_prov):
             authProveedor.save()
             formulario.save()
 
+            messages.success(request, "Proveedor modificado correctamente") 
             return redirect(to= "emp_proveedor")
         data['form'] = formulario
 
@@ -374,4 +450,6 @@ def eliminar_proveedor(request, id_prov):
 
     proveedor.save()
     djangoProveedor.save()
+
+    messages.success(request, "Proveedor eliminado satisfactoriamente") 
     return redirect(to= "emp_proveedor")
