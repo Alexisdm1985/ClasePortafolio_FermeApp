@@ -4,6 +4,7 @@ from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCre
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib import messages
 
 # Create your views here.
 
@@ -153,6 +154,8 @@ def modificarProducto(request, id):
         formulario = ModificarProducto(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
+
+            messages.success(request, "Producto modificado satisfactoriamente") 
             return redirect(to= "emp_productos")
 
         data['form'] = formulario
@@ -163,21 +166,22 @@ def eliminar_producto(request, id):
     producto = get_object_or_404(InvProducto, id_prod=id)
     producto.habilitado = 0
     producto.save()
+
+    messages.success(request, "Producto eliminado satisfactoriamente") 
     return redirect(to= "emp_productos")
 
 # ORDEN COMPRA
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
-    idProveedor = []
+    # idProveedor = []
 
-    for i in orden: # Obtiene el id_proveedor de cada orden
-        detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
-        idProveedor.append(detalles[0].proveedor_id_prov)
+    # for i in orden: # Obtiene el id_proveedor de cada orden
+    #     detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
+    #     idProveedor.append(detalles[0].proveedor_id_prov)
 
-        
     data = {
-        'ordenes': orden,
-        'id_prov': idProveedor
+        'ordenes': orden
+        # 'id_prov': idProveedor
     }
 
     return render(request, 'fermeApp/empleado/emp_orden.html', data)
@@ -208,6 +212,8 @@ def addOrden(request):
             
             detalle_orden = DetalleOrden(orden_compra_nro_orden= ordenInstance, proveedor_id_prov = id_prov, cantidad = cantidad, precio = precio, descuento= descuento, observaciones = observaciones, nombre = nombre)
             detalle_orden.save()
+
+            messages.success(request, "Su orden ha sido ingresada correctamente") 
             return redirect(to='emp_orden')
             
         else:
@@ -237,6 +243,8 @@ def addDetalle(request, nro_orden):
             # Crear detalle orden 
             new_detalle = DetalleOrden(orden_compra_nro_orden= orden, proveedor_id_prov= proveedor, cantidad = cantidad, precio=precio, descuento=descuento, observaciones=observaciones, nombre = nombre )
             new_detalle.save()
+
+            messages.success(request, "Detalle de orden agregada correctamente") 
             return redirect(to= 'emp_orden')          
 
         data['form_detalle'] = formulario
@@ -267,7 +275,10 @@ def modificarOrden(request, nro_orden):
 
                 i.proveedor_id_prov = proveedor
                 i.save()
+
+            messages.success(request, "Orden de compra modificada correctamente") 
             return redirect(to= "emp_orden")
+
         else: print("Error views.py def modificarOrden")
 
     return render(request, 'fermeApp/empleado/modificarOrden.html', data)
@@ -291,6 +302,8 @@ def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden esp
         formulario = AddDetalle(data=request.POST, instance=detalle)
         if formulario.is_valid():
             formulario.save()
+
+            messages.success(request, "Detalle de orden modificada correctamente") 
             return redirect(to='detalleOrden', nro_orden=34)
 
         data['form'] = formulario
@@ -333,6 +346,8 @@ def addProveedor(request):
         
             new_proveedor = Proveedor(nombre = nombre, rut = rut , domicilio = domicilio, celular = celular, rubro = rubro, userid = idProveedor)
             new_proveedor.save()
+
+            messages.success(request, "Proveedor agregado satisfactoriamente") 
             return redirect(to='emp_proveedor')
     
         else:
@@ -359,6 +374,7 @@ def modificarProveedor(request, id_prov):
             authProveedor.save()
             formulario.save()
 
+            messages.success(request, "Proveedor modificado correctamente") 
             return redirect(to= "emp_proveedor")
         data['form'] = formulario
 
@@ -374,4 +390,6 @@ def eliminar_proveedor(request, id_prov):
 
     proveedor.save()
     djangoProveedor.save()
+
+    messages.success(request, "Proveedor eliminado satisfactoriamente") 
     return redirect(to= "emp_proveedor")
