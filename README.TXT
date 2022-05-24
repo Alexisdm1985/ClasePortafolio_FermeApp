@@ -20,6 +20,7 @@ CHECK *-- Agregar modales mensaje satisfactorio
 
 ## URGENTE
 CHECK * Funcionalidad agregar producto individualmente
+-- CARRITO DE COMPRA
 
 - Validaciones inputs formularios (todos)
 - Validacion producto
@@ -33,26 +34,17 @@ CHECK * Paginacion
 
 - USUARIO:
 ---- menuCliente
------- Administrar cuenta
--------- ?
+||------ Administrar cuenta
 ------ Mis compras
--------- ?
 - VENDEDOR:
 -- Crear paginas
 ---- menu_vendedor
------- Administrar cuenta
--------- ?
+||------ Administrar cuenta
 ------ Ventas
 ------ Buscador boleta
 -------- MenuVendedorBoleta
 ------ Buscador factura
 -------- MenuVendedorFactura
-
-##
-- EMP ADMINISTRADOR:
--- Crear paginas
----- MenuEmpleadoAdminReportes
----- MenuProveedorReportes2
 - PROOVEDOR:
 -- Crear paginas
 ---- MenuProveedor

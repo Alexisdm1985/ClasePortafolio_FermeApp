@@ -1,0 +1,48 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %}
+{% load static %}
+
+<!-- CSS -->
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}">
+<link rel="stylesheet" href="{% static 'fermeApp/css/producto.css' %}">
+{% endblock %}
+
+<!-- CONTENT -->
+{% block contenido %}
+{% load humanize %}
+
+<main>
+    <div class="contenedor">
+        <div class="contenedor-imagen">
+            {% if producto.imagen %}
+                <img src="{{producto.imagen.url}}" alt="Imagen producto">
+            {% else %}
+                <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="Imagen producto">
+            {% endif %}
+        </div>
+    
+        <div class="contenedor-producto">
+            <div class="titulos">
+                <h2>{{producto.marca}}</h2>
+                <h1>{{producto.nombre}}</h1>
+            </div>
+            <div class="contenido">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis magni blanditiis aut ea harum repudiandae perferendis facere, ipsam culpa</p>
+                <span class="precio">$ {{producto.precio}}</span>
+            </div>
+            <div class="seccionCarrito">
+                <span>Cantidad</span>
+                <button type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- PAGINATOR -->
+    <div class="paginador">
+    {% include 'fermeApp/paginator.html' %}
+    </div>
+</main>
+
+{% endblock %}

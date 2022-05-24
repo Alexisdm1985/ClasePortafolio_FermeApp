@@ -85,6 +85,14 @@ def productos(request):
 
     return render(request, 'fermeApp/productos.html', data)
 
+def producto(request, id_prod):
+    producto = InvProducto.objects.get(id_prod=id_prod)
+
+    data = {
+        'producto': producto
+    }
+    return render(request, 'fermeApp/producto.html', data)
+
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
     
