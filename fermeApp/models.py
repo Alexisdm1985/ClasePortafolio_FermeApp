@@ -100,7 +100,7 @@ class Cliente(models.Model):
     contrasenia = models.CharField(max_length=250)
     pertenencia_emp = models.FloatField(choices=opciones_habilitado)
     tipo_usuario = models.CharField(max_length=30,default='CLIENTE')
-    habilitado = models.FloatField(choices=opciones_habilitado)
+    habilitado = models.FloatField(choices=opciones_habilitado, default=1)
         
 
     def __str__(self):

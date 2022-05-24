@@ -1,6 +1,6 @@
 from email.policy import default
-from .models import AuthUser, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto
-from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto
+from .models import AuthUser, Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto
+from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto, AddCliente
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
@@ -88,16 +88,6 @@ def productos(request):
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
     
-# Empleado
-# @permission_required('fermeApp.view_proveedor')
-def empleado(request):
-
-    userName = request.user.get_short_name()
-    data = {
-        'uName': userName if userName else 'Admin'
-    }
-    return render(request, 'fermeApp/empleado/home.html', data)
-
 # PRODUCTOS
 def emp_productos(request):
 
@@ -458,15 +448,77 @@ def eliminar_proveedor(request, id_prov):
 
 # Cliente
 def administrarCliente (request):
-    
-
     return render(request, 'fermeApp/cliente/administrarCliente.html')
 
 def comprasCliente (request):
-
     return render(request, 'fermeApp/cliente/comprasCliente.html')
 
+def addCliente (request): #FALTA COMPROBAR
+    data = {
+        'form': NuevoUserCreationForm(),
+        'form2': AddCliente()
+    }
 
+    if request.method == 'POST':
+        formulario = NuevoUserCreationForm(data=request.POST)
+        formulario2 = AddCliente(data=request.POST)
+
+        if formulario.is_valid() and formulario2.is_valid():
+            
+            # Guardamos datos para nuestra base de datos cliente
+            nombre = formulario.cleaned_data['first_name']
+            apellido = formulario.cleaned_data['last_name']
+            usuario = formulario.cleaned_data['username']
+            email = formulario.cleaned_data['email']
+            rut = formulario2.cleaned_data['rut_cli']
+            apellido2 = formulario2.cleaned_data['s_apellido']
+            telefono = formulario2.cleaned_data['telefono']
+            pertenencia_emp = formulario2.cleaned_data['pertenencia_emp']
+            contrasenia = formulario.cleaned_data['password1']
+
+            formulario.save() # AuthUser
+        
+            new_cliente = Cliente(rut_cli=rut, nombre=nombre, p_apellido=apellido, s_apellido=apellido2, email=email, telefono=telefono, usuario=usuario, contrasenia=contrasenia, pertenencia_emp=pertenencia_emp)
+            new_cliente.save()
+
+            messages.success(request, "Cliente agregado satisfactoriamente") 
+            return redirect(to='emp_cliente')
+    
+        else:
+            data["form"] = formulario
+
+    return render(request, 'fermeApp/empleado/addCliente.html', data)
+
+def emp_cliente (request):
+    cliente = Cliente.objects.filter(habilitado=1) #Filtra todos los clientes con habilidado=1
+
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(cliente, 16)
+        cliente = paginator.page(page)
+    except:
+        raise Http404
+
+    # AGREGAR BUSQUEDA/FILTROS AQUI DESPUES DE PAGINATOR
+
+    data = {
+        'entity': cliente,
+        'paginator': paginator
+    }
+
+    return render(request, 'fermeApp/empleado/emp_cliente.html', data)
+
+
+# Empleado
+# @permission_required('fermeApp.view_proveedor')
+def empleado(request):
+
+    userName = request.user.get_short_name()
+    data = {
+        'uName': userName if userName else 'Admin'
+    }
+    return render(request, 'fermeApp/empleado/home.html', data)
 
 
 # Cliente, Proveedor, Vendedor

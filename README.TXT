@@ -20,8 +20,7 @@ CHECK *-- Agregar modales mensaje satisfactorio
 
 ## URGENTE
 CHECK * Funcionalidad agregar producto individualmente
-- Funcionalidad agregar filtros en producto, orden, detalle orden, usuarios en general
-- Funcionalidad agregar busqueda: Orden compra, proveedor
+
 - Validaciones inputs formularios (todos)
 - Validacion producto
 - Validacion proveedor
@@ -31,7 +30,6 @@ CHECK * Funcionalidad agregar producto individualmente
 CHECK * Paginacion 
 -- Crear paginas
 ---- producto_individual
----- prodcuto_noencontnrado
 
 - USUARIO:
 ---- menuCliente
@@ -61,6 +59,9 @@ CHECK * Paginacion
 ---- MenuProveedorOrden
 
 ## FINALMENTE
+---- prodcuto_noencontnrado
+- Funcionalidad agregar filtros en producto, orden, detalle orden, usuarios en general
+- Funcionalidad agregar busqueda: Orden compra, proveedor
 - Crear readme con instrucciones de instalacion proyecto
 - Arreglo/checkeo disenio todas las paginas con mockup
 

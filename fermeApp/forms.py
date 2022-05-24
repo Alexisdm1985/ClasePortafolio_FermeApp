@@ -71,4 +71,10 @@ class ModificarProducto(forms.ModelForm):
         model = InvProducto
         fields = ['nombre', 'precio', "fecha_venc", "stock", "stock_crit", "stock_max","fam_producto_id_fam", "tipo_producto_id_tipo", 'marca', 'imagen', 'categoria']
 
-        
+    
+# CLIENTE
+class AddCliente(forms.ModelForm):
+
+    class Meta:
+        model = Cliente
+        fields = ["rut_cli", "s_apellido", "telefono", "pertenencia_emp"]
