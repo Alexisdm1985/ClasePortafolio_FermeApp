@@ -47,13 +47,17 @@
                             alt="cart">
                     </a>
                 </li>
-
-                <!-- Link para empleado -->
-                {% if perms.fermeApp.add_invproducto %}
-                <li><a href="{% url 'homeEmp' %}">Home</a></li>
-                {% endif %}
-
+                
+                
                 {% if user.is_authenticated %}
+                
+                    {% if perms.fermeApp.add_user %} <!-- ADMIN -->
+                <li><a href="{% url 'homeEmp' %}">Home</a></li>
+                    
+                    {% else %} <!-- TODOS LOS DEMAS USUARIOS -->
+                <li><a href="{% url 'homeUsuarios' %}">Home</a></li>
+                    {% endif %}
+
                 <li><a href="{% url 'logout' %}">Cerrar sesion</a></li>
                 <li><a href="#"> {{user.username}} </a></li>
 

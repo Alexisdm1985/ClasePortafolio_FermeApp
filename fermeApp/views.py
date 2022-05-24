@@ -89,6 +89,7 @@ def contacto(request):
     return render(request, 'fermeApp/contacto.html')
     
 # Empleado
+# @permission_required('fermeApp.view_proveedor')
 def empleado(request):
 
     userName = request.user.get_short_name()
@@ -359,6 +360,7 @@ def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden esp
     return render(request, 'fermeApp/empleado/modificarDetalleOrden.html', data)
 
 # Proveedor
+# @permission_required('fermeApp.view_proveedor')
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
@@ -453,3 +455,13 @@ def eliminar_proveedor(request, id_prov):
 
     messages.success(request, "Proveedor eliminado satisfactoriamente") 
     return redirect(to= "emp_proveedor")
+
+
+
+
+
+# Cliente, Proveedor, Vendedor
+def homeUsuarios (request):
+
+
+    return render(request, 'fermeApp/homeUsuarios.html')

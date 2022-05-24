@@ -28,10 +28,11 @@ CHECK * Funcionalidad agregar producto individualmente
 - Validacion ordencompra
 - Validacion detalleOrden
 
-- Paginacion 
+CHECK * Paginacion 
 -- Crear paginas
 ---- producto_individual
 ---- prodcuto_noencontnrado
+
 - USUARIO:
 ---- menuCliente
 ------ Administrar cuenta
