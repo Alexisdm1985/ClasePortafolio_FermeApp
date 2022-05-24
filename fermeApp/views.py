@@ -48,10 +48,9 @@ def nosotros(request):
 
 def productos(request):
         # Obtiene todos los productos
-    producto = InvProducto.objects.filter(habilitado=1)
-    # categorias = ['Herramientas', 'Gasfiteria', 'Hogar', 'Construccion']
+    producto = InvProducto.objects.all()
+
     data = {
-        # 'categorias': categorias,
         'productos': producto
     }
 
@@ -76,17 +75,17 @@ def empleado(request):
 
 # PRODUCTOS
 def emp_productos(request):
-
-    # producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
-    # data = {
-    #     'productos': producto
-    # }
+    producto = InvProducto.objects.all() 
+    data = {
+         'productos': producto
+     }
 
     if request.POST.get('nombre'):
         tituloAfiltrar = request.POST.get('nombre')
-        producto = producto.filter(nombre__icontains=tituloAfiltrar, habilitado=1)
+        producto = producto.filter(nombre__icontains=tituloAfiltrar, habilitado=1) # Filtra todos los productos con habilitado=1
 
     return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
+
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):
     
@@ -168,16 +167,15 @@ def eliminar_producto(request, id):
 # ORDEN COMPRA
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
-    idProveedor = []
+    # idProveedor = []
 
-    for i in orden: # Obtiene el id_proveedor de cada orden
-        detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
-        idProveedor.append(detalles[0].proveedor_id_prov)
+    # for i in orden: # Obtiene el id_proveedor de cada orden
+    #     detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
+    #     idProveedor.append(detalles[0].proveedor_id_prov)
 
-        
     data = {
-        'ordenes': orden,
-        'id_prov': idProveedor
+        'ordenes': orden
+        # 'id_prov': idProveedor
     }
 
     return render(request, 'fermeApp/empleado/emp_orden.html', data)
