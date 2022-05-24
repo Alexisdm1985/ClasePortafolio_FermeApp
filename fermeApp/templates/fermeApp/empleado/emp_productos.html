@@ -9,22 +9,30 @@
 
 {% block contenido %}
 
-    <!-- FILTRAR -->
-    <center>
-      <br>
-
-      <div class="container-sm " >
-        <div class="row">
-            <form action="" method="POST">
-                <label for="">Nombre Producto: </label>
-                <input type="text" name="nombre" id="">
-                <input type="submit" class ="btn btn-success" value="Buscar">
-                {% csrf_token %}
-            </form>
+<!-- FILTRAR -->
+    <div class="container-sm">
+      <div class="row">
+        <div class="col-md-6 mb-6">
+          <form action="" method="POST">
+            <select name="categoria">
+              {% for c in producto %}
+              <option value="{{ c.id }}">{{ c.categoria }}</option>
+              {% endfor %}
+            </select>
+            <input class="btn btn-success" type="submit" value="Filtrar">
+            {% csrf_token %}
+          </form>
         </div>
+        <div class="col-md-6 mb-6">
+          <form action="" method="POST">
+            <label for="">Nombre Producto: </label>
+            <input type="text" name="nombre" id="">
+            <input type="submit" class="btn btn-success" value="Buscar">
+            {% csrf_token %}
+          </form>
+        </div>
+      </div>
     </div>
-  </center>
-  <hr>
   <!-- FIN FILTRAR -->
 
 {% load humanize %}
