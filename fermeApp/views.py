@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.http import Http404
 
 # Create your views here.
 
@@ -13,8 +15,19 @@ def index(request):
     
     # Obtiene todos los productos
     listadoProducto = InvProducto.objects.filter(habilitado=1)
+    
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listadoProducto, 16)
+        listadoProducto = paginator.page(page)
+
+    except:
+        raise Http404
+        
     data = {
-        'productos': listadoProducto
+        'entity': listadoProducto,
+        'paginator': paginator
         
     }
     return render(request, 'fermeApp/index.html', data)
@@ -50,17 +63,27 @@ def nosotros(request):
 def productos(request):
         # Obtiene todos los productos
     producto = InvProducto.objects.filter(habilitado=1)
-    # categorias = ['Herramientas', 'Gasfiteria', 'Hogar', 'Construccion']
-    data = {
-        # 'categorias': categorias,
-        'productos': producto
-    }
+
 
     if request.POST.get('nombre'):
         tituloAfiltrar = request.POST.get('nombre')
         producto = producto.filter(nombre__icontains=tituloAfiltrar)
 
-    return render(request, 'fermeApp/productos.html', {'productos':producto})
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(producto, 16)
+        producto = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+
+        'entity': producto,
+        'paginator': paginator
+    }
+
+    return render(request, 'fermeApp/productos.html', data)
 
 def contacto(request):
     return render(request, 'fermeApp/contacto.html')
@@ -69,7 +92,6 @@ def contacto(request):
 def empleado(request):
 
     userName = request.user.get_short_name()
-
     data = {
         'uName': userName if userName else 'Admin'
     }
@@ -78,16 +100,29 @@ def empleado(request):
 # PRODUCTOS
 def emp_productos(request):
 
-    # producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
-    # data = {
-    #     'productos': producto
-    # }
+    producto = InvProducto.objects.filter(habilitado=1) # Filtra todos los productos con habilitado=1
+
+
 
     if request.POST.get('nombre'):
         tituloAfiltrar = request.POST.get('nombre')
         producto = producto.filter(nombre__icontains=tituloAfiltrar, habilitado=1)
 
-    return render(request, 'fermeApp/empleado/emp_productos.html', {'productos': producto})
+# pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(producto, 5)
+        producto = paginator.page(page)
+    except:
+        raise Http404
+
+    data = {
+        'entity': producto,
+        'paginator': paginator
+    }
+
+    return render(request, 'fermeApp/empleado/emp_productos.html', data)
+
 # @permission_required('fermeApp.add_invproducto')
 def addProducto(request):
     
@@ -173,14 +208,18 @@ def eliminar_producto(request, id):
 # ORDEN COMPRA
 def emp_orden(request):
     orden = OrdenCompra.objects.all()
-    # idProveedor = []
 
-    # for i in orden: # Obtiene el id_proveedor de cada orden
-    #     detalles = DetalleOrden.objects.filter(orden_compra_nro_orden=i.nro_orden)
-    #     idProveedor.append(detalles[0].proveedor_id_prov)
-
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(orden, 7)
+        orden = paginator.page(page)
+    except:
+        raise Http404
+        
     data = {
-        'ordenes': orden
+        'entity': orden,
+        'paginator': paginator
         # 'id_prov': idProveedor
     }
 
@@ -286,8 +325,17 @@ def modificarOrden(request, nro_orden):
 def detalleOrden(request, nro_orden): # listar detalle orden 
 
     ordenes = DetalleOrden.objects.filter(orden_compra_nro_orden=nro_orden) #Obtiene todos los detalles de orden relacionados
+        # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(ordenes, 7)
+        ordenes = paginator.page(page)
+    except:
+        raise Http404
+
     data = {
-        'ordenes': ordenes
+        'entity': ordenes,
+        'paginator': paginator
     }
     return render(request, 'fermeApp/empleado/emp_detallesOrden.html', data)
 
@@ -314,8 +362,20 @@ def modificarDetalle(request, nro_orden, nro_prod): # Modifita detalle orden esp
 def emp_proveedor(request):
     
     proveedor = Proveedor.objects.filter(habilitado=1) #Filtra todos los proveedores con habilidado=1
+
+    # pagination
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(proveedor, 16)
+        proveedor = paginator.page(page)
+    except:
+        raise Http404
+
+    # AGREGAR BUSQUEDA/FILTROS AQUI DESPUES DE PAGINATOR
+
     data = {
-        'proveedores': proveedor
+        'entity': proveedor,
+        'paginator': paginator
     }
 
     return render(request, 'fermeApp/empleado/emp_proveedor.html', data)

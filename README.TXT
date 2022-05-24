@@ -14,6 +14,8 @@ CHECK * Aplicar funcionalidad de cambio id proveedor en orden de compra (y que a
 CHECK *- Agregar seccion categoria a producto
 CHECK * Agregar que se pueda modificar el nombre del proveedor tanto en nuestra db como django user 
 
+CHECK *-- Agregar modales mensaje satisfactorio
+-- Agregar modales mensaje NO satisfactorio
 -- Agregar modales de confirmacion de usuario
 
 ## URGENTE

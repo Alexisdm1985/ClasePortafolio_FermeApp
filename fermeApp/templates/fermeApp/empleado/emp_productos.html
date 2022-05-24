@@ -47,7 +47,7 @@
           </tr>
         </thead>
         <tbody>
-            {% for p in productos %}
+            {% for p in entity %}
           <tr>
             <th scope="row">1</th>
             <td>{{p.nombre}}</td>
@@ -67,6 +67,11 @@
           {% endfor %}
         </tbody>
       </table>
+      
+      <!-- PAGINATOR -->
+      <div class="paginador">
+        {% include 'fermeApp/paginator.html' %}
+      </div>
 
 </main>
 {% endblock %}
