@@ -33,16 +33,33 @@
             </div>
             <div class="seccionCarrito">
                 <span>Cantidad</span>
-                <button type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
+                <input class="cantidad" type="number" value="1" min="1">
+                <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
             </div>
         </div>
     </div>
-
 
     <!-- PAGINATOR -->
     <div class="paginador">
     {% include 'fermeApp/paginator.html' %}
     </div>
+
+
+<script>
+    button = document.querySelector('.agregarProducto')
+    nroCart = document.querySelector('.numeroCart')
+    
+    document.addEventListener('click', e => {
+        
+        e.preventDefault()
+        if(e.target === button){
+            cantidadStr = document.querySelector('.cantidad').value
+            cantidad = parseInt(cantidadStr)
+            nroCart.style.display = 'inline';
+            nroCart.textContent = cantidad;
+        }
+    })
+</script>
 </main>
 
 {% endblock %}
