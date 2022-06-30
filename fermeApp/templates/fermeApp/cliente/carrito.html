@@ -13,6 +13,7 @@
 {% load humanize %}
 
 <main>
+    <h1>CARRITO</h1>
     <div class="contenedor">
         <div class="contenedor-imagen">
             {% if producto.imagen %}
@@ -35,8 +36,8 @@
             {% if usuario %}
                 <div class="seccionCarrito">
                     <span>Cantidad</span>
-                    <input class="cantidad" type="number" value="1" min="1" max="10">
-                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}"><a href="{% url 'carrito'%} "> Agregar al carro</a></button>
+                    <input class="cantidad" type="number" value="1" min="1">
+                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
                 </div>
             {% endif %}
         {% endif %}
@@ -55,18 +56,12 @@
     nroCart = document.querySelector('.numeroCart')
 
     button.addEventListener('click', e => {    
-        // e.preventDefault()
-        // Mostrar numero carrito
+        e.preventDefault()
         cantidadStr = document.querySelector('.cantidad').value
         cantidad = parseInt(cantidadStr)
         nroCart.style.display = 'inline';
         nroCart.textContent = cantidad;
-
-        // Guardar producto para enviar carrito
-        const idProducto = document.querySelector('.agregarProducto')
     })
-
-
 
 </script>
 </main>

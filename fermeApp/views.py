@@ -153,7 +153,7 @@ def addProducto(request):
             fecha_form = formulario.cleaned_data['fecha_venc']
             id_producto = 0
 
-            if fecha_form is None:
+            if fecha_form    is None:
                 fecha_form = "00000000"
                 id_producto = str(proveedor.id_prov) + str(id_fam.id_fam) + fecha_form + str(id_tipo.id_tipo)
                 id_producto = int(id_producto)
@@ -589,6 +589,14 @@ def eliminar_cliente(request, rut):
     messages.success(request, "Cliente eliminado satisfactoriamente") 
     return redirect(to= "emp_cliente")
 
+def carrito(request, id_prod):
+    producto = InvProducto.objects.get(id_prod=id_prod)
+
+    data = {
+        'producto': producto,
+        'usuario': request.user.groups.filter(name='CLIENTE').exists()
+    }
+    return render(request, 'fermeApp/cliente/carrito.html', data)
 # Empleado
 # @permission_required('fermeApp.view_proveedor')
 def empleado(request):
