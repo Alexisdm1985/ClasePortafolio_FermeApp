@@ -36,7 +36,7 @@
                 <div class="seccionCarrito">
                     <span>Cantidad</span>
                     <input class="cantidad" type="number" value="1" min="1" max="10">
-                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}"><a href="{% url 'carrito'%} "> Agregar al carro</a></button>
+                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}"><a href="{% url 'carrito' %} "> Agregar al carro</a></button>
                 </div>
             {% endif %}
         {% endif %}
@@ -51,24 +51,58 @@
 
 <script>
 
-    button = document.querySelector('.agregarProducto')
-    nroCart = document.querySelector('.numeroCart')
+    const button = document.querySelector('.agregarProducto')
+    const nroCart = document.querySelector('.numeroCart')
+    
+    if(button){
 
-    button.addEventListener('click', e => {    
-        // e.preventDefault()
-        // Mostrar numero carrito
-        cantidadStr = document.querySelector('.cantidad').value
-        cantidad = parseInt(cantidadStr)
-        nroCart.style.display = 'inline';
-        nroCart.textContent = cantidad;
+        button.addEventListener('click', e => {    
+            // e.preventDefault()
+            const productName = document.querySelector('.titulos h1').textContent
+            const productId = button.dataset.id
+            const productMarca = document.querySelector('.titulos h2').textContent
+            const productPrice = document.querySelector('.contenido span').textContent
+            
+            // Mostrar numero carrito
+            cantidadStr = document.querySelector('.cantidad').value
+            cantidad = parseInt(cantidadStr)
+            nroCart.style.display = 'inline';
+            nroCart.textContent = cantidad;
+            
+            // Creacion objeto (CLASS) CarritoItem para localStorage        
+            class CarritoItem {
+                constructor(id, nombre, marca, cantidad, precio){
+                    this.id = id,
+                    this.nombre = nombre,
+                    this.marca = marca,
+                    this.cantidad = cantidad,
+                    this.precio = precio
+                }
+            }
+            
+            // Falta validaciones, existe o no, etc
 
-        // Guardar producto para enviar carrito
-        const idProducto = document.querySelector('.agregarProducto')
-    })
+            // Instance
+            const item = new CarritoItem(productId, productName, productMarca, cantidad, productPrice)
+            
+            // Si existe el array lo obtengo, agrego, seteo
+            let arrayItems = []
+            const localProduct = JSON.parse(localStorage.getItem("productos"))
 
+            if(localProduct){
 
+                arrayItems = localProduct
+                arrayItems.push(item)
+    
+                // Guardar en localStorage
+                localStorage.setItem("productos", JSON.stringify(arrayItems))
+            }else {
+                localStorage.setItem("productos", JSON.stringify(arrayItems))
+            }
+            
+        })
+    }
 
 </script>
 </main>
-
 {% endblock %}

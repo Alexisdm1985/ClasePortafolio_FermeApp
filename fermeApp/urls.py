@@ -39,5 +39,5 @@ urlpatterns = [
     path('addCliente/', addCliente, name='addCliente'),
     path('modificarCliente/<user_name>/', modificarCliente, name='modificarCliente'),
     path('eliminar_cliente/<rut>/', eliminar_cliente, name='eliminar_cliente'),
-    path('carrito/<id_prod>/', carrito, name='carrito'),
+    path('carrito/', carrito, name='carrito'),
 ]

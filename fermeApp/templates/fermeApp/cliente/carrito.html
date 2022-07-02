@@ -14,7 +14,11 @@
 
 <main>
     <h1>CARRITO</h1>
-    <div class="contenedor">
+
+    <div class="contenedor"></div>
+
+    <!-- TEMPLATE -->
+    <template id="templateTodo">
         <div class="contenedor-imagen">
             {% if producto.imagen %}
                 <img src="{{producto.imagen.url}}" alt="Imagen producto">
@@ -42,28 +46,21 @@
             {% endif %}
         {% endif %}
         </div>
-    </div>
+    </template>
 
     <!-- PAGINATOR -->
     <div class="paginador">
     {% include 'fermeApp/paginator.html' %}
     </div>
+</main>
 
-
+    <!-- JS -->
 <script>
+    let product = JSON.parse(localStorage.getItem("productos"))
 
-    button = document.querySelector('.agregarProducto')
-    nroCart = document.querySelector('.numeroCart')
-
-    button.addEventListener('click', e => {    
-        e.preventDefault()
-        cantidadStr = document.querySelector('.cantidad').value
-        cantidad = parseInt(cantidadStr)
-        nroCart.style.display = 'inline';
-        nroCart.textContent = cantidad;
+    product.forEach( (item)=> {
+        
     })
 
 </script>
-</main>
-
 {% endblock %}

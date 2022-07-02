@@ -589,11 +589,9 @@ def eliminar_cliente(request, rut):
     messages.success(request, "Cliente eliminado satisfactoriamente") 
     return redirect(to= "emp_cliente")
 
-def carrito(request, id_prod):
-    producto = InvProducto.objects.get(id_prod=id_prod)
+def carrito(request):
 
     data = {
-        'producto': producto,
         'usuario': request.user.groups.filter(name='CLIENTE').exists()
     }
     return render(request, 'fermeApp/cliente/carrito.html', data)
