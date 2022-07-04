@@ -42,10 +42,10 @@
             </div>
             <ul class="nav-right">
                 <li>
-                    <a href="#" class="nav-cart">                        
+                    <a href="{% url 'carrito' %}" class="nav-cart">                        
                         <img src="{% static 'fermeApp/img/shopping-cart.png' %}" style="height: 45px; width: 40px;"
                             alt="cart">
-                        <span class="numeroCart">0</span>
+                        <span class="numeroCart"></span>
                     </a>
                 </li>
                 
@@ -114,5 +114,31 @@
         {% endfor%}
         {% endif %}
     </body>
+<!-- <script>
+    
+    if(JSON.parse(localStorage.getItem('numeroCarrito'))){
 
+        const nro = document.querySelector('.numeroCart')
+        let carrito = JSON.parse(localStorage.getItem('numeroCarrito'))
+        nro.textContent = carrito
+        nro.style.display = 'inline';
+    }
+</script> -->
+<script>
+    if(JSON.parse(localStorage.getItem('productos'))){
+        
+            let cantidadCarrito = 0
+            let datos = JSON.parse(localStorage.getItem('productos'))
+            
+            const nroCart = document.querySelector('.numeroCart')
+  
+            datos.forEach( item => {
+                cantidadCarrito += item.cantidad
+            })
+  
+            nroCart.style.display = 'inline';
+            nroCart.textContent = cantidadCarrito; 
+            localStorage.setItem('numeroCarrito', JSON.stringify(cantidadCarrito))
+    }
+  </script>
 </html>

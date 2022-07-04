@@ -1,0 +1,33 @@
+<!-- Import -->
+{% extends 'fermeApp/base.html' %}
+{% load static %}
+
+<!-- CSS -->
+{% block extrahead %}
+<!-- <link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}"> -->
+<!-- <link rel="stylesheet" href="{% static 'fermeApp/css/carrito.css' %}"> -->
+{% endblock %}
+
+<!-- CONTENT -->
+{% block contenido %}
+{% load humanize %}
+
+<main>
+    
+    <h1>CHECKOUT</h1>
+    <div class="informacion">
+        <div class="contacto">
+            <span>Contacto (email de usuario)</span>
+            
+        </div>
+        <div class="envio"></div>
+    </div>
+
+
+
+    <!-- PAGINATOR -->
+    <div class="paginador">
+        {% include 'fermeApp/paginator.html' %}
+    </div>
+</main>
+{% endblock %}

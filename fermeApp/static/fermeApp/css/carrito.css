@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+}
+/* Para quitar las flechas del input y solo ocupar los botones */
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3rem 0;
+}
+main h1 {
+    margin-bottom: 3rem;
+}
+.producto-container {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.producto {
+    width: 100%;
+    display: flex;
+    align-items: center;    
+    padding: 2rem;
+    justify-content: flex-start;
+}
+.producto-contenido {
+    display: flex;
+    align-items: center;
+    width: 50%;
+}
+.producto-contenido p{
+    width: 25%;
+}
+.producto-contenido img{
+    border-radius: 5px;
+    margin-right: 1rem;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+.btn-section {
+    display: flex;
+    margin: 0 2rem;
+}
+.btn-mas {
+    margin-right: 2rem;
+}
+.cantidad {
+    margin: 0 1rem;
+}
+
+
+.finalizarCompra {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;    
+    padding: 2rem;
+}
+.finalizarCompra span {
+    margin-bottom: 1rem;
+}

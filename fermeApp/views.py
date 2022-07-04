@@ -594,6 +594,7 @@ def carrito(request):
     data = {
         'usuario': request.user.groups.filter(name='CLIENTE').exists()
     }
+    
     return render(request, 'fermeApp/cliente/carrito.html', data)
 # Empleado
 # @permission_required('fermeApp.view_proveedor')
@@ -627,3 +628,7 @@ def homeUsuarios (request):
     }
     
     return render(request, 'fermeApp/homeUsuarios.html', data)
+
+# Ventas
+def checkouts (request):
+    return render(request, 'fermeApp/ventas/checkouts.html')

@@ -4,8 +4,8 @@
 
 <!-- CSS -->
 {% block extrahead %}
-<link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}">
-<link rel="stylesheet" href="{% static 'fermeApp/css/producto.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}"> -->
+<link rel="stylesheet" href="{% static 'fermeApp/css/carrito.css' %}">
 {% endblock %}
 
 <!-- CONTENT -->
@@ -13,54 +13,241 @@
 {% load humanize %}
 
 <main>
+    
     <h1>CARRITO</h1>
+    <div class="producto-container"></div>
+    <div class="finalizarCompra">
+        <!-- subtotal -->
+        <span id="subtotal"></span>
 
-    <div class="contenedor"></div>
+        <!-- descuento -->
+        <span id="descuento"></span>
+
+        <!-- total -->
+        <span id="total"></span>
+
+        <!-- boton finalizar -->
+        <button><a href="{% url 'checkouts' %}" class="finalizar">Finalizar</a></button>
+    </div>
+    
 
     <!-- TEMPLATE -->
     <template id="templateTodo">
-        <div class="contenedor-imagen">
-            {% if producto.imagen %}
-                <img src="{{producto.imagen.url}}" alt="Imagen producto">
-            {% else %}
-                <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="Imagen producto">
-            {% endif %}
-        </div>
-    
-        <div class="contenedor-producto">
-            <div class="titulos">
-                <h2>{{producto.marca}}</h2>
-                <h1>{{producto.nombre}}</h1>
+        <div class="producto"> 
+            <div class="producto-contenido">
+                
+                <img src="" alt="imagen producto" height="133" width="184">
+                
+                <h3> </h3> <!-- nombre -->
+                <h4></h4> <!-- marca -->
             </div>
-            <div class="contenido">
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis magni blanditiis aut ea harum repudiandae perferendis facere, ipsam culpa</p>
-                <span class="precio">$ {{producto.precio}}</span>
+            <p>{{intcomma}}</p> <!-- precio -->
+            
+            <div class="btn-section">
+                <button class="btn-menos" data-idProducto="">-</button>
+                <input class="cantidad" data-idProducto="" type="number" min="1" max="10">
+                <button class="btn-mas" data-idProducto="">+</button>
+            
+                <button type="button" class="btn-carro verProducto" data-idProducto=""><a href="{% url 'index' %}">Ver producto</a></button>
             </div>
-        {% if user.is_authenticated %}
-            {% if usuario %}
-                <div class="seccionCarrito">
-                    <span>Cantidad</span>
-                    <input class="cantidad" type="number" value="1" min="1">
-                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}">Agregar al carro</button>
-                </div>
-            {% endif %}
-        {% endif %}
-        </div>
+            <span data-idProducto="" class="totalProducto"></span>
+        </div>        
     </template>
-
+        
     <!-- PAGINATOR -->
     <div class="paginador">
-    {% include 'fermeApp/paginator.html' %}
+        {% include 'fermeApp/paginator.html' %}
     </div>
 </main>
 
     <!-- JS -->
 <script>
-    let product = JSON.parse(localStorage.getItem("productos"))
 
-    product.forEach( (item)=> {
+    //### Validar si el carrito esta vacio FALTA ###
+
+    let product = JSON.parse(localStorage.getItem("productos")) //Obtiene un array
+    const template = document.querySelector('#templateTodo').content
+    const fragment = document.createDocumentFragment()
+    const contenedor = document.querySelector('.producto-container')
+    const btnMas = document.querySelector('.btn-mas')
+    const btnMenos = document.querySelector('.btn-menos')
+    let nroCarrito = JSON.parse(localStorage.getItem('numeroCarrito'))
+    let carritoInt = parseInt(nroCarrito)
+
+
+    //Pinta los productos del localStorage
+    if(product){ 
+        
+        // Obtener elementos html, crear DOM, obtener template, setearlos con los datos de local storage, cargarlos al template, cargar el template en el DOM
+        product.forEach( (item)=> { 
+            
+            
+            const cloneTemplate = template.cloneNode(true);
+            cloneTemplate.querySelector('.producto-contenido > img').setAttribute('src', item.img)
+            cloneTemplate.querySelector('.producto-contenido > h4').textContent = item.marca
+            cloneTemplate.querySelector('.producto-contenido > h3').textContent = item.nombre
+            cloneTemplate.querySelector('.producto > p').textContent += item.precio
+            cloneTemplate.querySelector('.cantidad').value = item.cantidad
+            cloneTemplate.querySelector('.cantidad').dataset.idProducto = item.id
+            cloneTemplate.querySelector('.btn-mas').dataset.idProducto = item.id
+            cloneTemplate.querySelector('.btn-menos').dataset.idProducto = item.id
+
+            const precioDb = item.precio //Viene con el signo pesos.
+            const precio = precioDb.substring(1)
+            cloneTemplate.querySelector('.totalProducto').dataset.idProducto = item.id
+            cloneTemplate.querySelector('.totalProducto').textContent = precio * item.cantidad
+
+            const data = cloneTemplate.querySelector('.btn-carro')
+            data.dataset.idProducto = item.id
+
+            fragment.appendChild(cloneTemplate)
+            contenedor.appendChild(fragment)
+            
+        })
+    }
+
+    // Actualizar seccion finalizar compra
+    const subtotal = document.querySelector('#subtotal')
+    const total = document.querySelector('#total')
+    const descuento = document.querySelector('#descuento')
+    
+    const totalesProductos = document.querySelectorAll('.totalProducto')
+    let spanTotal = 0
+    totalesProductos.forEach( item => {
+        let valor = parseInt(item.textContent)
+        spanTotal += valor
+    })
+
+    total.textContent = spanTotal
+    descuento.textContent = 0
+    const descInt = parseInt(descuento.textContent)
+    subtotal.textContent = spanTotal - descInt
+
+
+
+
+    // Click botones sumar/restar
+    document.addEventListener('click', e =>{
+        
+        const buttonTarget = e.target.className
+        
+        //Botones
+        if(buttonTarget == 'btn-menos' || buttonTarget == 'btn-mas'){
+
+            const idProducto = e.target.dataset.idProducto
+            const cantidadAll = document.querySelectorAll('.cantidad')
+            const precioProductoAll = document.querySelectorAll('.totalProducto')
+            
+            if(buttonTarget == 'btn-menos'){
+                
+                cantidadAll.forEach( item => { //Busca y resta
+                    if(item.dataset.idProducto == idProducto){
+                        
+                        const itemValue = item.value - 1
+                        if (itemValue >= 1) {
+                            item.value --
+                            carritoInt --
+ 
+                            //obtener valor input, setear con ese valor el local storage
+                            let productos = JSON.parse(localStorage.getItem('productos'))
+                            let index = productos.findIndex( item => item.id === idProducto)
+                            productos[index].cantidad --
+                        
+                            localStorage.setItem('productos', JSON.stringify(productos))
+
+                            precioProductoAll.forEach(producto => {
+                            if(producto.dataset.idProducto == idProducto){
+                                
+                                let valor = parseInt(item.value)
+                                let precioPesos = productos[index].precio
+                                let precio = parseInt(precioPesos.substring(1))
+
+                                producto.textContent = valor * precio
+                                
+                            }
+                        })
+  
+                        }                
+                    } 
+                    
+                    let spanTotal = 0
+                    totalesProductos.forEach( item => {
+                        let valor = parseInt(item.textContent)
+                        spanTotal += valor
+                    })
+
+                    total.textContent = spanTotal
+                    descuento.textContent = 0
+                    const descInt = parseInt(descuento.textContent)
+                    subtotal.textContent = spanTotal - descInt
+                })
+
+            }
+
+            if (buttonTarget == 'btn-mas'){
+                
+                cantidadAll.forEach( item => {
+                    if(item.dataset.idProducto == idProducto){
+                        
+                        item.value ++;
+                        carritoInt ++
+
+                        //obtener valor input, setear con ese valor el local storage
+                        let productos = JSON.parse(localStorage.getItem('productos'))
+                        let index = productos.findIndex( item => item.id === idProducto)
+                        productos[index].cantidad ++
+
+
+                        localStorage.setItem('productos', JSON.stringify(productos))
+                        // Total producto
+                        precioProductoAll.forEach(producto => {
+                            if(producto.dataset.idProducto == idProducto){
+                                
+                                let valor = parseInt(item.value)
+                                let precioPesos = productos[index].precio
+                                let precio = parseInt(precioPesos.substring(1))
+
+                                producto.textContent = valor * precio
+                                
+                            }
+                        })
+                
+                    }    
+                    
+                let spanTotal = 0
+                totalesProductos.forEach( item => {
+                    let valor = parseInt(item.textContent)
+                    spanTotal += valor
+                })
+
+                total.textContent = spanTotal
+                descuento.textContent = 0
+                const descInt = parseInt(descuento.textContent)
+                subtotal.textContent = spanTotal - descInt
+
+
+                })
+                
+            }
+
+             //Carrito 
+            let datos = JSON.parse(localStorage.getItem('productos'))
+            let cantidadCarrito = 0
+            datos.forEach( item => {
+                cantidadCarrito += item.cantidad
+                
+            })
+
+            
+            
+            localStorage.setItem('numeroCarrito', JSON.stringify(cantidadCarrito))
+            const nro = document.querySelector('.numeroCart')
+            nro.textContent = cantidadCarrito
+
+        }
         
     })
+
 
 </script>
 {% endblock %}

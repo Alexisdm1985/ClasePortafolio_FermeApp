@@ -36,7 +36,7 @@
                 <div class="seccionCarrito">
                     <span>Cantidad</span>
                     <input class="cantidad" type="number" value="1" min="1" max="10">
-                    <button class="agregarProducto" type="button" data-id="{{producto.id_prod}}"><a href="{% url 'carrito' %} "> Agregar al carro</a></button>
+                    <button class="agregarProducto" type="button" ><a data-id="{{producto.id_prod}}" href="{% url 'carrito' %} "> Agregar al carro</a></button>
                 </div>
             {% endif %}
         {% endif %}
@@ -51,55 +51,83 @@
 
 <script>
 
-    const button = document.querySelector('.agregarProducto')
+    const button = document.querySelector('.agregarProducto a')
     const nroCart = document.querySelector('.numeroCart')
     
     if(button){
-
+        
         button.addEventListener('click', e => {    
-            // e.preventDefault()
+            e.preventDefault()
             const productName = document.querySelector('.titulos h1').textContent
             const productId = button.dataset.id
             const productMarca = document.querySelector('.titulos h2').textContent
             const productPrice = document.querySelector('.contenido span').textContent
             
-            // Mostrar numero carrito
             cantidadStr = document.querySelector('.cantidad').value
             cantidad = parseInt(cantidadStr)
-            nroCart.style.display = 'inline';
-            nroCart.textContent = cantidad;
+            
+            const img = document.querySelector('.contenedor-imagen > img').getAttribute('src')
             
             // Creacion objeto (CLASS) CarritoItem para localStorage        
             class CarritoItem {
-                constructor(id, nombre, marca, cantidad, precio){
+                constructor(id, nombre, marca, cantidad, precio, img){
                     this.id = id,
                     this.nombre = nombre,
                     this.marca = marca,
                     this.cantidad = cantidad,
-                    this.precio = precio
+                    this.precio = precio,
+                    this.img = img
                 }
             }
-            
-            // Falta validaciones, existe o no, etc
 
             // Instance
-            const item = new CarritoItem(productId, productName, productMarca, cantidad, productPrice)
+            const itemCarr = new CarritoItem(productId, productName, productMarca, cantidad, productPrice, img)
             
             // Si existe el array lo obtengo, agrego, seteo
-            let arrayItems = []
-            const localProduct = JSON.parse(localStorage.getItem("productos"))
-
-            if(localProduct){
-
-                arrayItems = localProduct
-                arrayItems.push(item)
-    
-                // Guardar en localStorage
-                localStorage.setItem("productos", JSON.stringify(arrayItems))
-            }else {
-                localStorage.setItem("productos", JSON.stringify(arrayItems))
-            }
+            const arrayItems = []
+            const dataBaseProduct = JSON.parse(localStorage.getItem("productos"))
             
+            //Si existen datos en localStorage
+            if(dataBaseProduct){ 
+            
+                const existe = dataBaseProduct.findIndex(item => item.id == itemCarr.id)
+                
+                //Si el item ya existe en localStorage, se modifica la cantidad
+                if (existe+1){ 
+                    
+                    console.log('si existew')
+                    const nuevaCantidadStr = document.querySelector('.cantidad').value
+                    let nuevaCantidad = parseInt(nuevaCantidadStr)
+                    
+                    dataBaseProduct[existe].cantidad += nuevaCantidad
+                    localStorage.setItem("productos", JSON.stringify(dataBaseProduct))
+                    
+                }else{
+                    
+                    dataBaseProduct.push(itemCarr)
+                    localStorage.setItem("productos", JSON.stringify(dataBaseProduct))
+                }
+                
+            }else {
+                
+                arrayItems.push(itemCarr)
+                localStorage.setItem("productos", JSON.stringify(arrayItems))
+                let aa = JSON.parse(localStorage.getItem("productos"))
+            }
+
+            // CARRITO NAV
+
+            let cantidadCarrito = 0
+            let datos = JSON.parse(localStorage.getItem('productos'))
+            
+            const nroCart = document.querySelector('.numeroCart')
+
+            datos.forEach( item => {
+                cantidadCarrito += item.cantidad
+            })
+
+            localStorage.setItem('numeroCarrito', JSON.stringify(cantidadCarrito))
+            nroCart.textContent = cantidadCarrito
         })
     }
 
