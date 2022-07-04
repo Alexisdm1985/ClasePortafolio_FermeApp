@@ -642,3 +642,7 @@ def checkouts (request):
         'usuarioLocal' : usuarioLocal
     }
     return render(request, 'fermeApp/ventas/checkouts.html', data)
+
+def compraExitosa (request):
+    
+    return render(request, 'fermeApp/ventas/compraExitosa.html')

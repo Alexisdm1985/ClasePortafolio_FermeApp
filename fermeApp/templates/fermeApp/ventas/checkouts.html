@@ -72,53 +72,153 @@
         <div class="btn-finalizar">
             <button><a href="#">Finalizar Pago</a></button>
         </div>
-    </div>
-    
-    <div class="carrito">
-        <div class="producto"> 
-            <div class="producto-contenido">
-                <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="imagen producto" height="60" width="80">
-            </div>
-            <div class="producto-datos">
-                <span> 	Juego ducha anticalcáreo con flexible 1,5mt</span> <!-- nombre -->
-                <span class="marca">Forstner</span> <!-- marca -->
-            </div>
-            <div class="total">
-                <span data-idProducto="" class="totalProducto">$ 33333</span>
-            </div>
-            
-        </div>        
-        <div class="producto"> 
-            <div class="producto-contenido">
-                <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="imagen producto" height="60" width="80">
-            </div>
-            <div class="producto-datos">
-                <span> 	Juego ducha anticalcáreo con flexible 1,5mt</span> <!-- nombre -->
-                <span class="marca">Forstner</span> <!-- marca -->
-            </div>
-            <div class="total">
-                <span data-idProducto="" class="totalProducto">$454545sdfsdfsdf33333</span>
-            </div>
-            
-        </div>        
-        <div class="resumen">
-            <div class="subtotal">
-                <span>Subtotal</span>
-                <span>$123</span>
-            </div>
-            <div class="totalFinal">
-                <span>total</span>
-                <span>$123</span>
-            </div>
         </div>
-
     
-    </div>
-</div>
+        <div class="carrito">
+            
+        </div>    
 
+    </div>
+
+<template id="template">
+    <div class="producto">
+        <div class="producto-contenido">
+            <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="imagen producto" height="60" width="80">
+        </div>
+        <div class="producto-datos">
+            <span> </span> <!-- nombre -->
+            <span class="marca"></span>
+        </div>
+        <div class="total">
+            <span data-idProducto="" class="totalProducto"></span>
+        </div>
+    </div> 
+</template>
+
+<template id="resumen">
+    <div class="resumen">
+        <div class="subtotal">
+            <span>Subtotal</span>
+            <span class="subTotal"></span>
+        </div>
+    
+        <div class="totalFinal">
+            <span>total</span>
+            <span class="totalResumen"></span>
+        
+        </div>
+    </div>
+
+</template>
     <!-- PAGINATOR -->
     <div class="paginador">
         {% include 'fermeApp/paginator.html' %}
     </div>
+
 </main>
+
+
+<script>
+    const btnFinalizar = document.querySelector('.btn-finalizar a')
+    const template = document.querySelector('#template')
+    const resumenTemp = document.querySelector('#resumen')
+    const fragment = document.createDocumentFragment()
+    const carrito = document.querySelector('.carrito')
+    
+    let subtotal = 0
+    let total = 0
+
+    // Array de objetos?
+    let array = []
+
+    // Buscar datos en localStorage
+    const database = JSON.parse(localStorage.getItem('productos'))
+    
+    //Recorrer database
+    database.forEach( item => {
+        const cloneTemp = template.content.cloneNode(true)
+    
+        cloneTemp.querySelector('.producto-contenido img').setAttribute('src', `${item.img}`)
+        cloneTemp.querySelector('.producto-datos > span').textContent = item.nombre
+        cloneTemp.querySelector('.marca').textContent = item.marca
+        const precio = parseInt(item.precio.substring(1))
+        const cantidad = parseInt(item.cantidad)
+        cloneTemp.querySelector('.totalProducto').textContent = precio * cantidad
+
+        fragment.appendChild(cloneTemp)
+        carrito.appendChild(fragment)
+
+        // Guarda datos para el resumen
+        subtotal += precio * cantidad
+
+        // Para guardar en array e enviarlo a Django
+        let producto = {
+            id: item.id,
+            cantidad: cantidad
+        }
+        array.push(producto)
+    })
+
+    total = subtotal
+
+    const cloneResumenTemp = resumenTemp.content.cloneNode(true)
+    cloneResumenTemp.querySelector('.subTotal').textContent = subtotal
+    cloneResumenTemp.querySelector('.totalResumen').textContent = total
+    fragment.appendChild(cloneResumenTemp)
+    carrito.appendChild(fragment)
+
+
+    // When the button is clicked, 
+    // btnFinalizar.addEventListener('click', e =>{
+
+    //     e.preventDefault();  
+    //     console.log("sjdfksfjksd")
+    //     // Run the function that will send the code to the ToolsPageView
+    //     enviarDatos(array);
+    // })
+    
+
+    // async function enviarDatos(array) {
+    //     const response = await fetch('http://127.0.0.1:8000/checkouts', {
+    //     method: "POST",
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({'datos': array})
+    // })
+    // .then(response => response.json())
+    // // .then((response) => {
+    // //             if (!response.ok) {
+    // //                 // error processing
+    // //                 throw 'Error';
+    // //             }
+    // //             return response.json()
+    // //         })
+    // .then(data => {
+    
+    //     console.log(data);
+    // // extract the decoded value from the data sent back from the view
+    // // display it by targeting the element in your html that you want
+    // // to display it
+    // });
+    // }
+
+
+
+    // async function enviarDatos(array) {
+    //     const response = await fetch('/checkouts', {
+    //     method: "POST",
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({
+    //         'Datos': array,
+    //     }),
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    
+    //     console.log(data);
+    // // extract the decoded value from the data sent back from the view
+    // // display it by targeting the element in your html that you want
+    // // to display it
+    // });
+    // }
+</script>
 {% endblock %}

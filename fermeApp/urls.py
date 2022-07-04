@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import checkouts, carrito, homeProveedor, reportes, producto, eliminar_cliente, modificarCliente, emp_cliente, addCliente , comprasCliente, administrarCliente, homeUsuarios, addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
+from .views import compraExitosa, checkouts, carrito, homeProveedor, reportes, producto, eliminar_cliente, modificarCliente, emp_cliente, addCliente , comprasCliente, administrarCliente, homeUsuarios, addDetalle ,modificarDetalle, detalleOrden, modificarOrden, eliminar_proveedor, modificarProveedor, emp_orden, addProveedor, emp_productos, eliminar_producto, index, registro, contacto, productos, nosotros, empleado, addProducto, modificarProducto, emp_proveedor, addOrden
 
 urlpatterns = [
 # Global
@@ -43,5 +43,6 @@ urlpatterns = [
 
 # Ventas
     path('checkouts/', checkouts, name='checkouts'),
+    path('compraeExitosa/', compraExitosa, name='compraExitosa'),
 
 ]
