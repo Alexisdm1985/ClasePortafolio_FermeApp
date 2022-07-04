@@ -5,7 +5,7 @@
 <!-- CSS -->
 {% block extrahead %}
 <!-- <link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}"> -->
-<!-- <link rel="stylesheet" href="{% static 'fermeApp/css/carrito.css' %}"> -->
+<link rel="stylesheet" href="{% static 'fermeApp/css/checkouts.css' %}">
 {% endblock %}
 
 <!-- CONTENT -->
@@ -13,17 +13,108 @@
 {% load humanize %}
 
 <main>
-    
-    <h1>CHECKOUT</h1>
-    <div class="informacion">
-        <div class="contacto">
-            <span>Contacto (email de usuario)</span>
+    <div class="contenedor">
+
+        <div class="informacion">
             
+            <div class="contacto">
+            <h4>Contacto</h4>
+            <div>
+                <div class="email">
+                    <span>Email</span>
+
+                    <input placeholder="hho" type="email" class="form-control" name="email" id="email" value="{{usuario.email}}">
+                    
+                </div>
+                <div class="telefono">
+                    <span>Telefono</span>
+                    <input class="form-control" type="number" name="telefono" id="telefono" value="{{usuarioLocal.telefono}}">
+                </div>
+            </div>
         </div>
-        <div class="envio"></div>
+        
+        <div class="formato-entrega">
+            <h4>Formato de entrega</h4>
+            <div>
+                <div class="envioCheck">
+                    
+                    <input type="checkbox" name="envio" id="envio">
+                    <span>Envio</span>
+                </div>
+                <div class="retiroCheck">
+                    <input type="checkbox" name="retiro" id="retiro">
+                    <span>Retiro</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="envio">
+            <h4>Direccion de envío</h4>
+            <div>
+                <div class="recinto">
+                    <span>Casa, Depto, Oficina, etc.</span>
+                    <input class="form-control" type="text" value="" name="direccion" id="direccion">
+                </div>
+                <div class="direccion">
+                    <span>Direccion</span>
+                    <input class="form-control" type="text" value="{{usuarioLocal.direccion}}" name="direccion" id="direccion">
+                </div>
+            </div>
+        </div>
+        
+        <div class="pago">
+            <h4>Método de pago</h4>
+            <div>
+                <span>Colocar opciones de metodo de pago</span>
+            </div>
+        </div>
+        
+        <div class="btn-finalizar">
+            <button><a href="#">Finalizar Pago</a></button>
+        </div>
     </div>
+    
+    <div class="carrito">
+        <div class="producto"> 
+            <div class="producto-contenido">
+                <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="imagen producto" height="60" width="80">
+            </div>
+            <div class="producto-datos">
+                <span> 	Juego ducha anticalcáreo con flexible 1,5mt</span> <!-- nombre -->
+                <span class="marca">Forstner</span> <!-- marca -->
+            </div>
+            <div class="total">
+                <span data-idProducto="" class="totalProducto">$ 33333</span>
+            </div>
+            
+        </div>        
+        <div class="producto"> 
+            <div class="producto-contenido">
+                <img src="{% static 'fermeApp/img/sierraCircular.jpg' %}" alt="imagen producto" height="60" width="80">
+            </div>
+            <div class="producto-datos">
+                <span> 	Juego ducha anticalcáreo con flexible 1,5mt</span> <!-- nombre -->
+                <span class="marca">Forstner</span> <!-- marca -->
+            </div>
+            <div class="total">
+                <span data-idProducto="" class="totalProducto">$454545sdfsdfsdf33333</span>
+            </div>
+            
+        </div>        
+        <div class="resumen">
+            <div class="subtotal">
+                <span>Subtotal</span>
+                <span>$123</span>
+            </div>
+            <div class="totalFinal">
+                <span>total</span>
+                <span>$123</span>
+            </div>
+        </div>
 
-
+    
+    </div>
+</div>
 
     <!-- PAGINATOR -->
     <div class="paginador">

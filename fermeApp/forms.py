@@ -77,13 +77,13 @@ class AddCliente(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ["rut_cli", "s_apellido", "telefono", "pertenencia_emp"]
+        fields = ["rut_cli", "s_apellido", "telefono", "pertenencia_emp", "direccion"]
 
 class ModificarCliente(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ["usuario", "nombre", "email" ,"p_apellido", "s_apellido", "telefono", "pertenencia_emp"]
+        fields = ["usuario", "nombre", "email" ,"p_apellido", "s_apellido", "telefono", "pertenencia_emp", "direccion"]
 
 # class ModificarDjangoCliente(UserCreationForm):
 

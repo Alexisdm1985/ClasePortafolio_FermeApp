@@ -101,7 +101,8 @@ class Cliente(models.Model):
     pertenencia_emp = models.FloatField(choices=opciones_habilitado)
     tipo_usuario = models.CharField(max_length=30,default='CLIENTE')
     habilitado = models.FloatField(choices=opciones_habilitado, default=1)
-        
+    direccion = models.CharField(max_length=250)
+
 
     def __str__(self):
         return f"{self.nombre} {self.p_apellido}"

@@ -484,10 +484,11 @@ def addCliente (request): #FALTA COMPROBAR
             telefono = formulario2.cleaned_data['telefono']
             pertenencia_emp = formulario2.cleaned_data['pertenencia_emp']
             contrasenia = formulario.cleaned_data['password1']
+            direccion = formulario2.cleaned_data['direccion']
 
             formulario.save() # AuthUser
         
-            new_cliente = Cliente(rut_cli=rut, nombre=nombre, p_apellido=apellido, s_apellido=apellido2, email=email, telefono=telefono, usuario=usuario, contrasenia=contrasenia, pertenencia_emp=pertenencia_emp)
+            new_cliente = Cliente(rut_cli=rut, nombre=nombre, p_apellido=apellido, s_apellido=apellido2, email=email, telefono=telefono, usuario=usuario, contrasenia=contrasenia, pertenencia_emp=pertenencia_emp, direccion = direccion)
             new_cliente.save()
             
             # group = Group.objects.get(name='CLIENTE')
@@ -546,6 +547,7 @@ def modificarCliente(request, user_name):
             s_apellido = cliForm.cleaned_data['s_apellido']
             telefono = cliForm.cleaned_data['telefono']
             pertenencia_emp = cliForm.cleaned_data['pertenencia_emp']
+            direccion = cliForm.cleaned_data['direccion']
             
             # Modificando usuarios
             djCliente.username = username
@@ -561,6 +563,7 @@ def modificarCliente(request, user_name):
             cliente.telefono = telefono
             cliente.pertenencia_emp = pertenencia_emp
             cliente.usuario = username
+            cliente.direccion = direccion
             cliente.save()
             
             messages.success(request, "Cliente modificado correctamente") 
@@ -631,4 +634,11 @@ def homeUsuarios (request):
 
 # Ventas
 def checkouts (request):
-    return render(request, 'fermeApp/ventas/checkouts.html')
+    usuario = request.user
+    usuarioLocal = get_object_or_404(Cliente, usuario=usuario.username)
+
+    data = {
+        'usuario' : usuario,
+        'usuarioLocal' : usuarioLocal
+    }
+    return render(request, 'fermeApp/ventas/checkouts.html', data)
