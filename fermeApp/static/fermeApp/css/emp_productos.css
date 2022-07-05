@@ -11,7 +11,8 @@
     }
     main {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         height: 80vh;
     }
     .table{

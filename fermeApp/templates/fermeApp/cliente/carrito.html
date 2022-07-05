@@ -6,6 +6,7 @@
 {% block extrahead %}
 <!-- <link rel="stylesheet" href="{% static 'fermeApp/css/productos.css' %}"> -->
 <link rel="stylesheet" href="{% static 'fermeApp/css/carrito.css' %}">
+<!-- <script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js”></script> -->
 {% endblock %}
 
 <!-- CONTENT -->
@@ -14,45 +15,49 @@
 
 <main>
     
-    <h1>CARRITO</h1>
-    <div class="producto-container"></div>
-    
-    <div class="finalizarCompra">
-        <!-- subtotal -->
-        <span id="subtotal"></span>
+    <h1>My Carrito</h1>
 
-        <!-- descuento -->
-        <span id="descuento"></span>
-
-        <!-- total -->
-        <span id="total"></span>
-
-        <!-- boton finalizar -->
-        <button><a href="{% url 'checkouts' %}" class="finalizar">Finalizar</a></button>
-    </div>
-    
+    <div class="container"></div>
 
     <!-- TEMPLATE -->
     <template id="templateTodo">
-        <div class="producto"> 
-            <div class="producto-contenido">
-                
-                <img src="" alt="imagen producto" height="133" width="184">
-                
-                <h3> </h3> <!-- nombre -->
-                <h4></h4> <!-- marca -->
-            </div>
-            <p>{{intcomma}}</p> <!-- precio -->
-            
-            <div class="btn-section">
-                <button class="btn-menos" data-idProducto="">-</button>
-                <input class="cantidad" data-idProducto="" type="number" min="1" max="10">
-                <button class="btn-mas" data-idProducto="">+</button>
-            
-                <button type="button" class="btn-carro verProducto" data-idProducto=""><a href="{% url 'index' %}">Ver producto</a></button>
-            </div>
-            <span data-idProducto="" class="totalProducto"></span>
-        </div>        
+        
+            <section id="cart"> 
+                <article class="product">
+                    <header>
+                        <a class="remove">
+                            <img src="" alt=""> <!-- IMG -->
+    
+                            <h3>Remove product</h3>
+                        </a>
+                    </header>
+    
+                    <div class="content">
+    
+                        <h1 class="nombreProducto">Lorem ipsum</h1> <!-- NOMBRE -->
+    
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, numquam quis perspiciatis ea ad omnis provident laborum dolore in atque.  
+                        
+                    </div>
+    
+                    <footer class="content">
+                        <span class="qt-minus">-</span>
+                        <span class="qt">2</span>
+                        <span class="qt-plus">+</span>
+    
+                        <h2 class="full-price"> <!-- Precio total -->
+                            
+                        </h2>
+    
+                        <h2 class="price"> <!-- Precio unitario -->
+                            
+                        </h2>
+                    </footer>
+                </article>
+    
+            </section>
+    
+        
     </template>
         
     <!-- PAGINATOR -->
@@ -61,8 +66,305 @@
     </div>
 </main>
 
-    <!-- JS -->
+
+<section>
+	<footer id="site-footer">
+		<div class="container clearfix">
+			<div class="right">
+				<h1 class="total">Total: $<span>1111</span></h1>
+				<a class="btn">Finalizar compra</a>
+			</div>
+		</div>
+	</footer>
+</section>
+
+
+
 <script>
+    var check = false;
+
+function changeVal(el) {
+  var qt = parseFloat(el.parent().children(".qt").html());
+  var price = parseFloat(el.parent().children(".price").html());
+  var eq = Math.round(price * qt * 100) / 100;
+  
+  el.parent().children(".full-price").html( eq + "€" );
+  
+  changeTotal();			
+}
+
+function changeTotal() {
+  
+  var price = 0;
+  
+  $(".full-price").each(function(index){
+    price += parseFloat($(".full-price").eq(index).html());
+  });
+  
+  price = Math.round(price * 100) / 100;
+  var tax = Math.round(price * 0.05 * 100) / 100
+  var shipping = parseFloat($(".shipping span").html());
+  var fullPrice = Math.round((price + tax + shipping) *100) / 100;
+  
+  if(price == 0) {
+    fullPrice = 0;
+  }
+  
+  $(".subtotal span").html(price);
+  $(".tax span").html(tax);
+  $(".total span").html(fullPrice);
+}
+
+$(document).ready(function(){
+  
+  $(".remove").click(function(){
+    var el = $(this);
+    el.parent().parent().addClass("removed");
+    window.setTimeout(
+      function(){
+        el.parent().parent().slideUp('fast', function() { 
+          el.parent().parent().remove(); 
+          if($(".product").length == 0) {
+            if(check) {
+              $("#cart").html("<h1>The shop does not function, yet!</h1><p>If you liked my shopping cart, please take a second and heart this Pen on <a href='https://codepen.io/ziga-miklic/pen/xhpob'>CodePen</a>. Thank you!</p>");
+            } else {
+              $("#cart").html("<h1>No products!</h1>");
+            }
+          }
+          changeTotal(); 
+        });
+      }, 200);
+  });
+  
+  $(".qt-plus").click(function(){
+    $(this).parent().children(".qt").html(parseInt($(this).parent().children(".qt").html()) + 1);
+    
+    $(this).parent().children(".full-price").addClass("added");
+    
+    var el = $(this);
+    window.setTimeout(function(){el.parent().children(".full-price").removeClass("added"); changeVal(el);}, 150);
+  });
+  
+  $(".qt-minus").click(function(){
+    
+    child = $(this).parent().children(".qt");
+    
+    if(parseInt(child.html()) > 1) {
+      child.html(parseInt(child.html()) - 1);
+    }
+    
+    $(this).parent().children(".full-price").addClass("minused");
+    
+    var el = $(this);
+    window.setTimeout(function(){el.parent().children(".full-price").removeClass("minused"); changeVal(el);}, 150);
+  });
+  
+  window.setTimeout(function(){$(".is-open").removeClass("is-open")}, 1200);
+  
+  $(".btn").click(function(){
+    check = true;
+    $(".remove").click();
+  });
+});
+
+</script>
+
+<script>
+    let product = JSON.parse(localStorage.getItem("productos")) //Obtiene un array
+    const template = document.querySelector('#templateTodo').content
+    const fragment = document.createDocumentFragment()
+    const contenedor = document.querySelector('.container')
+    const btnMas = document.querySelector('.qt-plus')
+    const btnMenos = document.querySelector('.qt-minus')
+
+    // Seccion total producto
+    const total = document.querySelector('.total > span')
+
+
+// CREACION DE FUNCIONES
+// falta la marca
+    const pintarDatos = (product) => {
+        product.forEach( (item)=> { 
+            
+            const cloneTemplate = template.cloneNode(true);
+            cloneTemplate.querySelector('.remove > img').setAttribute('src', item.img)
+            // cloneTemplate.querySelector('.producto-contenido > h4').textContent = item.marca
+            cloneTemplate.querySelector('.nombreProducto').textContent = item.nombre
+            cloneTemplate.querySelector('.price').textContent += item.precio
+            cloneTemplate.querySelector('.qt').textContent = item.cantidad
+            cloneTemplate.querySelector('.qt').dataset.idProducto = item.id
+            cloneTemplate.querySelector('.qt-plus').dataset.idProducto = item.id
+            cloneTemplate.querySelector('.qt-minus').dataset.idProducto = item.id
+
+            const precioDb = item.precio //Viene con el signo pesos.
+            const precio = precioDb.substring(1)
+
+            cloneTemplate.querySelector('.full-price').dataset.idProducto = item.id
+            cloneTemplate.querySelector('.full-price').textContent = precio * item.cantidad
+
+            fragment.appendChild(cloneTemplate)
+            contenedor.appendChild(fragment)
+            
+        })
+    }
+
+    const pintarSumaTotal = () => {
+        // Suma todos los totales de cada producto
+        const fullPrecioPorProducto = document.querySelectorAll('.full-price')
+        let sumaTotales = 0
+    
+        fullPrecioPorProducto.forEach( item => {
+            let valor = parseInt(item.textContent)
+            sumaTotales += valor
+        })
+    
+        // Pinta el nuevo valor
+        total.textContent = sumaTotales
+
+    }
+    
+    // Activa todo el script
+    let comenzarScript = () => {
+        if(product) {
+            pintarDatos(product)
+            pintarSumaTotal()
+        }
+    }
+
+    restarItem = (qtAll, idProducto, carritoInt, allFullPrice) =>{
+
+    //Buscar el qt que coincida con el id producto para modificar su valor
+        qtAll.forEach( cantidad => { 
+
+            if(cantidad.dataset.idProducto == idProducto){
+
+                // Comprueba si al restar 1, este llega a cero
+                let cantidadInt = parseInt(cantidad.textContent)
+                const itemValue = cantidadInt - 1
+
+                if (itemValue >= 1) {
+                    cantidadInt --
+                    carritoInt --
+
+                    //Busca el producto en localStorage y resta 1 a la cantidad
+                    let productos = JSON.parse(localStorage.getItem('productos'))
+                    let index = productos.findIndex( item => item.id === idProducto)
+                    productos[index].cantidad --
+                
+                    localStorage.setItem('productos', JSON.stringify(productos))
+                    cantidad.textContent = cantidadInt
+
+                    // Busca el fullPrice del producto en especifico y lo actualiza
+                    allFullPrice.forEach( (fullPrice) => {
+
+                        if(fullPrice.dataset.idProducto == idProducto){
+                                
+                            let valor = cantidadInt
+                            let precioPesos = productos[index].precio
+                            let precio = parseInt(precioPesos.substring(1))
+
+                            fullPrice.textContent = valor * precio
+                            
+                        }
+                    })
+                }                
+            } 
+        })
+
+        pintarSumaTotal()
+    }
+
+    sumarItem = (qtAll, idProducto, carritoInt, allFullPrice ) => {
+
+        qtAll.forEach( item => {
+            if(item.dataset.idProducto == idProducto){
+                let cantidadInt = parseInt(item.textContent)
+                cantidadInt ++;
+                carritoInt ++
+
+                //obtener valor input, setear con ese valor el local storage
+                let productos = JSON.parse(localStorage.getItem('productos'))
+                let index = productos.findIndex( item => item.id === idProducto)
+                productos[index].cantidad ++
+
+
+                localStorage.setItem('productos', JSON.stringify(productos))
+                // Total producto
+                allFullPrice.forEach(producto => {
+                    if(producto.dataset.idProducto == idProducto){
+                        
+                        let valor = cantidadInt
+                        let precioPesos = productos[index].precio
+                        let precio = parseInt(precioPesos.substring(1))
+
+                        producto.textContent = valor * precio
+                        
+                    }
+                })
+
+            }    
+        
+        pintarSumaTotal()
+
+    })
+    }    
+    
+    comenzarScript();
+    
+
+    // Click botones sumar/restar
+    document.addEventListener('click', e =>{
+        
+        const targetClassName = e.target.className
+        
+        //Botones
+        if(targetClassName == 'qt-minus' || targetClassName == 'qt-plus'){
+            
+            let nroCarrito = JSON.parse(localStorage.getItem('numeroCarrito'))
+            let carritoInt = parseInt(nroCarrito)
+
+            const idProducto = e.target.dataset.idProducto    
+
+            // Precio total por producto
+            const allFullPrice = document.querySelectorAll('.full-price')
+
+            // Cantidad por cada producto
+            const qtAll = document.querySelectorAll('.qt')
+            
+            if(targetClassName == 'qt-minus'){
+                
+                restarItem(qtAll, idProducto, carritoInt, allFullPrice)
+
+            }
+
+
+            if (targetClassName == 'qt-plus'){
+                // llamar funcion sumar item
+
+                
+            }
+
+             //Carrito 
+            let datos = JSON.parse(localStorage.getItem('productos'))
+            let cantidadCarrito = 0
+            datos.forEach( item => {
+                cantidadCarrito += item.cantidad
+                
+            })
+
+            
+            
+            localStorage.setItem('numeroCarrito', JSON.stringify(cantidadCarrito))
+            const nro = document.querySelector('.numeroCart')
+            nro.textContent = cantidadCarrito
+        }
+    })
+
+</script>
+
+
+    <!-- JS -->
+<!-- <script>
 
     //### Validar si el carrito esta vacio FALTA ###
 
@@ -71,7 +373,7 @@
     const fragment = document.createDocumentFragment()
     const contenedor = document.querySelector('.producto-container')
     const btnMas = document.querySelector('.btn-mas')
-    const btnMenos = document.querySelector('.btn-menos')
+    const btnMenos = document.querySelector('.qt-minus')
     let nroCarrito = JSON.parse(localStorage.getItem('numeroCarrito'))
     let carritoInt = parseInt(nroCarrito)
 
@@ -250,5 +552,5 @@
     })
 
 
-</script>
+</script> -->
 {% endblock %}

@@ -57,14 +57,14 @@ button {
     width: 100%;
     padding: .5em;
     color: white;
-    background-color: #22577A;
+    background-color:  #212121 ;
     box-shadow: 0 5px 5px rgba(0 0 0 /.7);
     transition: all .3s ease;
     display: block;
     margin: 2em auto;
 }
 button:hover {
-    background-color: #064663;
+    background-color:#313131;
     box-shadow: 0 5px 5px rgb(17, 46, 65);
 }
 .contact{
