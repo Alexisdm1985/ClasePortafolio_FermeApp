@@ -3,11 +3,12 @@ from email.policy import default
 from .models import AuthUser, Cliente, DetalleOrden, InvProducto, OrdenCompra, Proveedor, FamProducto, TipoProducto, Vendedor
 from .forms import AddDetalleOrden, AddOrden, ModificarIdProveedor, NuevoUserCreationForm, AddProducto, AddProveedor, ModificarProveedor, AddDetalle, ModificarProducto, AddCliente, ModificarCliente
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import Http404
+from django.core import serializers
 
 # Create your views here.
 
@@ -20,7 +21,7 @@ def index(request):
     # pagination
     page = request.GET.get('page', 1)
     try:
-        paginator = Paginator(listadoProducto, 16)
+        paginator = Paginator(listadoProducto, 13)
         listadoProducto = paginator.page(page)
 
     except:
@@ -600,6 +601,8 @@ def carrito(request):
     
     return render(request, 'fermeApp/cliente/carrito.html', data)
 # Empleado
+
+# def addEmpleado
 # @permission_required('fermeApp.view_proveedor')
 def empleado(request):
 
@@ -612,9 +615,12 @@ def empleado(request):
 def reportes(request):
 
     userName = request.user.get_short_name()
+  
     data = {
-        'uName': userName if userName else 'Admin'
+        'uName': userName if userName else 'Admin',
+
     }
+
     return render(request, 'fermeApp/empleado/reportes.html', data)
 
 # Cliente, Proveedor, Vendedor
@@ -627,7 +633,8 @@ def homeUsuarios (request):
         'uName': userName if userName else 'Admin',
         'proveedor': usuario.groups.filter(name='PROVEEDOR').exists(),
         'cliente': usuario.groups.filter(name='CLIENTE').exists(),
-        'vendedor': usuario.groups.filter(name='VENDEDOR').exists()
+        'vendedor': usuario.groups.filter(name='VENDEDOR').exists(),
+        'empleado': usuario.groups.filter(name='EMPLEADO').exists()
     }
     
     return render(request, 'fermeApp/homeUsuarios.html', data)

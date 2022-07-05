@@ -10,16 +10,13 @@
 <!-- CONTENT -->
 {% block contenido %}
 {% load humanize %}
-
 <section>
-    <div align='center'>
-        <br>
-        <h1 class="fa fa-align-center"> Productos</h1>
-        <hr>
-    </div>
-    
+    <h1 id="tituloProducto"> Productos</h1>
+</section>
+<section>
+
     <!-- FILTRAR -->
-    <div class="container-sm" align="right"  >
+    <!-- <div class="container-sm" align="right"  >
         <div class="row">
             <form action="" method="POST">
                 {% csrf_token %}
@@ -28,30 +25,56 @@
                 <input type="submit" class ="btn btn-success" value="BUSCAR">
             </form>
         </div>
-    </div>
+    </div> -->
     <!-- FIN FILTRAR -->
 </section>    
 <main>
-    <div class="producto-container">
-        {% for p in entity %}
-
-        <div class="producto"> 
-            <div class="producto-contenido">
-                {% if p.imagen %}
-                <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
-                {% endif %}
-                <h4>{{p.marca}}</h4>
-                <h3> {{p.nombre}} </h3>
-                <p>$ {{p.precio | intcomma}} </p>
-            </div>
-
-            <div class="btn-section">
-                <button type="button" class="btn-carro verProducto" data-idProducto="{{p.id_prod}}"><a href="{% url 'producto' p.id_prod %}">Ver producto</a></button>
-                <button class="btn-carro agregarProducto" data-idProducto="{{p.id_prod}}">Agregar al Carro</button>
+    <div class="shell">
+        <div class="container">
+          <div class="row">
+              {% for p in entity %}
+              <!-- INICIO -->
+              <div class="col-md-2">
+                <div class="wsk-cp-product">
+                  
+                  <!-- IMG -->
+                  <div class="wsk-cp-img">
+                    <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
+                  
+                  </div>
+    
+                  <!-- TEXTO -->
+                  <div class="wsk-cp-text">
+    
+                    <div class="category">
+                      <span>
+                        <a style="text-decoration: none;" class="verProducto" href="{% url 'producto' p.id_prod %}" data-idProducto="{{p.id_prod}}">
+                          Ver producto
+                        </a>
+                      </span>
+                    </div>
+    
+                    <div class="title-product">
+                      <h3>{{p.nombre}}</h3>
+                    </div>
+    
+                    <div class="card-footer">
+                      <div class="wcf-left"><span class="price">${{p.precio}}</span></div>
+                      
+                      <div class="wcf-right">
+                        <a href="{% url 'producto' p.id_prod %}" data-idProducto="{{p.id_prod}}" class="buy-btn"> </a>
+                      </div>
+                      
+                    </div>
+    
+                    <!--  -->
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
             </div>
         </div>
-        {% endfor %}
-    </div>
+      </div>
     
       <!-- PAGINATOR -->
       <div class="paginador">

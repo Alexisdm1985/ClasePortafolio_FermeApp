@@ -14,7 +14,6 @@
 
 <!-- Carrusel de Imagenes -->
 
-<!-- <body> -->
 <section>
     <div class="slider-frame">
       <ul>
@@ -25,43 +24,71 @@
       </ul>
     </div>
 </section>
-<!-- </body> -->
 
-<br>
-<br>
-<div align='center'>
-  <h1 class="fa fa-align-center"> Destacados</h1>
-</div>
-<br>
-<br>
+<section>
+  <h1 id="tituloProducto">Destacados</h1>
+</section>
+
+
 
 <main>
 
   {% load humanize %}
 
-  <div class="producto-container">
-    {% for p in entity %}
-      <div class="producto">
-        <div class="producto-contenido">
-            {% if p.imagen %}
-               <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
-            {% endif %}
-           <h4>{{p.marca}}</h4>
-           <h3> {{p.nombre}} </h3>
-           <p>$ {{p.precio | intcomma}} </p>
+      <div class="shell">
+        <div class="container">
+          <div class="row">
+              {% for p in entity %}
+              <!-- INICIO -->
+              <div class="col-md-2">
+                <div class="wsk-cp-product">
+                  
+                  <!-- IMG -->
+                  <div class="wsk-cp-img">
+                    <img src="{{ p.imagen.url }}" alt="imagen producto" height="133" width="184">
+                  
+                  </div>
+    
+                  <!-- TEXTO -->
+                  <div class="wsk-cp-text">
+    
+                    <div class="category">
+                      <span>
+                        <a style="text-decoration: none;" class="verProducto" href="{% url 'producto' p.id_prod %}" data-idProducto="{{p.id_prod}}">
+                          Ver producto
+                        </a>
+                      </span>
+                    </div>
+    
+                    <div class="title-product">
+                      <h3>{{p.nombre}}</h3>
+                    </div>
+    
+                    <div class="card-footer">
+                      <div class="wcf-left"><span class="price">${{p.precio}}</span></div>
+                      
+                      <div class="wcf-right">
+                        <a href="#" data-idProducto="{{p.id_prod}}" class="buy-btn">+ </a>
+                      </div>
+
+                    </div>
+    
+                    <!--  -->
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
         </div>
-          <div class="btn-section">
-            <button type="button" class="btn-carro verProducto" data-idProducto="{{p.id_prod}}"><a href="{% url 'producto' p.id_prod %}">Ver producto</a></button>
-            <button class="btn-carro" data-idProducto="{{p.id_prod}}">Agregar al Carro</button>
-          </div>
       </div>
-    {% endfor %}
-  </div>
-  
+          
+
       <!-- PAGINATOR -->
       <div class="paginador">
         {% include 'fermeApp/paginator.html' %}
       </div>
 </main>
+
+
 
 {% endblock %}

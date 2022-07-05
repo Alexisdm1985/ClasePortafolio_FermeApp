@@ -5,90 +5,288 @@
 <!-- CSS -->
 
 {% block extrahead %}
-<link rel="stylesheet" href="{% static 'fermeApp/css/emp_home.css' %}">
+
 {% endblock %}
 
 
 {% block contenido %}
 
 {% load humanize %}
+<style>
+    .chart{
+        width: 30%;
+        height: 600;
+        display: none;
+        margin-right: 3rem;
+    }
+    .ventasTotales{
+        width: 40%;
+        height: 600;
+        display: none;
+        margin-left: 3rem;
+    }
 
+    main{
+        min-height: 70vh;
+        /* padding: 3rem;    */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contenedor {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        margin-top: 5rem;
+    }
+
+    .botones{
+        display: flex;
+        gap: 50px;
+    }
+    
+    /* button {
+        border-radius: 5px;
+        box-shadow: 0 5px 5px rgba(0 0 0 /.8);
+        padding: 1rem;
+        margin: 3rem 0;
+    } */
+    button {
+        outline: none;
+        margin: 5rem 0;
+        border: none;
+        display: flex;
+        align-items: center;
+        transition: all .4s ease;
+        padding: 1.5em;
+        box-shadow: 0px 5px 5px rgba(68, 61, 87, 0.3);
+    /* box-shadow: 
+                5px 7px 0 rgba(0 0 0 /.5),
+                inset 5px 7px 0 rgba(0 0 0 /.2); */
+        border-radius: 5px;
+    }
+    button a {
+        color: rgb(29, 64, 138);
+        text-decoration: none;
+        letter-spacing: 2px;
+        /* padding: 1.5em;
+        box-shadow: 0 5px 5px rgba(0 0 0 /.2);
+        border-radius: 5px; */
+    }
+    button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 7px 7px rgba(15,10,28);
+        /* box-shadow: 
+                    0 7px 7px rgba(15,10,28),
+                    inset 0 7px 7px rgba(0 0 0 /.2); */
+    }
 </style>
-<section>
-    <h1>Bienvenid@,  {{ uName }} </h1>
-</section>
 <main>
     <div class="contenedor">
 
-        <div class="enlaces">
-            
-            <h4>
-                <a href="#">
-                    <img src="{% static 'fermeApp/img/cuenta.png' %}" alt="">
-                   Accesos
-                </a>
-            </h4>
-        </div>
-        <div class="enlaces">
-
-            <h4>
-                <a href=" {% url 'emp_orden' %} ">
-                    <img src="{% static 'fermeApp/img/order.png' %}" alt="">
-                   Usuarios
-                </a>
-            </h4>
+        <div class="chart">
+            <canvas id="myChart" width="1500" height="1200" style="display: none;"></canvas>
         </div>
         
-        <div class="enlaces">
+        <!--  -->
 
-            <h4>
-                <a href="{% url 'emp_productos' %}">
-                    <img src="{% static 'fermeApp/img/productos.png' %}" alt="">
-                    Stock
-                </a>
-            </h4>
-        </div>
-
-        <div class="enlaces">
-
-            <h4>
-                <a href="{% url 'emp_proveedor' %}"> 
-                    <img src="{% static 'fermeApp/img/proveedor.png' %}" alt="">              
-                    Ordenes de compra
-                </a>
-            </h4>
-        </div>
-
-        <div class="enlaces">
-
-            <h4>
-                <a href="{% url 'emp_cliente' %}">
-                    <img src="{% static 'fermeApp/img/user.png' %}" alt="">
-                    Facturas
-                </a>
-            </h4>
-        </div>
-
-        <div class="enlaces">
-
-            <h4>
-                <a href="">
-                    <img src="{% static 'fermeApp/img/report.png' %}" alt="">
-                    Boletas
-                </a>
-            </h4>
-        </div>
-
-        <div class="enlaces">
-
-            <h4>
-                <a href="">
-                    <img src="{% static 'fermeApp/img/report.png' %}" alt="">
-                    Ventas
-                </a>
-            </h4>
+        <div class="ventasTotales">
+            <canvas id="chartVentas" width="1500" height="1200" style="display: none;"></canvas>
         </div>
         
     </div>
+        <div class="botones">
+            <button class="btn-usuarios">Informe usuarios</button>
+            <button class="btn-ventasTotales"> Informe ventas mensual</button>
+        </div>
 </main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const btnUsuarios = document.querySelector('.btn-usuarios')
+    const btnVentasTotales = document.querySelector('.btn-ventasTotales')
+    const char = document.querySelector('.chart')
+    const ventasTotales = document.querySelector('.ventasTotales')
+
+    btnUsuarios.addEventListener('click', e => {
+        informeUsuarios()
+        
+        document.querySelector('#myChart').style.display = 'inline'
+        char.style.display = 'block'
+    })
+    
+    btnVentasTotales.addEventListener('click', e => {
+        informeVentasMensual()
+        document.querySelector('#chartVentas').style.display = 'inline'
+        ventasTotales.style.display = 'block'
+
+    })
+
+informeUsuarios = () => {
+    let tipoUsuario = ['Cliente', 'Proveedor', 'Vendedor', 'Empleado']
+    let clientes = ['francoCliente']
+    let vendedor = ['juanVendedor', 'aguVendedor']
+    let empleado = ['ivanEmp']
+    let proveedor = ['mariaProveedor', 'marcoProveedor']
+    let cantidad = [1, 2, 2, 1];
+    let frameworks = ['React', 'Angular', 'Vue', 'Hyperapp', 'Omi'];
+
+        //ctx siempre es para chart
+    const ctx = document.getElementById('myChart');
+
+        //Seguir la misma sintaxis
+    const myChart = new Chart(ctx, {
+        type: 'doughnut', //  If you wanted a pie, or line chart, you could specify it as type: 'pie' or type: 'line'.
+        data: { 
+            labels: tipoUsuario, // Labels siempre es un array que se muestra en el eje X
+            // Datasets es un array de objetos con 2 propiedades principales + propiedades de estilo
+            datasets: [{ 
+                // Label es un string que se muestra arriba del dashboard
+                label: 'Cantidad de usuarios en el sistema',
+                // Array con los valores del eje Y
+                data: cantidad,
+                backgroundColor: [ // Array de hexadecimales o RGBA
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)"
+                ], 
+                borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                ],
+                // borderWidth: 1
+                hoverOffset: 4
+
+            }]
+
+        },
+        //  it contains configuration options to customize the charts such as changing the position of legend, enable/disable responsiveness, control styling, etc.
+        options: {
+            responsive: true, 
+            maintainAspectRatio: false // Obliga a que siga el tamanio especificado
+        }
+    })
+}
+
+informeVentasMensual = () => {
+    let alicates = [
+        "Alicate aprieta terminal",
+        "Alicate aprieta terminal 9\" ",
+        "Alicate aprieta terminal 10AWG ",
+        "Alicate autoajustable knipex",
+    ]
+
+    let ladrillo =[
+        "Ladrillo 7 Súper",
+        "Ladrillo 9 Súper",
+        "Ladrillo Fiscal Especial",
+        "Bloque Cemento Liso Gris",
+    ]
+
+    let ducha = [
+        "Juego de ducha flexible",
+        "Kit Grifería tina",
+        "Monomando tina",
+        "Juego de ducha flexible",
+    ]
+
+    let cobreBronce = [
+        "Codo Bronce SO-SO 1/2\" x 3/8\" ",
+        "Terminal bronce SO-HE 1/2\" ",
+        "Tee Bronce SO/SO/SO 1/2\" ",
+        "Codo Bronce SO/SO 1/2\" ",
+        "Terminal bronce SO/HI 1/2\" ",
+        "Copla Bronce SO/SO 1/2\" ",
+    ]
+
+    let productos = [...alicates, ...ladrillo, ...ducha, ...cobreBronce]
+
+    let random = (max) =>{
+        return Math.floor(Math.random() * max);
+    }
+
+    let cantidadVentas = []
+    
+    productos.forEach( item =>{
+        cantidadVentas.push(random(98))
+    })
+
+    //ctx siempre es para chart
+    const ctx = document.getElementById('chartVentas');
+
+    //Seguir la misma sintaxis
+    const myChart = new Chart(ctx, {
+    type: 'bar', //  If you wanted a pie, or line chart, you could specify it as type: 'pie' or type: 'line'.
+    data: { 
+        labels: productos, // Labels siempre es un array que se muestra en el eje X
+        // Datasets es un array de objetos con 2 propiedades principales + propiedades de estilo
+        datasets: [{ 
+            // Label es un string que se muestra arriba del dashboard
+            label: 'Venta mensual',
+            // Array con los valores del eje Y
+            data: cantidadVentas,
+            backgroundColor: [ // Array de hexadecimales o RGBA
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            ], 
+            borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            ],
+            borderWidth: 1
+            // hoverOffset: 4
+
+        }]
+
+    },
+    //  it contains configuration options to customize the charts such as changing the position of legend, enable/disable responsiveness, control styling, etc.
+    options: {
+        responsive: true, 
+        maintainAspectRatio: false // Obliga a que siga el tamanio especificado
+    }
+})
+}
+
+</script>
+
 {% endblock %}

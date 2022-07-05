@@ -40,7 +40,7 @@
         </div>
     {% endif %}
     
-    {% if proveedor %}
+    {% if proveedor or empleado %}
         <div class="enlaces">
 
             <h4>
@@ -85,6 +85,44 @@
                 <a href="#">
                     <img src="{% static 'fermeApp/img/order.png' %}" alt="">
                     Buscar factura
+                </a>
+            </h4>
+        </div>
+        {% endif %}
+        {% if empleado %}
+        <div class="enlaces">
+
+            <h4>
+                <a href="{% url 'emp_productos' %}">
+                    <img src="{% static 'fermeApp/img/productos.png' %}" alt="">
+                    Productos
+                </a>
+            </h4>
+        </div>
+        <div class="enlaces">
+
+            <h4>
+                <a href="{% url 'emp_proveedor' %}"> 
+                    <img src="{% static 'fermeApp/img/proveedor.png' %}" alt="">              
+                    Proveedores
+                </a>
+            </h4>
+        </div>
+        <div class="enlaces">
+        
+            <h4>
+                <a href="#">
+                    <img src="{% static 'fermeApp/img/order.png' %}" alt="">
+                    Clientes
+                </a>
+            </h4>
+        </div>
+        <div class="enlaces">
+
+            <h4>
+                <a href="{% url 'reportes' %}">
+                    <img src="{% static 'fermeApp/img/report.png' %}" alt="">
+                    Reportes
                 </a>
             </h4>
         </div>
